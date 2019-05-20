@@ -26,7 +26,7 @@ config submodule update --init --recursive
 config config --local status.showUntrackedFiles no
 config pull --recurse-submodules
 
-read -p "Run setup? (y/n) " yn
+read -rp "Run setup? (y/n) " yn
 case $yn in
   [Yy]*) "$HOME/.local/bin/initial-setup/setup-dotfiles.sh";;
   *) break:;

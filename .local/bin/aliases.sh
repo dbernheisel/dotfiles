@@ -120,7 +120,7 @@ alias sourcetree='open -a SourceTree ./'
 alias :q='exit'
 alias weather='curl wttr.in'
 
-alias ll='ls -lah'
+alias ll='LC_COLLATE=C ls -lah'
 
 alias tmuxbase='tmux attach -t base || tmux new -s base'
 

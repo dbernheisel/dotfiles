@@ -11,7 +11,7 @@ sudo pacman -Sy --needed openssl openssh base-devel
 
 for pkg in $(grep -E "^[^#;]" ~/Archfile | sort | uniq); do
   if pacman -Qi "$pkg" &> /dev/null; then continue; fi
-  read -p "Install ${pkg}? (y/n) " yn
+  read -rp "Install ${pkg}? (y/n) " yn
   case $yn in
     [Yy]*) yay -S "$pkg";;
     *) continue;;

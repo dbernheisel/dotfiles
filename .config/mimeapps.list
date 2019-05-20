@@ -1,0 +1,18 @@
+[Added Associations]
+application/pdf=google-chrome.desktop;org.gnome.Evince.desktop;feh.desktop;libreoffice-draw.desktop;
+application/zip=org.gnome.FileRoller.desktop;
+image/png=gpicview.desktop;feh.desktop;
+image/jpeg=gpicview.desktop;feh.desktop;
+audio/flac=vlc.desktop;
+application/vnd.rar=org.gnome.FileRoller.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop;
+text/plain=libreoffice-writer.desktop;
+image/tiff=gpicview.desktop;org.gnome.Evince.desktop;feh.desktop;
+video/mp4=vlc.desktop;
+application/json=libreoffice-writer.desktop;
+text/markdown=libreoffice-writer.desktop;
+
+[Default Applications]
+x-scheme-handler/webcal=google-chrome.desktop
+text/csv=libreoffice-calc.desktop;
+inode/directory=Thunar-folder-handler.desktop;
