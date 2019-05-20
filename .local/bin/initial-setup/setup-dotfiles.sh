@@ -51,9 +51,9 @@ gem_install_or_update() {
 }
 
 pip_install_or_update() {
-  if type pip &> /dev/null; then pip install "$1" -U; fi
-  if type pip2 &> /dev/null; then pip2 install "$1" -U; fi
-  if type pip3 &> /dev/null; then pip3 install "$1" -U; fi
+  if type pip &> /dev/null; then pip install --user "$1" -U; fi
+  if type pip2 &> /dev/null; then pip2 install --user "$1" -U; fi
+  if type pip3 &> /dev/null; then pip3 install --user "$1" -U; fi
 }
 
 yarn_install_or_update() {
