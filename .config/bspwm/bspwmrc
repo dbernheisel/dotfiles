@@ -1,0 +1,66 @@
+#! /bin/sh
+
+sxhkd &
+xrdb -merge ~/.Xresources
+unclutter -root &
+
+gap=10
+
+bspc config remove_unplugged_monitors true
+bspc config remove_disabled_monitors true
+
+wal -i ~/googledrive/backgrounds &
+if [ -f /usr/bin/workspaces_multimonitor ]; then
+  workspaces_multimonitor &
+else
+  bspc monitor -d 1 2 3 4 5
+fi
+
+bspc config window_gap            $gap
+bspc config top_padding           -$gap
+bspc config right_padding         -$gap
+bspc config bottom_padding        -$gap
+bspc config left_padding          -$gap
+
+bspc config split_ratio           0.52
+bspc config gapless_monocle       true
+bspc config borderless_monocle    true
+bspc config leaf_monocle          true
+bspc config adaptive_raise        true
+bspc config apply_floating_atom   true
+bspc config history_aware_focus   true
+bspc config focus_follows_pointer false
+
+# Color
+bspc config normal_frame_opacity  1.0
+bspc config focused_frame_opacity 1.0
+bspc config border_width          6
+
+# Color based on background
+source "${HOME}/.cache/wal/colors.sh"
+bspc config normal_border_color "$color1"
+bspc config active_border_color "$color2"
+bspc config focused_border_color "$color15"
+bspc config presel_feedback_color "$color1"
+
+bspc desktop ^1 -k monocle
+
+bspc rule -a Gimp state=floating follow=on
+bspc rule -a Google-chrome-stable private=on
+bspc rule -a Google-chrome private=on
+bspc rule -a Firefox private=on
+bspc rule -a feh floating=on manage=off
+bspc rule -a zoom state=floating
+bspc rule -a mplayer2 state=floating
+bspc rule -a rofi focus=on
+bspc rule -a Screenkey manage=off
+bspc rule -a Transmission-gtk pseudo_tiled=on
+
+allow_rgb10_configs=false compton --config ~/.config/compton/compton.conf -b
+~/dotfiles/bin/launch_polybar.sh
+
+# Increase key-repeat rate
+xset r rate 350 50
+
+# Set the cursor when it's floating over the background
+xsetroot -cursor_name left_ptr &

@@ -1,0 +1,237 @@
+[colors]
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+foreground-alt = ${xrdb:color7:#222}
+primary = ${xrdb:color1:#222}
+secondary = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+
+[settings]
+throttle-output = 5
+throttle-output-for = 10
+throttle-input-for = 30
+screenchange-reload = true
+compositing-background = source
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+
+[bar/top]
+monitor = ${env:MONITOR:}
+dpi = ${xrdb:Xft.dpi:172}
+width = 100%
+height = 40
+offset-x = 0
+offset-y = 0
+radius = 0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+underline-size = 4
+underline-color = #eee
+
+spacing = 1
+padding-left = 0
+padding-right = 1
+module-margin-left = 0
+module-margin-right = 2
+
+font-0 = FuraCode Nerd Font:size=14;2
+font-1 = FontAwesome:size=16;-2
+font-2 = siji:size=10;0
+
+modules-left = powermenu spacer i3 spacer xwindow
+modules-center =
+modules-right = backlight spacer battery spacer volume spacer date
+
+tray-position = right
+tray-padding = 0
+tray-offset-x = 0
+tray-background = ${colors.background}
+tray-scale = 1.0
+tray-maxsize = 40
+
+;wm-restack = bspwm
+enable-ipc = true
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+; MODULES
+[module/spacer]
+type = custom/text
+content = ""
+content-foreground = ${colors.secondary}
+
+[module/wifi]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-prefix = %{A1:~/.config/rofi/scripts/wifi-menu.sh:}直%{A}
+label-connected = %essid%
+format-disconnected = %{A1:~/.config/rofi/scripts/wifi-menu.sh:}睊%{A}
+ramp-signal-0 =
+ramp-signal-1 =
+ramp-signal-2 =
+ramp-signal-3 =
+ramp-signal-4 =
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+fuzzy-match = true
+format = <label-state> <label-mode>
+label-mode = %mode%
+pin-workspaces = true
+
+[module/bspwm]
+type = internal/bspwm
+
+ws-icon-default = 
+
+format = <label-state> <label-mode>
+
+label-focused = %icon% %name%
+label-focused-background = #88000000
+label-focused-underline= #ddd
+label-focused-padding = 3
+
+label-occupied = %icon% %name%
+label-occupied-padding = 3
+
+label-urgent = %icon% %name%
+label-urgent-padding = 3
+
+label-empty = %icon% %name%
+label-empty-foreground = #44ffffff
+label-empty-padding = 3
+
+pin-workspaces = true
+inline-mode = false
+fuzzy-match = true
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:120:...%
+label-maxlen = 120
+label-padding = 3
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+[module/date]
+type = internal/date
+interval = 1.0
+date = %a %b %d
+time = %l:%M%P
+date-alt = %A, %d %B %Y
+time-alt = %l:%M:%S%P
+
+label = %{A1:california:}%date%%{A}   %time%
+format = <label>
+format-background = ${colors.background}
+format-foreground = ${colors.foreground-alt}
+format-padding = 0
+
+[module/battery]
+type = internal/battery
+
+full-at = 99
+
+battery = BAT0
+adapter = AC0
+
+poll-interval = 5
+
+format-charging = <animation-charging><label-charging>%
+format-discharging = <ramp-capacity><label-discharging>%
+format-full = <ramp-capacity><label-full>%
+label-charging = %percentage%
+label-discharging = %percentage%
+label-full = %percentage%
+format-charging-padding = 0
+format-discharging-padding = 0
+format-full-padding = 0
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/backlight]
+type = internal/backlight
+
+card = intel_backlight
+enable-scroll = true
+
+format = <ramp><label>
+label = %percentage%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+
+[module/volume]
+type = internal/alsa
+
+format-volume = <ramp-volume><label-volume>
+format-muted = <label-muted>
+label-volume = %{A3:pavucontrol:}%percentage%%{A}
+label-muted = %{A3:pavucontrol:}婢%{A}
+label-muted-foreground = #aaa
+format-volume-padding = 0
+format-muted-padding = 0
+
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 墳
+ramp-headphones-0 = 
+
+[module/powermenu]
+type = custom/menu
+
+label-open = 
+label-close = cancel
+label-open-padding = 3
+label-close-padding = 3
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = shutdown
+menu-0-1-exec = menu-open-2
+menu-0-2 = logout
+menu-0-2-exec = menu-open-3
+menu-0-0-padding = 3
+menu-0-1-padding = 3
+menu-0-2-padding = 3
+
+menu-1-0 = reboot?
+menu-1-0-exec = reboot
+menu-1-0-padding = 3
+
+menu-2-0 = shutdown?
+menu-2-0-exec = poweroff
+menu-2-0-padding = 3
+
+menu-3-0 = logout?
+menu-3-0-exec = i3-msg exit
+;menu-3-0-exec = bspc quit
+menu-3-0-padding = 3
+
+; vim:ft=dosini

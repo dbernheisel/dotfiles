@@ -1,0 +1,18 @@
+[Unit]
+Description=GCSF (Google Drive Filesystem)
+Documentation="https://github.com/harababurel/gcsf"
+After=network.target
+
+[Service]
+Type=simple
+Environment=RUST_BACKTRACE=1
+Environment=GCSF_MOUNTPOINT="/home/dbernheisel/drive"
+Environment=GCSF_SESSION="dbernheisel"
+ExecStart=/usr/bin/gcsf mount $GCSF_MOUNTPOINT -s $GCSF_SESSION
+ExecStop=/usr/bin/fusermount -u $GCSF_MOUNTPOINT
+# GCSF will die by itself after the fusermount command
+KillMode=none
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
