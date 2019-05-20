@@ -1,12 +1,12 @@
 [submodule ".zprezto"]
 	path = .zprezto
-	url = git@github.com:sorin-ionescu/prezto
+	url = https://github.com/sorin-ionescu/prezto.git
 [submodule ".asdf"]
 	path = .asdf
-	url = git@github.com:asdf-vm/asdf
+	url = https://github.com/asdf-vm/asdf.git
 [submodule ".elixir_ls"]
 	path = .elixir_ls
-	url = git@github.com:JakeBecker/elixir-ls
+	url = https://github.com/JakeBecker/elixir-ls.git
 [submodule ".kotlin_ls"]
 	path = .kotlin_ls
-	url = git@github.com:fwcd/KotlinLanguageServer
+	url = https://github.com/fwcd/KotlinLanguageServer.git

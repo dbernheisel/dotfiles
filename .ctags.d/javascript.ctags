@@ -1,0 +1,11 @@
+--exclude=.git
+--exclude=vendor
+--exclude=priv/static/js
+--exclude=coverage
+--exclude=bower_components
+--exclude=node_modules
+--exclude=assets/node_modules
+--exclude=dist
+--exclude=gulp
+--exclude=tmp
+--exclude=public

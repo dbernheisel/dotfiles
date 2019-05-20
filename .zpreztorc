@@ -9,6 +9,8 @@
 # General
 #
 
+fpath=(~/.local/bin/zsh $fpath)
+
 # Set case-sensitivity for completion, history lookup, etc.
 # zstyle ':prezto:*:*' case-sensitive 'yes'
 zstyle ':completion:*' matcher-list '' 'l:|=[^_]* r:|=*'

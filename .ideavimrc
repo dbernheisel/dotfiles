@@ -1,0 +1,34 @@
+nmap <space> <leader>
+
+source ~/dotfiles/nvimrc
+
+set clipboard=unnamed
+
+nmap <leader>sv :source ~/.ideavimrc<CR>
+
+" IDEAvim-specific
+set visualbell
+set noerrorbells
+set surround
+set multiple-cursors
+
+" Switch between the last two files
+nmap <leader><leader> :e#<CR>
+
+" Split window vertically or horizontally *and* switch to the new split!
+nmap <silent><leader>hs :split <CR><C-W><C-H>
+nmap <silent><leader>vs :vsplit <CR><C-W><C-J>
+
+nmap <c-]>:action GotoImplementation<CR>
+nmap <silent>gd :action GotoImplementation<CR>
+nmap <c-p> :action SearchEverywhere<CR>
+nmap <leader><f>:action GotoFile<CR>
+
+nmap <C-S-left> :next<CR>
+nmap <C-S-right> :previous<CR>
+
+nmap <C-o> :action Back<CR>
+nmap <C-i> :action Forward<CR>
+
+nmap <Leader>/ :action CommentByLineComment<CR>
+vmap <leader>/ :action CommentByLineComment<space>

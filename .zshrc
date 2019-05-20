@@ -40,12 +40,12 @@ export POSTGRES_USER=$(whoami)
 # Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
 if [ -f ~/.elixir_ls/release/language_server.sh ]; then
-  export PATH=~/.elixir_ls/release:$PATH
+  export PATH="$HOME/.elixir_ls/release:$PATH"
 fi
 
 # Kotlin
 if [ -f ~/.kotlin_ls/build/install/kotlin-language-server/bin/kotlin-language-server ]; then
-  export PATH=~/.kotlin_ls/build/install/kotlin-language-server/bin:$PATH
+  export PATH="$HOME/.kotlin_ls/build/install/kotlin-language-server/bin:$PATH"
 fi
 
 # fzf Autocompletions
@@ -67,10 +67,8 @@ fi
 [ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/completions/asdf.bash
 
 # Newer git
-if type brew &> /dev/null; then
-  if [ -f $(brew --prefix git)/bin/git ]; then
-    export PATH=$(brew --prefix git)/bin:$PATH
-  fi
+if type brew &> /dev/null && [ -f $(brew --prefix git)/bin/git ]; then
+  export PATH=$(brew --prefix git)/bin:$PATH
 fi
 
 # Rust
@@ -82,11 +80,8 @@ fi
 export FZF_DEFAULT_OPTS='--color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/**/*" --glob "!_build/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!bower_components/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!.Trash/**/*"'
 
-
-source ~/dotfiles/aliases.sh
+source ~/.local/bin/aliases.sh
 source ~/.secrets
-
-export PATH=~/dotfiles/bin:$PATH
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 

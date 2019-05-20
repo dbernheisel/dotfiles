@@ -1,0 +1,31 @@
+# Common
+@development-tools
+curl
+file
+git
+python-setuptools
+
+# Erlang requirements
+compat-openssl10-devel
+
+# Ruby requirements
+bzip2
+gcc-6
+gdbm-devel
+libffi-devel
+libyaml-devel
+ncurses-devel
+openssl-devel
+readline-devel
+zlib-devel
+
+# Python requirements
+bzip2
+bzip2-devel
+gcc
+openssl-devel
+readline-devel
+sqlite
+sqlite-devel
+tk-devel
+zlib-devel
