@@ -1,4 +1,5 @@
 # sourced from install.sh
+sudo pacman -Sy openssl openssh base-devel
 
 (
   git clone https://aur.archlinux.org/yay.git ~/yay
