@@ -3,7 +3,7 @@ set -ex
 
 # I use SSH all the time, and that causes problems if you don't have an SSH
 # key setup yet. The setup script will prompt that process.
-mv ~/.gitconfig ~/.gitconfig-bak
+mv ~/.gitconfig ~/.gitconfig-bak || true
 git clone --bare --recursive https://github.com/dbernheisel/dotfiles.git "$HOME/.cfg"
 
 function config {
@@ -21,6 +21,7 @@ if ! config checkout; then
 fi
 
 config checkout
+mv ~/.gitconfig ~/.gitconfig-bak-checked
 config submodule update --init --recursive
 config config --local status.showUntrackedFiles no
 config pull --recurse-submodules
@@ -31,4 +32,4 @@ case $yn in
   *) break:;
 esac
 
-mv ~/.gitconfig-bak ~/.gitconfig
+mv ~/.gitconfig-bak-checked ~/.gitconfig
