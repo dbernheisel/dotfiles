@@ -1,5 +1,7 @@
+#!/bin/bash
 # sourced from install.sh
-sudo pacman -Sy openssl openssh base-devel
+
+sudo pacman -Sy --needed openssl openssh base-devel
 
 (
   git clone https://aur.archlinux.org/yay.git ~/yay
@@ -7,7 +9,14 @@ sudo pacman -Sy openssl openssh base-devel
   makepkg -si
 )
 
-yay -S --needed "$(comm -12 <(pacman -Slq | sort) <(! grep "^[^#;]" ~/Archfile | sort | uniq))"
+for pkg in $(grep -E "^[^#;]" ~/Archfile | sort | uniq); do
+  if pacman -Qi "$pkg" &> /dev/null; then continue; fi
+  read -p "Install ${pkg}? (y/n) " yn
+  case $yn in
+    [Yy]*) yay -S "$pkg";;
+    *) continue;;
+  esac
+done
 
 #fancy_echo "Installing script to reset keyrate when waking up"
 #sudo mkdir -p /usr/lib/systemd/system-sleep
