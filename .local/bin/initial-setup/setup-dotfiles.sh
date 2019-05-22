@@ -152,99 +152,13 @@ install_asdf_plugin() {
   fi
 }
 
-asdf_install_latest_version() {
-  if command -v asdf >/dev/null; then
-    local language="$1"; shift
-    local latest_version
-    install_asdf_plugin "$language"
-    latest_version=$(asdf list-all "$language" | grep -v '[A-Za-z-]' | tail -n 1)
-    fancy_echo "Installing $language $latest_version" "$yellow"
-    asdf install "$language" "$latest_version"
-    fancy_echo "Setting global version of $language to $latest_version" "$yellow"
-    asdf global "$language" "$latest_version"
-  else
-    fancy_echo "Could not install language for asdf. Could not find asdf" "$red" && false
-  fi
-}
-
-asdf_install_latest_nodejs() {
-  local language="nodejs"
-  local latest_version
-  install_asdf_plugin "$language"
-  export GNUPGHOME="${ASDF_DIR:-$HOME/.asdf}/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
-  # shellcheck disable=SC1090
-  source "$HOME/.asdf/plugins/$language/bin/import-release-team-keyring"
-  latest_version=$(asdf list-all "$language" | grep -v '[A-Za-z-]' | tail -n 1)
-  fancy_echo "Installing $language $latest_version" "$yellow"
-  asdf install "$language" "$latest_version"
-  fancy_echo "Setting global version of $language to $latest_version" "$yellow"
-  asdf global "$language" "$latest_version"
-  unset GNUPGHOME
-}
-
-asdf_install_latest_pythons() {
-  local latest_2_version
-  local latest_3_version
-  local language="python"
-  install_asdf_plugin "$language"
-  latest_2_version=$(asdf list-all $language | grep -v '^2.*' | grep -v '[A-Za-z-]' | tail -n 1)
-  latest_3_version=$(asdf list-all $language | grep -v '^3.*' | grep -v '[A-Za-z-]' | tail -n 1)
-  fancy_echo "Installing python $latest_2_version" "$yellow"
-  if is_mac; then
-    CFLAGS="-O2 -I$(xcrun --show-sdk-path)/usr/include" \
-      asdf install "$language" "$latest_2_version" && \
-      brew unlink python2
-  else
-    asdf install "$language" "$latest_2_version"
-  fi
-
-  fancy_echo "Installing python $latest_3_version" "$yellow"
-  if is_mac; then
-    CFLAGS="-O2 -I$(xcrun --show-sdk-path)/usr/include" \
-      asdf install "$language" "$latest_3_version" && \
-      brew unlink python3
-  else
-    asdf install "$language" "$latest_3_version"
-  fi
-
-  fancy_echo "Setting global version of $language to $latest_3_version $latest_2_version" "$yellow"
-  asdf global "$language" "$latest_3_version" "$latest_2_version"
-}
-
-asdf_install_latest_golang() {
-  local language="golang"
-  local goarch
-  local goarchbit
-  case "$OSTYPE" in
-    darwin*)  goarch="darwin" ;;
-    linux*)   goarch="linux" ;;
-    bsd*)     goarch="freebsd" ;;
-    *)        fancy_echo "Cannot determine system for golang" "$red" && exit 1;;
-  esac
-  case $(uname -m) in
-    i?86)   goarchbit=386 ;;
-    x86_64) goarchbit=amd64 ;;
-    ppc64)  goarchbit=ppc64 ;;
-    *)      fancy_echo "Cannot determine system for golang" "$red" && exit 1;;
-  esac
-
-  install_asdf_plugin $language
-  local latest_version
-  latest_version=$(asdf list-all golang | grep -E $goarch | grep -v 'rc' | grep -v 'src' | grep -v 'beta' | grep -E $goarchbit | tail -n 1)
-  fancy_echo "Installing $language $latest_version" "$yellow"
-  asdf install "$language" "$latest_version"
-  fancy_echo "Setting global verison of $language to $latest_version" "$yellow"
-  asdf global "$language" "$latest_version"
-}
-
 install_asdf
 if type asdf &> /dev/null; then
-  fancy_echo "Installing languages through ASDF ..." "$yellow"
-  if prompt_install "Ruby"; then asdf_install_latest_version ruby; fi
-  if prompt_install "Elixir"; then asdf_install_latest_version elixir; fi
-  if prompt_install "NodeJS"; then asdf_install_latest_nodejs; fi
-  if prompt_install "Python 2 and 3"; then asdf_install_latest_pythons; fi
-  if prompt_install "Golang"; then asdf_install_latest_golang; fi
+  fancy_echo "Installing languages through asdf ..." "$yellow"
+  if prompt_install "Ruby"; then install_asdf_plugin ruby; fi
+  if prompt_install "Elixir"; then install_asdf_plugin elixir; fi
+  if prompt_install "NodeJS"; then install_asdf_plugin nodejs; fi
+  asdf install
 fi
 
 #### Tools
