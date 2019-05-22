@@ -44,7 +44,7 @@ bindsym $mod+Shift+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+Shift+d exec --no-startup-id ~/dotfiles/bin/switch-displays.sh
+bindsym $mod+Shift+d exec --no-startup-id ~/.local/bin/switch-displays.sh
 
 # change focus
 focus_follows_mouse no
@@ -131,7 +131,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+z exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # lock
-set $Locker ~/dotfiles/bin/lock_screen.sh
+set $Locker ~/.local/bin/lock_screen.sh
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -270,8 +270,8 @@ bindsym $mod+m exec "/usr/local/bin/switch-audio-port"
 # Autostart apps
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id "allow_rgb10_configs=false compton --config ~/.config/compton/compton.conf -b"
-exec --no-startup-id "~/dotfiles/bin/launch_polybar.sh"
-exec --no-startup-id "~/dotfiles/bin/launch_tray.sh"
+exec --no-startup-id "~/.local/bin/launch_polybar.sh"
+exec --no-startup-id "~/.local/bin/launch_tray.sh"
 # Set background and theme from background
 exec --no-startup-id "feh --randomize --bg-fill ~/backgrounds"
 exec --no-startup-id "wal -Rn"
@@ -282,4 +282,4 @@ exec --no-startup-id "xsetroot -cursor_name left_ptr"
 # Increase key-repeat rate
 exec --no-startup-id "xset r rate 350 50"
 exec --no-startup-id "xrdb -merge ~/.Xresources"
-exec --no-startup-id "xautolock -time 15 -locker ~/dotfiles/bin/lock_screen.sh"
+exec --no-startup-id "xautolock -time 15 -locker ~/.local/bin/lock_screen.sh"
