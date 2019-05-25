@@ -39,7 +39,7 @@ padding-right = 1
 module-margin-left = 0
 module-margin-right = 2
 
-font-0 = FuraCode Nerd Font:size=14;2
+font-0 = FuraCode Nerd Font:size=12;2
 font-1 = FontAwesome:size=16;-2
 font-2 = siji:size=10;0
 

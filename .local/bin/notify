@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "$1 - $2" && notify-send --urgency=low "$1" "$2"

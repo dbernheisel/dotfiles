@@ -15,4 +15,6 @@ else
   polybar --reload top &
 fi
 
+source "$HOME/.local/bin/launch_tray.sh"
+
 disown

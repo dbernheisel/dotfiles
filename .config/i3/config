@@ -216,7 +216,7 @@ smart_borders on
 # floating windows
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Kalu"] floating enable
-for_window [class="Zoom"] floating enable
+for_window [class="zoom"] floating enable
 for_window [class="(?i)blueman"] floating enable
 
 for_window [window_role="pop-up"] floating enable
