@@ -16,6 +16,7 @@ if ! config checkout; then
   config checkout 2>&1 | \
     grep -E "\s+\." | \
     sed 's/^\s*\(.*[^ \t]\)\(\s\+\)*$/\1/' | \
+    awk '{$1=$1};1' | \
     uniq | \
     tar cvpfzL "backup-$(date +%F).tar.gz" -T -
   config reset --hard
