@@ -11,6 +11,16 @@ setlocal nocindent
 setlocal textwidth=80
 setlocal colorcolumn=+1
 
+" If the buffer is in the wiki
+if(expand('%:p:h')=~"vimwiki")
+  nmap <buffer> <CR> <Plug>VimwikiFollowLink
+  nmap <buffer> <Backspace> <Plug>VimwikiGoBackLink
+else
+  " Basically unmap it
+  nmap <buffer> <F14> <Plug>VimwikiFollowLink
+  nmap <buffer> <F15> <Plug>VimwikiGoBackLink
+endif
+
 " Distraction-free writing mode
 function! s:goyo_enter()
   " light theme

@@ -33,6 +33,7 @@ call plug#begin('~/.config/nvim/plugged')
   " Wiki
   let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
+  let g:vimwiki_use_calendar = 1
   Plug 'vimwiki/vimwiki'
   Plug 'itchyny/calendar.vim'
   nnoremap <leader>cc :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
@@ -67,6 +68,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-fugitive'           " Gblame
 
   Plug 'dkprice/vim-easygrep'         " Grep across files
+  Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
   Plug 'tpope/vim-endwise'            " Auto-close if, do, def
   Plug 'tpope/vim-surround'           " Add 's' command to give motions context
                                       " eg: `cs"'` will change the surrounding

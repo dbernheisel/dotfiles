@@ -13,7 +13,7 @@
   nm-applet & disown
   blueman-applet & disown
   flameshot & disown
-  sleep 20 && kalu & disown
+  kalu & disown
 )
 
 disown

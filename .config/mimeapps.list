@@ -12,6 +12,7 @@ video/mp4=vlc.desktop;
 application/json=libreoffice-writer.desktop;
 text/markdown=libreoffice-writer.desktop;
 text/csv=libreoffice-calc.desktop;
+application/x-bittorrent=transmission-gtk.desktop;
 
 [Default Applications]
 x-scheme-handler/webcal=google-chrome.desktop
