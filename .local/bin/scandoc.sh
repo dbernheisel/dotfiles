@@ -33,34 +33,27 @@ fi
 TMP_DIR="/tmp/scanning/$(basename "$FILENAME")"
 mkdir -p "$TMP_DIR"
 
-# Scan sources for me:
-#  Automatic Document Feeder(centrally aligned)
-#  Automatic Document Feeder(centrally aligned,Duplex)
-echo -ne "Does this have two-sided documents? (y/n) "
+echo -ne "Scan both sides of documents? y/[n] "
 read -r IS_DUPLEX
 case "$IS_DUPLEX" in
-  Y*|y*) SCAN_SOURCE="Automatic Document Feeder(centrally aligned,Duplex)";;
-  *) SCAN_SOURCE="Automatic Document Feeder(centrally aligned)";;
+  Y*|y*) SCAN_SOURCE="Automatic Document Feeder(center aligned,Duplex)";;
+  *) SCAN_SOURCE="Automatic Document Feeder(center aligned)";;
 esac
-echo "source=$SCAN_SOURCE"
 
-echo -ne "How big is the paper? (Letter,Legal,Biggest) "
+echo -ne "How big is the paper? Letter/Legal/[Biggest] "
 read -r SCAN_SIZE
 case "$SCAN_SIZE" in
   Letter|letter) SCAN_SIZE="-x 215.88 -y 279.374 ";;
   Legal|legal) SCAN_SIZE="-x 215.88 -y 356 ";;
   *) SCAN_SIZE="";;
 esac
-echo "size=$SCAN_SIZE"
 
-#echo -ne "Color or Grayscale? "
-#read -r SCAN_MODE
-#case "$SCAN_MODE" in
-  #C*|c*) SCAN_MODE="24bit Color";;
-  #G*|g*) SCAN_MODE="True Gray";;
-  #*) echo "Invalid scan mode" && exit 1;;
-#esac
-#echo "mode=$SCAN_MODE"
+echo -ne "Color or Grayscale? [Color]/Gray "
+read -r SCAN_MODE
+case "$SCAN_MODE" in
+  G*|g*) SCAN_MODE="True Gray";;
+  *) SCAN_MODE="24bit Color[fast]";;
+esac
 
 (
   cd "$TMP_DIR"
@@ -69,6 +62,7 @@ echo "size=$SCAN_SIZE"
   scanimage \
     --source="$SCAN_SOURCE" \
     --device="$SCANNER" \
+    --mode="$SCAN_MODE" \
     $SCAN_SIZE \
     --format=tiff \
     --batch --batch-print \
