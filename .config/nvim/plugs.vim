@@ -17,9 +17,11 @@ call plug#begin('~/.config/nvim/plugged')
 
   "Plug 'prabirshrestha/async.vim'
   "Plug 'prabirshrestha/vim-lsp'
+  Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
   " Linters
   Plug 'w0rp/ale'
+  nnoremap <leader>gd :ALEGoToDefinition<cr>
 
   " Autocomplete
   let g:deoplete#enable_at_startup = 1
@@ -78,8 +80,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'pbrisbin/vim-mkdir'           " create directories if they don't exist
 
   Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
-
-  Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
   " FZF and RipGrep
   if isdirectory('/home/linuxbrew/.linuxbrew/opt/fzf')

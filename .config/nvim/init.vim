@@ -80,7 +80,6 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <leader>gd :ALEGoToDefinition<cr>
 
 " Get off my lawn
 imap <Up> <nop>
@@ -147,6 +146,19 @@ let g:neoterm_size = 80
 let g:neoterm_fixedsize = 1
 let g:neoterm_keep_term_open = 0
 
+function! OpenTermV(command)
+  let g:neoterm_size = 80
+  execute 'vert T '.a:command
+endfunction
+
+function! OpenTermH(command)
+  let g:neoterm_size = 10
+  execute 'belowright T '.a:command
+endfunction
+
+command! -nargs=1 VT call OpenTermV(<q-args>)
+command! -nargs=1 HT call OpenTermH(<q-args>)
+
 function! RunTest(cmd)
   exec a:cmd
 endfunction
@@ -206,10 +218,7 @@ augroup vimrcEx
   " Set syntax highlighting
   autocmd BufNewFile,BufRead Brewfile setf ruby
   autocmd BufNewFile,BufRead *.md setf markdown
-  autocmd BufNewFile,BufRead *.ex* setf elixir
-  autocmd BufNewFile,BufRead *.leex setf eelixir
   autocmd BufNewFile,BufRead *.drab setf eelixir
-  autocmd BufNewFile,BufRead mix.lock setf elixir
   autocmd BufNewFile,BufRead *.arb setf ruby
   autocmd BufNewFile,BufRead irbrc setf ruby
   autocmd BufNewFile,BufRead pryrc setf ruby
