@@ -1,0 +1,87 @@
+{
+  "solargraph.commandPath": "/home/dbernheisel/.asdf/shims/solargraph",
+  "solargraph.completion": true,
+  "solargraph.hover": true,
+  "solargraph.definitions": true,
+  "solargraph.rename": true,
+  "solargraph.references": true,
+  "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown"],
+  "languageserver": {
+    "sorbet": {
+      "command": "/home/dbernheisel/.asdf/shims/srb",
+      "args": ["tc", "--lsp", "--enable-all-experimental-lsp-features"],
+      "filetypes": ["ruby"],
+      "rootPatterns": ["sorbet/config"],
+      "initializationOptions": {},
+      "settings": {}
+    },
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "dls": {
+      "command": "diagnostic-languageserver",
+      "args": ["--stdio"],
+      "filetypes": ["sh", "elixir", "eelixir"],
+      "initializationOptions": {
+        "filetypes": {
+          "sh": ["shellcheck"],
+          "elixir": ["mix_credo"],
+          "eelixir": ["mix_credo"]
+        },
+        "linters": {
+          "shellcheck": {
+            "command": "shellcheck",
+            "debounce": 50,
+            "args": [ "--format=gcc", "-"],
+            "offsetLine": 0,
+            "offsetColumn": 0,
+            "sourceName": "shellcheck",
+            "formatLines": 1,
+            "formatPattern": [
+              "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
+              {
+                "line": 1,
+                "column": 2,
+                "message": 4,
+                "security": 3
+              }
+            ],
+            "securities": {
+              "error": "error",
+              "warning": "warning",
+              "note": "info"
+            }
+          }
+        },
+        "mix_credo": {
+          "command": "mix",
+          "debounce": 100,
+          "rootPatterns": ["mix.exs"],
+          "args": ["credo", "suggest", "--format", "flycheck", "--read-from-stdin"],
+          "offsetLine": 0,
+          "offsetColumn": 0,
+          "sourceName": "mix_credo",
+          "formatLines": 1,
+          "formatPattern": [
+            "^[^ ]+?:([0-9]+)(:([0-9]+))?:\\s+([^ ]+):\\s+(.*)$",
+            {
+            "line": 1,
+            "column": 3,
+            "message": 5,
+            "security": 4
+            }
+          ],
+          "securities": {
+            "F": "warning",
+            "C": "warning",
+            "D": "info",
+            "R": "info"
+          }
+        }
+      }
+    }
+  }
+}

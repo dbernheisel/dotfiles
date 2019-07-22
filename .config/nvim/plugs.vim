@@ -1,5 +1,27 @@
-" ln -s ~/dotfiles/vim/plugs.vim ~/.config/nvim/plugs.vim
 map K <Nop>
+
+let g:elixirls = {
+  \ 'path': printf('%s/%s', stdpath('config'), 'bundle/elixir-ls'),
+  \ }
+
+let g:elixirls.lsp = printf(
+  \ '%s/%s',
+  \ g:elixirls.path,
+  \ 'release/language_server.sh')
+
+function! g:elixirls.compile(...)
+  let l:commands = join([
+    \ 'mix local.hex --force',
+    \ 'mix local.rebar --force',
+    \ 'mix deps.get',
+    \ 'mix compile',
+    \ 'mix elixir_ls.release'
+    \ ], '&&')
+
+  echom '>>> Compiling elixirls'
+  silent call system(l:commands)
+  echom '>>> elixirls compiled'
+endfunction
 
 " install vim-plug if needed.
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -8,24 +30,71 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
-  " Language server support
-  "Plug 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\ }
+" Configure Language Servers
+let g:lang_server = {
+  \ 'elixir': printf('%s/%s', stdpath('config'), 'plugged/elixir-ls'),
+  \ }
 
-  "Plug 'prabirshrestha/async.vim'
-  "Plug 'prabirshrestha/vim-lsp'
+let g:lang_server.elixir_lsp = printf('%s/%s', g:lang_server.elixir, 'release/language_server.sh')
+
+function! g:lang_server.compile_elixir(...)
+  let l:commands = join([
+    \ 'mix local.hex --force',
+    \ 'mix local.rebar --force',
+    \ 'mix deps.get',
+    \ 'mix compile',
+    \ 'mix elixir_ls.release'
+    \ ], '&&')
+
+  echom '>>> Compiling elixirls'
+  silent call system(l:commands)
+  echom '>>> elixirls compiled'
+endfunction
+
+call plug#begin('~/.config/nvim/plugged')
   Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
-  " Linters
-  Plug 'w0rp/ale'
-  nnoremap <leader>gd :ALEGoToDefinition<cr>
+  " Language server support
+  Plug 'JakeBecker/elixir-ls', { 'do': { -> g:elixirls.compile() } }
 
-  " Autocomplete
-  let g:deoplete#enable_at_startup = 1
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-solargraph', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'amiralies/coc-elixir', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Use <c-space> to trigger completion.
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  " Language servers
+  Plug 'JakeBecker/elixir-ls', { 'do': { -> g:lang_server.compile_elixir() } }
+  Plug 'mads-hartmann/bash-language-server', { 'do': 'yarn global install --frozen-lockfile && asdf reshim nodejs'}
+  Plug 'iamcco/coc-diagnostic', {'do': 'yarn global install --frozen-lockfile && asdf reshim nodejs'}
+
+  " Language server integration
+  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-sources', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-solargraph', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'amiralies/coc-elixir', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 
   " :Dash
   if has('mac')
@@ -38,15 +107,11 @@ call plug#begin('~/.config/nvim/plugged')
   let g:vimwiki_use_calendar = 1
   Plug 'vimwiki/vimwiki'
   Plug 'itchyny/calendar.vim'
-  nnoremap <leader>cc :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
   " Jump to related files, :A, :AS, :AV, and :AT
   Plug 'tpope/vim-projectionist'
   Plug 'andyl/vim-projectionist-elixir', { 'for': 'elixir' }
   Plug 'tpope/vim-rails', { 'for': 'ruby' }
-
-  " Elixir formatting
-  Plug 'mhinz/vim-mix-format', { 'for': 'elixir' }
 
   " <C-n> to select next word with new cursor
   Plug 'terryma/vim-multiple-cursors'
@@ -69,7 +134,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'airblade/vim-gitgutter'       " Git gutter
   Plug 'tpope/vim-fugitive'           " Gblame
 
-  Plug 'dkprice/vim-easygrep'         " Grep across files
   Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
   Plug 'tpope/vim-endwise'            " Auto-close if, do, def
   Plug 'tpope/vim-surround'           " Add 's' command to give motions context
@@ -90,8 +154,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug '/usr/local/opt/fzf'         " Use brew-installed fzf
   endif
   Plug 'junegunn/fzf.vim'             " Fuzzy-finder
-  Plug 'zackhsi/fzf-tags'             " fzf for tags
-  nmap <C-]> <Plug>(fzf_tags)
 
   " Cosmetic
   Plug 'ryanoasis/vim-devicons'       " :)
@@ -118,3 +180,14 @@ call plug#begin('~/.config/nvim/plugged')
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
 call plug#end()
+
+call coc#config('languageserver', {
+\  'elixir': {
+\    'command': g:lang_server.elixir_lsp,
+\    'trace.server': 'verbose',
+\    'filetypes': ['elixir', 'eelixir'],
+\    'settings': {
+\      'dialyzerEnabled': 'false'
+\    }
+\  }
+\})

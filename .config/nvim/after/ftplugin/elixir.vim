@@ -1,5 +1,3 @@
-let g:mix_format_on_save = 0
-
 " Highlight character that marks where line is too long
 setlocal textwidth=100
 setlocal colorcolumn=+1
@@ -14,10 +12,6 @@ endfunction
 
 let g:test#custom_transformations = {'elixir_umbrella': function('ElixirUmbrellaTransform')}
 let g:test#transformation = 'elixir_umbrella'
-
-" setlocal formatprg=mix\ format\ -
-let b:ale_linters = ['mix', 'credo', 'dialyxir', 'elixir-ls']
-let b:ale_fixers = ['mix_format']
 
 let g:projectionist_heuristics['mix.exs'] = {
   \ 'apps/*/mix.exs': { 'type': 'app' },

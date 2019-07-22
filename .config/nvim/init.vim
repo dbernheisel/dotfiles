@@ -61,7 +61,7 @@ set ignorecase
 set smartcase
 map <silent> <CR> :nohl<CR>
 
-if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app"
+if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
   " Turn on 24bit color
   set termguicolors
   let g:truecolor = 1
@@ -80,6 +80,9 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
+
+" Disable Documentation Lookup
+map K <Nop>
 
 " Get off my lawn
 imap <Up> <nop>
@@ -118,8 +121,6 @@ endif
 if filereadable(expand("~/.config/nvim/terminal.vim"))
   source ~/.config/nvim/terminal.vim
 endif
-
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 nmap <leader>b :call ToggleFileTree()<CR>
 let NERDTreeShowLineNumbers=0
@@ -200,6 +201,55 @@ let g:lightline = {
   \ 'colorscheme': 'wombat',
   \ }
 let g:elm_format_autosave = 1
+
+"============ COC Config
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> K :call <SID>show_documentation()<cr>
+
+function! s:show_documentation()
+  if (index(['vim', 'help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+nmap <leader>rn <Plug>(coc-rename)
+
+augroup cocEx
+  " Highlight symbol under cursor on CursorHold
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup END
+
+"============
+
+nnoremap <leader>cc :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
 " Theme
 set background=dark
