@@ -39,3 +39,4 @@ application/xhtml+xml=brave-bin.desktop
 application/x-extension-xhtml=brave-bin.desktop
 application/x-extension-xht=brave-bin.desktop
 application/pdf=org.gnome.Evince.desktop
+x-scheme-handler/postman=Postman.desktop

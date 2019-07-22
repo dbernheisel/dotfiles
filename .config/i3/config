@@ -30,7 +30,7 @@ hide_edge_borders both
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 floating_minimum_size 300 x 300
-floating_maximum_size 1000 x 1000
+floating_maximum_size 2000 x 1000
 
 # start a terminal
 bindsym $mod+Return exec kitty
@@ -45,6 +45,9 @@ bindsym $mod+Shift+q kill
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+Shift+d exec --no-startup-id ~/.local/bin/switch-displays.sh
+
+bindsym $mod+Shift+plus move scratchpad
+bindsym $mod+plus scratchpad show
 
 # change focus
 focus_follows_mouse no
@@ -260,7 +263,7 @@ bindsym $mod+F7 exec mocp --previous
 bindsym $mod+F8 exec mocp --next
 
 # App shortcuts
-bindsym $mod+w exec "/usr/bin/google-chrome-stable"
+bindsym $mod+w exec "/usr/bin/brave"
 bindsym $mod+n exec "/usr/bin/thunar"
 bindsym $mod+space exec "rofi -show run"
 
