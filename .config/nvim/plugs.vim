@@ -102,8 +102,7 @@ call plug#begin('~/.config/nvim/plugged')
   endif
 
   " Wiki
-  let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
-                      \ 'syntax': 'markdown', 'ext': '.md'}]
+  let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/'}]
   let g:vimwiki_use_calendar = 1
   Plug 'vimwiki/vimwiki'
   Plug 'itchyny/calendar.vim'
@@ -121,6 +120,9 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Easier block commenting.
   Plug 'scrooloose/nerdcommenter'
+  let g:NERDDefaultAlign = 'left'
+  let g:NERDSpaceDelims = 1
+  let g:NERDCommentEmptyLines = 1
 
   " Add :Gist commands
   Plug 'mattn/webapi-vim'
@@ -163,6 +165,9 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'itchyny/lightline.vim'        " Statusline
 
   " Syntax highlighting
+  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh", "ini=dosini"]
+  let g:vim_markdown_frontmatter = 1
+  let g:elm_format_autosave = 1
   Plug 'sheerun/vim-polyglot'         " Languages support.
 
   " Theme for markdown editing

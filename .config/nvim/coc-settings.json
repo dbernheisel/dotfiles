@@ -1,11 +1,13 @@
 {
-  "solargraph.commandPath": "/home/dbernheisel/.asdf/shims/solargraph",
+  "solargraph.useBundler": true,
   "solargraph.completion": true,
   "solargraph.hover": true,
   "solargraph.definitions": true,
+  "solargraph.diagnostics": true,
   "solargraph.rename": true,
   "solargraph.references": true,
-  "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown"],
+  "solargraph.formatting": true,
+  "solargraph.autoformat": false,
   "languageserver": {
     "sorbet": {
       "command": "/home/dbernheisel/.asdf/shims/srb",

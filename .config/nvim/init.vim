@@ -1,5 +1,3 @@
-" ln -s ~/dotfiles/.nvimrc ~/.config/nvim/init.vim
-
 " General
 set nocompatible
 if has('mac')
@@ -110,10 +108,6 @@ set number
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
-if filereadable(expand("~/.config/nvim/language-servers.vim"))
-  source ~/.config/nvim/language-servers.vim
-endif
-
 if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
 endif
@@ -146,6 +140,10 @@ let g:neoterm_default_mod = 'vert'
 let g:neoterm_size = 80
 let g:neoterm_fixedsize = 1
 let g:neoterm_keep_term_open = 0
+let test#ruby#rspec#options = {
+  \ 'nearest': '--backtrace',
+  \ 'suite':   '--profile 5',
+\}
 
 function! OpenTermV(command)
   let g:neoterm_size = 80
@@ -200,7 +198,6 @@ endif
 let g:lightline = {
   \ 'colorscheme': 'wombat',
   \ }
-let g:elm_format_autosave = 1
 
 "============ COC Config
 
