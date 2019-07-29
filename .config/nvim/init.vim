@@ -269,6 +269,7 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.arb setf ruby
   autocmd BufNewFile,BufRead irbrc setf ruby
   autocmd BufNewFile,BufRead pryrc setf ruby
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 
   " Remove trailing whitespace on save
   autocmd BufWritePre * :%s/\s\+$//e

@@ -173,6 +173,9 @@ yarn_install_or_update vscode-html-languageserver-bin
 yarn_install_or_update vscode-css-languageserver-bin
 yarn_install_or_update ocaml-language-server
 yarn_install_or_update typescript-language-server
+yarn_install_or_update bash-language-server
+yarn_install_or_update markdownlint-cli
+yarn_install_or_update write-good
 
 (
   cd ~/.elixir_ls || exit 1

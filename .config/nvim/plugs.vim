@@ -54,17 +54,6 @@ endfunction
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
-  " Language server support
-  Plug 'JakeBecker/elixir-ls', { 'do': { -> g:elixirls.compile() } }
-
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-solargraph', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'amiralies/coc-elixir', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -81,20 +70,13 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Language servers
   Plug 'JakeBecker/elixir-ls', { 'do': { -> g:lang_server.compile_elixir() } }
-  Plug 'mads-hartmann/bash-language-server', { 'do': 'yarn global install --frozen-lockfile && asdf reshim nodejs'}
-  Plug 'iamcco/coc-diagnostic', {'do': 'yarn global install --frozen-lockfile && asdf reshim nodejs'}
 
   " Language server integration
-  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-sources', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-solargraph', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'amiralies/coc-elixir', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+  "
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
+        \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
+        \ 'coc-elixir', 'coc-tsserver', 'coc-diagnostic']
 
   " :Dash
   if has('mac')
