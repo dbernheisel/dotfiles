@@ -8,7 +8,7 @@ endif
 set title                   " set tab title
 set splitbelow              " open splits below current
 set splitright              " open splits to the right of current
-set laststatus=2
+set laststatus=2            " always
 set encoding=utf-8
 set noshowmode
 
@@ -99,7 +99,7 @@ nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Set lines and number gutter
-set cursorline " turn off row highlighting where cursor is
+set cursorline " turn on row highlighting where cursor is
 set ruler      " turn on ruler information in statusline
 
 " Set number gutter
@@ -117,7 +117,6 @@ if filereadable(expand("~/.config/nvim/terminal.vim"))
 endif
 
 nmap <leader>b :call ToggleFileTree()<CR>
-let NERDTreeShowLineNumbers=0
 " Don't fuck up the icons on reloading this file
 function! ToggleFileTree()
   if exists("g:loaded_webdevicons")
@@ -132,18 +131,6 @@ vmap <leader>/ <leader>c<space>
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
-
-" Test
-let g:test#strategy = "neoterm"
-let g:neoterm_shell = '$SHELL -l'
-let g:neoterm_default_mod = 'vert'
-let g:neoterm_size = 80
-let g:neoterm_fixedsize = 1
-let g:neoterm_keep_term_open = 0
-let test#ruby#rspec#options = {
-  \ 'nearest': '--backtrace',
-  \ 'suite':   '--profile 5',
-\}
 
 function! OpenTermV(command)
   let g:neoterm_size = 80
@@ -195,9 +182,17 @@ if executable('fzf')
   command! -bang -nargs=* RipGrep call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!_build/**/*" --glob "!tags" --glob "!priv/static/**/*" --glob "!bower_components/**/*" --glob "!storage/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!public/**/*" --glob "!*.cache" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 endif
 
-let g:lightline = {
-  \ 'colorscheme': 'wombat',
-  \ }
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? &fileencoding : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
 
 "============ COC Config
 
@@ -227,6 +222,10 @@ function! s:show_documentation()
   else
     call CocAction('doHover')
   endif
+endfunction
+
+function! s:jumpdef()
+
 endfunction
 
 command! -nargs=0 Format :call CocAction('format')

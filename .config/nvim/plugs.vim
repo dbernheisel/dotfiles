@@ -99,6 +99,7 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Sidebar file explorer
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  let NERDTreeShowLineNumbers = 0
 
   " Easier block commenting.
   Plug 'scrooloose/nerdcommenter'
@@ -112,6 +113,16 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Add test commands
   Plug 'janko-m/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'] }
+  let g:test#strategy = "neoterm"
+  let g:neoterm_shell = '$SHELL -l'
+  let g:neoterm_default_mod = 'vert'
+  let g:neoterm_size = 80
+  let g:neoterm_fixedsize = 1
+  let g:neoterm_keep_term_open = 0
+  let test#ruby#rspec#options = {
+    \ 'nearest': '--backtrace',
+    \ 'suite':   '--profile 5',
+  \}
 
   Plug 'kassio/neoterm'
 
@@ -145,6 +156,27 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'Erichain/vim-monokai-pro'     " Theme - Dark
   Plug 'reewr/vim-monokai-phoenix'    " Theme - Darker
   Plug 'itchyny/lightline.vim'        " Statusline
+  let g:lightline = {
+    \ 'colorscheme': 'wombat',
+    \ 'active': {
+    \   'left':  [
+    \     [ 'mode', 'paste' ],
+    \     [ 'readonly', 'filename', 'modified' ]
+    \   ],
+    \   'right': [
+    \     [ 'lineinfo' ],
+    \     [ 'filetype', 'fileformat', 'fileencoding' ],
+    \     [ 'cocstatus', 'gitbranch' ]
+    \   ]
+    \ },
+    \ 'component_function': {
+    \   'cocstatus': 'coc#status',
+    \   'fileformat': 'LightlineFileformat',
+    \   'filetype': 'LightlineFiletype',
+    \   'fileencoding': 'LightlineFileencoding',
+    \   'gitbranch': 'fugitive#head'
+    \   }
+    \ }
 
   " Syntax highlighting
   Plug 'sheerun/vim-polyglot'         " Languages support.
