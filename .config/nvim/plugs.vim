@@ -165,10 +165,17 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'itchyny/lightline.vim'        " Statusline
 
   " Syntax highlighting
-  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh", "ini=dosini"]
-  let g:vim_markdown_frontmatter = 1
-  let g:elm_format_autosave = 1
   Plug 'sheerun/vim-polyglot'         " Languages support.
+  let g:polyglot_disabled = ['markdown', 'elixir', 'eelixir']
+
+  Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
+
+
+  Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+  Plug 'godlygeek/tabular', {'for': 'markdown'}
+  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh", "ini=dosini"]
+  let g:vim_markdown_strikethrough = 1
+  let g:vim_markdown_frontmatter = 1
 
   " Theme for markdown editing
   Plug 'reedes/vim-colors-pencil', {'for': 'markdown' }
