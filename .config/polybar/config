@@ -88,8 +88,21 @@ ramp-signal-foreground = ${colors.foreground-alt}
 type = internal/i3
 fuzzy-match = true
 format = <label-state> <label-mode>
-label-mode = %mode%
 pin-workspaces = true
+enable-scroll = false
+
+label-mode = %mode%
+label-mode-padding = 2
+
+label-unfocused = %index%
+label-focused = %index%
+label-focused-underline = ${colors.foreground-alt}
+label-visible = %index%
+label-urgent = %index%
+label-urgent-underline = ${colors.alert}
+
+label-separator = " "
+label-separator-padding = 0
 
 [module/bspwm]
 type = internal/bspwm
