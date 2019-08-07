@@ -84,7 +84,7 @@ call plug#begin('~/.config/nvim/plugged')
   endif
 
   " Wiki
-  let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/'}]
+  let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'syntax': 'markdown'}]
   let g:vimwiki_use_calendar = 1
   Plug 'vimwiki/vimwiki'
   Plug 'itchyny/calendar.vim'
@@ -178,18 +178,18 @@ call plug#begin('~/.config/nvim/plugged')
     \   }
     \ }
 
-  " Syntax highlighting
-  Plug 'sheerun/vim-polyglot'         " Languages support.
-  let g:polyglot_disabled = ['markdown', 'elixir', 'eelixir']
 
   Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
 
-
-  Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-  Plug 'godlygeek/tabular', {'for': 'markdown'}
+  Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
+  Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
   let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh", "ini=dosini"]
   let g:vim_markdown_strikethrough = 1
   let g:vim_markdown_frontmatter = 1
+
+  " Syntax highlighting
+  let g:polyglot_disabled = ['markdown', 'elixir', 'eelixir']
+  Plug 'sheerun/vim-polyglot'         " Languages support.
 
   " Theme for markdown editing
   Plug 'reedes/vim-colors-pencil', {'for': 'markdown' }

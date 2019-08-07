@@ -45,6 +45,7 @@ set list
 
 " Turn on undo file so I can undo even after closing a file
 silent !mkdir -p ~/.config/nvim/undo > /dev/null 2>&1
+
 set undofile
 set undodir=~/.config/nvim/undo
 
@@ -132,18 +133,20 @@ vmap <leader>/ <leader>c<space>
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
 
-function! OpenTermV(command)
+function! OpenTermV(...)
   let g:neoterm_size = 80
-  execute 'vert T '.a:command
+  let l:command = a:1 == '' ? 'pwd' : a:1
+  execute 'vert T '.l:command
 endfunction
 
-function! OpenTermH(command)
+function! OpenTermH(...)
   let g:neoterm_size = 10
-  execute 'belowright T '.a:command
+  let l:command = a:1 == '' ? 'pwd' : a:1
+  execute 'belowright T '.l:command
 endfunction
 
-command! -nargs=1 VT call OpenTermV(<q-args>)
-command! -nargs=1 HT call OpenTermH(<q-args>)
+command! -nargs=? VT call OpenTermV(<q-args>)
+command! -nargs=? HT call OpenTermH(<q-args>)
 
 function! RunTest(cmd)
   exec a:cmd
