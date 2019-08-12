@@ -43,7 +43,7 @@
   prune = true
 [diff]
   tool = vimdiff
-  colorMoved = zebra
+  colorMoved = dimmed-zebra
   colorMovedWS = allow-indentation-change
 [difftool "vscode"]
   cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
@@ -56,7 +56,7 @@
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [commit]
-  template = ~/dotfiles/gitmessage
+  template = ~/.gitmessage
 [http]
   postBuffer = 157286400
 [url "ssh://git@github.com/"]
@@ -83,5 +83,7 @@
   old = red bold
   new = green bold
   whitespace = red reverse
-  oldMoved = 141 bold
-  newMoved = 39 bold
+  oldMoved = red italic
+  oldMovedDimmed = red dim italic
+  newMoved = green italic
+  newMovedDimmed = green dim italic
