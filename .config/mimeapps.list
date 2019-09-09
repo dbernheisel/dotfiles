@@ -20,12 +20,11 @@ text/html=brave-bin.desktop;
 application/x-extension-htm=brave-bin.desktop;
 application/x-extension-html=brave-bin.desktop;
 application/x-extension-shtml=brave-bin.desktop;
-application/xhtml+xml=brave-bin.desktop;
 application/x-extension-xhtml=brave-bin.desktop;
 application/x-extension-xht=brave-bin.desktop;
 
 [Default Applications]
-x-scheme-handler/webcal=google-chrome.desktop
+x-scheme-handler/webcal=brave-browser.desktop
 text/csv=libreoffice-calc.desktop;
 inode/directory=Thunar-folder-handler.desktop;
 x-scheme-handler/http=brave-bin.desktop
@@ -35,8 +34,8 @@ text/html=brave-bin.desktop
 application/x-extension-htm=brave-bin.desktop
 application/x-extension-html=brave-bin.desktop
 application/x-extension-shtml=brave-bin.desktop
-application/xhtml+xml=brave-bin.desktop
 application/x-extension-xhtml=brave-bin.desktop
 application/x-extension-xht=brave-bin.desktop
 application/pdf=org.gnome.Evince.desktop
 x-scheme-handler/postman=Postman.desktop
+application/xhtml+xml=brave-usercreated-2.desktop;
