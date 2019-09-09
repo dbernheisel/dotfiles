@@ -227,12 +227,9 @@ function! s:show_documentation()
   endif
 endfunction
 
-function! s:jumpdef()
-
-endfunction
-
 command! -nargs=0 Format :call CocAction('format')
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
 nmap <leader>rn <Plug>(coc-rename)
 
