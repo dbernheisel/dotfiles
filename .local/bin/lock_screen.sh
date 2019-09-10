@@ -4,8 +4,8 @@ set -e
 lockmessage="Locked"
 delay_before_suspend="30m"
 
-deskshot=$(mktemp --suffix=.png)
-lockshot=$(mktemp --suffix=.png)
+deskshot="$HOME/.deskshot.png"
+lockshot="$HOME/.lockshot.png"
 font="Noto-Sans-Black"
 suspend_now="${1:-no}"
 
