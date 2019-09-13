@@ -5,8 +5,8 @@ include "/home/dbernheisel/.gtkrc-2.0.mine"
 gtk-theme-name="Adapta-Eta"
 gtk-icon-theme-name="Papirus"
 gtk-font-name="Roboto 11"
-gtk-cursor-theme-name="Breeze"
-gtk-cursor-theme-size=24
+gtk-cursor-theme-name="Breeze Snow"
+gtk-cursor-theme-size=64
 gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ
 gtk-toolbar-icon-size=GTK_ICON_SIZE_SMALL_TOOLBAR
 gtk-button-images=0
