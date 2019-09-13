@@ -2,9 +2,11 @@
 set -e
 IGNORE=(linux linux-headers virtualbox-host-modules-arch)
 
-if [ "$1" = "--no-kernel" ]; then
+if [ "$1" = "--kernel" ]; then
   shift;
-
+  sudo pacman -Syyu
+  yay -Su --aur
+else
   echo "Ignoring packages: ${IGNORE[*]}"
   ignore_flags=""
   for ignorable in "${IGNORE[@]}"; do
@@ -12,8 +14,5 @@ if [ "$1" = "--no-kernel" ]; then
   done
   # shellcheck disable=SC2086
   sudo pacman -Syyu $ignore_flags
-  yay -Su --aur
-else
-  sudo pacman -Syyu
   yay -Su --aur
 fi
