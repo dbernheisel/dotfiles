@@ -252,6 +252,11 @@ set background=dark
 colorscheme monokai-phoenix
 syntax on
 
+" Transparent Backgrounds
+if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
+  hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+endif
+
 augroup vimrcEx
   autocmd!
 
