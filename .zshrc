@@ -63,8 +63,8 @@ if type fzf &> /dev/null; then
 fi
 
 # asdf version manager
-[ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
-[ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/completions/asdf.bash
+[ -e $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
+[ -e $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/completions/asdf.bash
 
 # Newer git
 if type brew &> /dev/null && [ -f $(brew --prefix git)/bin/git ]; then
@@ -80,8 +80,9 @@ fi
 export FZF_DEFAULT_OPTS='--color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/**/*" --glob "!_build/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!bower_components/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!.Trash/**/*"'
 
-source ~/.local/bin/aliases.sh
-source ~/.secrets
+[ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh
+[ -e $HOME/.local/bin/aliases.zsh ] && source $HOME/.local/bin/aliases.zsh
+[ -e $HOME/.secrets ] && source $HOME/.secrets
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 
