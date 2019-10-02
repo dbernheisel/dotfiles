@@ -39,13 +39,13 @@ padding-right = 1
 module-margin-left = 0
 module-margin-right = 2
 
-font-0 = FuraCode Nerd Font:size=12;2
+font-0 = FuraCode Nerd Font:size=12:style=Regular;2
 font-1 = FontAwesome:size=16;-2
 font-2 = siji:size=10;0
 
 modules-left = powermenu spacer i3 spacer xwindow
 modules-center =
-modules-right = backlight spacer battery spacer volume spacer date
+modules-right = backlight spacer volume spacer date
 
 tray-position = right
 tray-padding = 0
@@ -54,11 +54,12 @@ tray-background = ${colors.background}
 tray-scale = 1.0
 tray-maxsize = 40
 
-;wm-restack = bspwm
 enable-ipc = true
 
-scroll-up = i3wm-wsnext
-scroll-down = i3wm-wsprev
+; scroll-up = i3wm-wsnext
+; scroll-down = i3wm-wsprev
+
+;wm-restack = bspwm
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
 
@@ -74,9 +75,9 @@ interface = wlp2s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-prefix = %{A1:~/.config/rofi/scripts/wifi-menu.sh:}直%{A}
+format-connected-prefix = %{A1:~/.local/bin/wifi-menu.sh:}直%{A}
 label-connected = %essid%
-format-disconnected = %{A1:~/.config/rofi/scripts/wifi-menu.sh:}睊%{A}
+format-disconnected = %{A1:~/.local/bin/wifi-menu.sh:}睊%{A}
 ramp-signal-0 =
 ramp-signal-1 =
 ramp-signal-2 =

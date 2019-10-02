@@ -83,7 +83,8 @@ elif [ "$CHENTRY" = "toggle on" ]; then
 
 elif [ "$CHENTRY" = "toggle off" ]; then
 	nmcli radio wifi off
-
+elif [ "$CHENTRY" = "" ]; then
+  exit 0
 else
 
 	# If the connection is already in use, then this will still be able to get the SSID
