@@ -64,9 +64,6 @@ if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "ki
   " Turn on 24bit color
   set termguicolors
   let g:truecolor = 1
-
-  " Get italics working
-  hi Comment gui=italic
 else
   let g:truecolor = 0
 endif
@@ -255,6 +252,7 @@ syntax on
 " Transparent Backgrounds
 if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
   hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+  hi Comment gui=italic
 endif
 
 augroup vimrcEx
@@ -295,3 +293,4 @@ augroup netrwEx
 augroup END
 
 filetype on
+
