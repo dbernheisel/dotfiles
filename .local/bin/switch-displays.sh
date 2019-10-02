@@ -48,3 +48,4 @@ else
   higher_dpi "Turning on internal screen"
 fi
 
+exit 0
