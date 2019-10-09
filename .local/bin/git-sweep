@@ -10,6 +10,7 @@ REMOVABLE=$(git branch -r --merged master \
   | grep -v 'master$' \
   | grep -v 'production$' \
   | grep -v 'staging$' \
+  | grep -v 'develop$' \
   | grep -v '^release' \
   | grep -v 'next$'
 )
