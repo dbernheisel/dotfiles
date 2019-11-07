@@ -21,28 +21,32 @@ if have "nvim"; then
   fi
 fi
 
-if [[ $TERMINFO == *"kitty"* ]];  then
+if [[ $TERMINFO =~ "kitty" ]];  then
   function icat() {
     kitty +kitten icat "${@}"
   }
 
-  function ranger() {
-    TERM=xterm-kitty command ranger "${@}"
-  }
+  if have "ranger"; then
+    function ranger() {
+      TERM=xterm-kitty command ranger "${@}"
+    }
+  fi
 fi
 
 # Set title easily
+# usage: title "wat"
 function title() {
   echo -ne "\033]0;$1\007"
 }
 
 # wrapper for plucking columns from output
+# usage: echo "Hello \t hi" | col 2    #> "hi"
 function col {
   awk -v col="$1" '{print $col}'
 }
 
 # Color cat
-if have "ccat" &> /dev/null; then
+if have "ccat"; then
  alias cat='ccat'
 fi
 
@@ -109,7 +113,7 @@ alias sandbox='rails c --sandbox'
 alias imp='iex -S mix phx.server'
 alias im='iex -S mix'
 
-if type "xclip" &> /dev/null; then
+if have "xclip"; then
   alias pbcopy='xclip -selection clipboard'
   alias pbpaste='xclip -o -selection clipboard'
 fi
@@ -121,6 +125,43 @@ alias :q='exit'
 alias weather='curl wttr.in'
 
 alias ll='LC_COLLATE=C ls -lah'
+alias df='df -h'
+
+if have 'exa'; then
+  alias l='exa -1a'
+  alias ls='exa'
+  alias ll='exa -lh --git'
+  alias lt='exa -lT --git'
+fi
+
+alias listen='lsof -P -i -n'
+alias listen-ports='netstat -tulanp'
+
+function extract() {
+  if [ -f "$1" ] ; then
+    case "$1" in
+      *.tar.bz2) tar xjf "$1";;
+      *.tar.gz)  tar xzf "$1";;
+      *.bz2)     bunzip2 "$1";;
+      *.rar)     unrar e "$1";;
+      *.gz)      gunzip "$1";;
+      *.tar)     tar xf "$1";;
+      *.tbz2)    tar xjf "$1";;
+      *.tgz)     tar xzf "$1";;
+      *.zip)     unzip "$1";;
+      *.Z)       uncompress "$1";;
+      *.7z)      7z x "$1";;
+      *)         echo "'$1' cannot be extracted via extract()";;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Protect thyself from self
+alias rm='nocorrect rm -i --preserve-root'
+
+alias memhog='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'
 
 alias tmuxbase='tmux attach -t base || tmux new -s base'
 
@@ -128,19 +169,34 @@ if have "pacman"; then
   alias pacman='sudo pacman'
 fi
 
+# Notify function
 if have "notify-send"; then
-  alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+  # usage: do-something; alert [optional body] [optional title]
+  function notify() {
+    local NOTIFYSTATUS=$?
+    local ICON
+    ICON="$([ $NOTIFYSTATUS = 0 ] && echo terminal || echo error)"
+    local BODY="${1-Exited with code: $NOTIFYSTATUS}"
+    local TITLE="${2-Alert}"
+    notify-send --urgency=low -i "$ICON" "$TITLE" "$BODY"
+  }
+fi
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  function notify() {
+    osascript -e 'on run {theText}' -e 'display notification theText with title "Terminal Notification" sound name "Glass"' -e 'end run' "$1"
+  }
 fi
 
 alias csv-diff='git diff --color-words="[^[:space:],]+" --no-index'
 
 if have "scanimage"; then
   # usage: scanimg test.jpg
-  alias scanimg='scanimage --device="brother4:net1;dev0" --mode Color --format=jpeg --resolution=600 --batch > '
+  alias scanimg='scanimage --device="brother5:net1;dev0" --mode Color --format=jpeg --resolution=600 --batch > '
 fi
 
-# usage: copy_heroku_db production my_app_dev
 if have "heroku"; then
+  # usage: copy_heroku_db production my_app_dev
   function copy_heroku_db() {
     local heroku_app=$1; shift
     local local_db=$1; shift

@@ -59,13 +59,6 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-# Notify function
-if [[ "$OSTYPE" == darwin* ]]; then
-  notify () {
-    osascript -e 'on run {theText}' -e 'display notification theText with title "Terminal Notification" sound name "Glass"' -e 'end run' $1
-  }
-fi
-
 # This is how to configure iTerm2 to send the correct CSI for ctrl+h:
 #
 # Edit -> Preferences -> Keys
