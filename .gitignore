@@ -18,6 +18,7 @@ tags.lock
 tags.temp
 temp
 tmp/**/*
+.solargraph.yml
 
 backup
 fzf.bash

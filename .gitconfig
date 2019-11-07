@@ -7,6 +7,8 @@
   ui = auto
 [interactive]
   diffFilter = diff-so-fancy --patch-mode
+[format]
+  pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [credential]
   helper = osxkeychain
 [push]
@@ -45,19 +47,23 @@
 [fetch]
   prune = true
 [diff]
-  tool = vimdiff
+  tool = vscode
   colorMoved = dimmed-zebra
   colorMovedWS = allow-indentation-change
 [difftool "vscode"]
   cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
-[format]
-  pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+[difftool "kitty"]
+  cmd = kitty +kitten diff \"$LOCAL\" \"$REMOTE\"
+[difftool "nvim"]
+  cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
 [merge]
-  tool = vimdiff
+  tool = vscode
   conflictstyle = diff3
   ff = only
+[mergetool "vscode"]
+  tool = code --wait \"$MERGED\"
 [mergetool "vimdiff"]
-  cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = nvim -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c '$wincmd J'
 [commit]
   template = ~/.gitmessage
 [http]
