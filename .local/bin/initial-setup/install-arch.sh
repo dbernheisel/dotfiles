@@ -18,9 +18,3 @@ for pkg in $(grep -E "^[^#;]" ~/Archfile | sort | uniq); do
     *) continue;;
   esac
 done
-
-#fancy_echo "Installing script to reset keyrate when waking up"
-#sudo mkdir -p /usr/lib/systemd/system-sleep
-#for hook in "$HOME/dotfiles/usr/lib/systemd/system-sleep/"*; do
-  #sudo ln -vsf "$hook" "/usr/lib/systemd/system-sleep"
-#done
