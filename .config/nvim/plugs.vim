@@ -130,10 +130,6 @@ call plug#begin('~/.config/nvim/plugged')
   let g:NERDSpaceDelims = 1
   let g:NERDCommentEmptyLines = 1
 
-  " Add :Gist commands
-  Plug 'mattn/webapi-vim'
-  Plug 'mattn/gist-vim'
-
   " Add test commands
   Plug 'janko-m/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'] }
   let g:test#strategy = "neoterm"
@@ -176,11 +172,11 @@ call plug#begin('~/.config/nvim/plugged')
   " Cosmetic
   Plug 'ryanoasis/vim-devicons'       " :)
   Plug 'crater2150/vim-theme-chroma'  " Theme - Light
+  Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
   Plug 'Erichain/vim-monokai-pro'     " Theme - Dark
   Plug 'reewr/vim-monokai-phoenix'    " Theme - Darker
   Plug 'itchyny/lightline.vim'        " Statusline
   let g:lightline = {
-    \ 'colorscheme': 'wombat',
     \ 'active': {
     \   'left':  [
     \     [ 'mode', 'paste' ],

@@ -60,9 +60,19 @@ set ignorecase
 set smartcase
 map <silent> <CR> :nohl<CR>
 
-if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
+function! ModernTerminal()
+  if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+if ModernTerminal()
   " Turn on 24bit color
   set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   let g:truecolor = 1
 else
   let g:truecolor = 0
@@ -108,10 +118,6 @@ nnoremap <leader><leader> <c-^>
 
 if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
-endif
-
-if filereadable(expand("~/.config/nvim/terminal.vim"))
-  source ~/.config/nvim/terminal.vim
 endif
 
 nmap <leader>b :call ToggleFileTree()<CR>
@@ -245,13 +251,32 @@ augroup END
 nnoremap <leader>cc :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
 " Theme
-set background=dark
-colorscheme monokai-phoenix
 syntax on
 
-" Transparent Backgrounds
-if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
+function! LightMode()
+  set background=light
+  colorscheme onehalflight
+  let g:lightline.colorscheme='onehalflight'
+endfunction
+nmap <leader>lm :call LightMode()<cr>
+
+function! DarkMode()
+  set background=dark
+  colorscheme monokai-phoenix
+  let g:lightline.colorscheme='wombat'
+  " Transparent Backgrounds
   hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+endfunction
+nmap <leader>dm :call DarkMode()<cr>
+
+if filereadable(expand("~/.config/nvim/terminal.vim"))
+  source ~/.config/nvim/terminal.vim
+endif
+
+:call DarkMode()
+
+if ModernTerminal()
+  " Comments should be italics
   hi Comment gui=italic
 endif
 
