@@ -57,7 +57,7 @@ function prompt_bernheisel_setup {
   zstyle ':prezto:module:git:info:keys' format 'prompt' '%b%D '
 
   # Define prompts.
-  PROMPT='%B%F{white}%c%f%b %B%F{green}❯%f%b%  '
+  PROMPT='%B%F{white}%c%f%b %B%(?.%F{green}.%F{red})❯%f%b%  '
   RPROMPT='${editor_info[overwrite]}${editor_info[keymap]} ${git_info:+${(e)git_info[prompt]}}'
 }
 

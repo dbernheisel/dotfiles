@@ -40,6 +40,7 @@ zstyle ':prezto:load' pmodule \
   'homebrew' \
   'rsync' \
   'osx' \
+  'pacman' \
   'git' \
   'syntax-highlighting' \
   'history-substring-search' \
@@ -89,7 +90,7 @@ zstyle ':prezto:module:history-substring-search:color' not-found ''
 #
 
 # Set the Pacman frontend.
-# zstyle ':prezto:module:pacman' frontend 'yaourt'
+zstyle ':prezto:module:pacman' frontend 'yay'
 
 #
 # Prompt
