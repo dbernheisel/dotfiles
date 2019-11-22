@@ -110,8 +110,8 @@ alias be='bundle exec'
 alias sandbox='rails c --sandbox'
 
 # Alias some Elixir/Phoenix commands
-alias imp='iex -S mix phx.server'
-alias im='iex -S mix'
+alias imp='iex --erl "+sbwt none +sbwtdcpu none +sbwtdio none" -S mix phx.server'
+alias im='iex --erl "+sbwt none +sbwtdcpu none +sbwtdio none" -S mix'
 
 if have "xclip"; then
   alias pbcopy='xclip -selection clipboard'
