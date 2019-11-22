@@ -273,7 +273,7 @@ bindsym $mod+m exec "/usr/local/bin/switch-audio-port"
 
 # Autostart apps
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id "allow_rgb10_configs=false compton --config ~/.config/compton/compton.conf -b"
+exec --no-startup-id "allow_rgb10_configs=false picom --config ~/.config/picom/picom.conf -b"
 exec --no-startup-id "~/.local/bin/launch_polybar.sh"
 exec --no-startup-id "~/.local/bin/launch_tray.sh"
 # Set background and theme from background
