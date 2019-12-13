@@ -54,6 +54,10 @@ if have "bat"; then
  alias cat='bat -p'
 fi
 
+if have "awsume"; then
+ alias awsume='. awsume'
+fi
+
 # Git
 alias gaa='git add -A'
 alias gs='git status'
