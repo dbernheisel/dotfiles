@@ -9,7 +9,7 @@
 # General
 #
 
-fpath=(~/.local/bin/zsh $fpath)
+fpath=(~/.local/bin/zsh ~/.awsume/zsh-autocomplete $fpath)
 
 # Set case-sensitivity for completion, history lookup, etc.
 # zstyle ':prezto:*:*' case-sensitive 'yes'
