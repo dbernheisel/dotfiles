@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-IGNORE=(linux linux-headers virtualbox-host-modules-arch)
+IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
 if [ "$1" = "--kernel" ]; then
   shift;
