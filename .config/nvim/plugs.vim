@@ -1,28 +1,5 @@
 map K <Nop>
 
-let g:elixirls = {
-  \ 'path': printf('%s/%s', stdpath('config'), 'bundle/elixir-ls'),
-  \ }
-
-let g:elixirls.lsp = printf(
-  \ '%s/%s',
-  \ g:elixirls.path,
-  \ 'release/language_server.sh')
-
-function! g:elixirls.compile(...)
-  let l:commands = join([
-    \ 'mix local.hex --force',
-    \ 'mix local.rebar --force',
-    \ 'mix deps.get',
-    \ 'mix compile',
-    \ 'mix elixir_ls.release'
-    \ ], '&&')
-
-  echom '>>> Compiling elixirls'
-  silent call system(l:commands)
-  echom '>>> elixirls compiled'
-endfunction
-
 " Use the floating windows for FZF
 if exists("*nvim_open_win")
   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
@@ -53,27 +30,6 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Configure Language Servers
-let g:lang_server = {
-  \ 'elixir': printf('%s/%s', stdpath('config'), 'plugged/elixir-ls'),
-  \ }
-
-let g:lang_server.elixir_lsp = printf('%s/%s', g:lang_server.elixir, 'release/language_server.sh')
-
-function! g:lang_server.compile_elixir(...)
-  let l:commands = join([
-    \ 'mix local.hex --force',
-    \ 'mix local.rebar --force',
-    \ 'mix deps.get',
-    \ 'mix compile',
-    \ 'mix elixir_ls.release'
-    \ ], '&&')
-
-  echom '>>> Compiling elixirls'
-  silent call system(l:commands)
-  echom '>>> elixirls compiled'
-endfunction
-
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
@@ -92,7 +48,7 @@ call plug#begin('~/.config/nvim/plugged')
   inoremap <silent><expr> <c-space> coc#refresh()
 
   " Language servers
-  Plug 'JakeBecker/elixir-ls', { 'do': { -> g:lang_server.compile_elixir() } }
+  Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:lang_server.compile_elixir() } }
 
   " Language server integration
   "
@@ -225,14 +181,3 @@ call plug#begin('~/.config/nvim/plugged')
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
 call plug#end()
-
-call coc#config('languageserver', {
-\  'elixir': {
-\    'command': g:lang_server.elixir_lsp,
-\    'trace.server': 'verbose',
-\    'filetypes': ['elixir', 'eelixir'],
-\    'settings': {
-\      'dialyzerEnabled': 'false'
-\    }
-\  }
-\})

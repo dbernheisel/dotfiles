@@ -105,6 +105,7 @@ inoremap jj <Esc>
 " Shortcuts for editing vimrc. I do it too much
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>c :<c-u>CocList commands<CR>
 
 " Set lines and number gutter
 set cursorline " turn on row highlighting where cursor is
@@ -219,6 +220,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn CocCommand document.renameCurrentWord
 
 nnoremap <silent> K :call <SID>show_documentation()<cr>
 
@@ -230,10 +232,10 @@ function! s:show_documentation()
   endif
 endfunction
 
-command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Format :call CocActionAsync('format')
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
+command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
 nmap <leader>rn <Plug>(coc-rename)
 
 augroup cocEx
@@ -248,7 +250,7 @@ augroup END
 
 "============
 
-nnoremap <leader>cc :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
+nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
 " Theme
 syntax on
