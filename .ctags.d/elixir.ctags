@@ -1,6 +1,3 @@
---map-elixir=+.ex
---map-elixir=+.exs
-
 --exclude=_build
 --exclude=.elixir_ls
 --exclude=assets/node_modules

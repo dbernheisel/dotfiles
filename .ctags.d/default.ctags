@@ -1,0 +1,5 @@
+--exclude=node_modules
+--exclude=gulp
+--exclude=.git
+--exclude=*.md
+--exclude=*.svg
