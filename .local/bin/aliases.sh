@@ -6,19 +6,9 @@ function have() {
 
 # Neovim
 if have "nvim"; then
-  if have "nvr"; then
-    function vim() {
-      if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-        nvr -cc tabedit --remote-wait +'set bufhidden=wipe' "${@}"
-      else
-        nvim "${@}"
-      fi
-    }
-  else
-    function vim() {
-      nvim "${@}"
-    }
-  fi
+  function vim() {
+    nvim "${@}"
+  }
 fi
 
 if [[ $TERMINFO =~ "kitty" ]];  then
@@ -57,6 +47,8 @@ fi
 if have "awsume"; then
  alias awsume='. awsume'
 fi
+
+alias whatprocess='ps -p $$ -oargs='
 
 # Git
 alias gaa='git add -A'
