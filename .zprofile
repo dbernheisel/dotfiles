@@ -7,14 +7,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 # Editors
+export VISUAL="nvim"
 export EDITOR='nvim'
 export PAGER='less'
-
-if [ -n "$NVIM_LISTEN_ADDRESS" ] && type nvr &> /dev/null; then
-  export VISUAL="nvr -cc tabedit --remote-wait +'set bufhidden=wipe'"
-else
-  export VISUAL="nvim"
-fi
 
 # Language
 if [[ -z "$LANG" ]]; then
@@ -36,6 +31,7 @@ declare -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 path=(
   /usr/local/{bin,sbin}
+  $HOME/.local/bin
   $path
 )
 

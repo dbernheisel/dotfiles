@@ -56,8 +56,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-bindsym $mod+Tab exec --no-startup-id "rofi -show combi run,window -kb-cancel Alt+Escape,Escape -kb-accept-entry !Alt-Tab,Return -kb-row-down Alt+Tab,Alt+Down -kb-row-up Alt+ISO_Left_Tab,Alt+Up &"
-
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -266,7 +264,9 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 # App shortcuts
 bindsym $mod+w exec "/usr/bin/brave"
 bindsym $mod+n exec "/usr/bin/thunar"
-bindsym $mod+space exec "rofi -show run"
+bindsym $mod+Tab exec "rofi -show window"
+bindsym $mod+space exec "zsh -lc \\"rofi -show combi 'window,run'\\""
+bindsym $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 
 # Redirect sound to headphones
 bindsym $mod+m exec "/usr/local/bin/switch-audio-port"

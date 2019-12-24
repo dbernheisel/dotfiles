@@ -14,7 +14,8 @@ fi
 setopt extended_glob
 unsetopt nomatch
 
-export PATH="$HOME/.local/bin:$PATH"
+typeset -U path
+path[1,0]=$HOME/.local/bin
 
 # awscli from brew auto-completion
 if type aws &> /dev/null && [ -f ~/usr/local/share/zsh/site-functions/_aws ]; then
