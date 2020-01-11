@@ -121,7 +121,11 @@ call plug#begin('~/.config/nvim/plugged')
   endif
 
   if isdirectory('/usr/local/opt/fzf')
-    Plug '/usr/local/opt/fzf'         " Use brew-installed fzf
+    Plug '/usr/local/opt/fzf'         " Use arch-installed fzf
+  endif
+
+  if isdirectory('/usr/share/doc/fzf/examples')
+    Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
   endif
   Plug 'junegunn/fzf.vim'             " Fuzzy-finder
 

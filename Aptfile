@@ -22,7 +22,7 @@ unixodbc-dev
 autoconf
 bison
 build-essential
-gcc-6
+# gcc-6
 libffi-dev
 libgdbm-dev
 libncurses5-dev
@@ -51,7 +51,6 @@ python3-pip
 
 # Extras
 awscli
-compton
 ctags
 curl
 feh
@@ -59,13 +58,15 @@ fonts-firacode
 fonts-font-awesome
 fonts-noto-cjk
 fonts-noto-color-emoji
+fzf
 git
-gnome-calendar
 gpg
 gucharmap
 htop
 lxappearance
 neofetch
+neovim
+nodejs
 openjdk-11-jdk
 p7zip
 pavucontrol
@@ -75,6 +76,7 @@ python-pil
 python-pip
 python3-pip
 redis
+ripgrep
 rofi
 rxvt-unicode
 scrot
@@ -85,7 +87,6 @@ wget
 xclip
 xdg-utils
 xdotool
-linuxbrew-wrapper
 
 # Polybar
 libasound2-dev

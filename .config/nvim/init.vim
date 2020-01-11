@@ -185,6 +185,10 @@ if executable('fzf')
     set rtp+=/usr/local/opt/fzf
   endif
 
+  if executable('/usr/bin/fzf')
+    set rtp+=/usr/bin/fzf
+  endif
+
   set grepprg=rg\ --vimgrep   " use ripgrep
   command! -bang -nargs=* RipGrep call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!_build/**/*" --glob "!tags" --glob "!priv/static/**/*" --glob "!bower_components/**/*" --glob "!storage/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!public/**/*" --glob "!*.cache" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 endif

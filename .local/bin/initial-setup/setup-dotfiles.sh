@@ -102,6 +102,14 @@ is_arch() {
   fi
 }
 
+is_crostini() {
+  if [ -d /etc/systemd/user/sommelier@0.service.d ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
   column
   fancy_echo "You need to generate an SSH key" "$red"
@@ -109,6 +117,7 @@ if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
 fi
 
 #### Prerequisites, like xcode and homebrew
+if is_crostini; then source "$INITIALSCRIPTS/install-crostini.sh"; fi
 if is_debian; then source "$INITIALSCRIPTS/install-debian.sh"; fi
 if is_fedora; then source "$INITIALSCRIPTS/install-fedora.sh"; fi
 if is_arch; then source "$INITIALSCRIPTS/install-arch.sh"; fi
@@ -167,6 +176,9 @@ fancy_echo "Installing neovim plugins for languages" "$yellow"
 pip_install_or_update neovim
 pip_install_or_update neovim-remote
 
+fancy_echo "Installing tools" "$yellow"
+yarn_install_or_update diff-so-fancy
+
 fancy_echo "Installing language servers" "$yellow"
 yarn_install_or_update vscode-json-languageserver-bin
 yarn_install_or_update vscode-html-languageserver-bin
@@ -198,9 +210,6 @@ tic "$HOME/.tmux-italics.terminfo"
 if is_linux && ! type kitty &> /dev/null && prompt_install "Kitty terminal"; then
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 fi
-
-column
-fancy_echo "Installing neovim plugins for languages" "$yellow"
 
 column
 fancy_echo "Installing user fonts" "$yellow"

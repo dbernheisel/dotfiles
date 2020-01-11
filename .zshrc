@@ -31,6 +31,10 @@ if [ -d ~/flutter/bin ]; then
   export PATH=~/flutter/bin:$PATH
 fi
 
+if [ -d ~/.yarn/bin ]; then
+  export PATH=~/.yarn/bin:$PATH
+fi
+
 if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
   export PATH="$(brew --prefix)/bin:$PATH"
 fi
@@ -53,6 +57,8 @@ fi
 if type fzf &> /dev/null; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     source /usr/share/fzf/key-bindings.zsh
+  elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
   elif [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
   else
@@ -82,7 +88,7 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 
 # Kitty
-if [ $TERMINFO =~ "kitty" ]; then
+if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
   kitty + complete setup zsh | source /dev/stdin
 fi
 
