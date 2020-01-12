@@ -36,16 +36,14 @@ function col {
 }
 
 # Color cat
-if have "ccat"; then
+if have "bat"; then
+ alias cat='bat -p'
+elif have "ccat"; then
  alias cat='ccat'
 fi
 
-if have "bat"; then
- alias cat='bat -p'
-fi
-
 if have "awsume"; then
- alias awsume='. awsume'
+ alias awsume='source awsume'
 fi
 
 alias whatprocess='ps -p $$ -oargs='
