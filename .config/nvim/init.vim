@@ -296,12 +296,13 @@ augroup vimrcEx
     \ endif
 
   " Set syntax highlighting
-  autocmd BufNewFile,BufRead Brewfile setf ruby
+  autocmd BufNewFile,BufRead Procfile,Brewfile setf ruby
   autocmd BufNewFile,BufRead *.md setf markdown
   autocmd BufNewFile,BufRead *.drab setf eelixir
   autocmd BufNewFile,BufRead *.arb setf ruby
   autocmd BufNewFile,BufRead irbrc setf ruby
   autocmd BufNewFile,BufRead pryrc setf ruby
+  autocmd BufNewFile,BufRead *.jsonc setf json
   autocmd FileType json syntax match Comment +\/\/.\+$+
 
   " Remove trailing whitespace on save
