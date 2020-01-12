@@ -1,18 +1,61 @@
 #!/bin/bash
 set -e
-IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
-if [ "$1" = "--kernel" ]; then
-  shift;
-  sudo pacman -Syyu
-  yay -Su --aur
-else
-  echo "Ignoring packages: ${IGNORE[*]}"
-  ignore_flags=""
-  for ignorable in "${IGNORE[@]}"; do
-    ignore_flags="--ignore $ignorable ${ignore_flags}"
-  done
-  # shellcheck disable=SC2086
-  sudo pacman -Syyu $ignore_flags
-  yay -Su --aur
+is_crostini() {
+  if [ -d /etc/systemd/user/sommelier@0.service.d ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+## ARCH LINUX
+
+if [ -f "/etc/arch-release" ]; then
+  IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
+
+  if [ "$1" = "--kernel" ]; then
+    shift;
+    if is_crostini; then
+      echo "Cannot upgrade kernel within Crostini"
+      exit 1
+    fi
+
+    sudo pacman -Syyu
+    if type yay &> /dev/null; then yay -Su --aur; fi
+  else
+    echo "Ignoring packages: ${IGNORE[*]}"
+    IGNORE_FLAGS=""
+    for IGNORABLE in "${IGNORE[@]}"; do
+      IGNORE_FLAGS="--ignore $IGNORABLE ${IGNORE_FLAGS}"
+    done
+    # shellcheck disable=SC2086
+    sudo pacman -Syyu $IGNORE_FLAGS
+    if type yay &> /dev/null; then yay -Su --aur; fi
+  fi
+fi
+
+## DEBIAN
+
+if [ -f "/etc/debian_release" ]; then
+  IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
+
+  if [ "$1" = "--kernel" ]; then
+    shift;
+    if is_crostini; then
+      echo "Cannot upgrade kernel within Crostini"
+      exit 1
+    fi
+    sudo apt upgrade
+  else
+    for IGNORABLE in "${IGNORE[@]}"; do
+      sudo apt-mark hold "$IGNORABLE"
+    done
+
+    sudo apt upgrade
+
+    for IGNORABLE in "${IGNORE[@]}"; do
+      sudo apt-mark unhold "$IGNORABLE"
+    done
+  fi
 fi
