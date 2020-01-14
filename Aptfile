@@ -52,6 +52,7 @@ python3-pip
 # Extras
 awscli
 ctags
+inotify-tools
 curl
 feh
 fonts-firacode
@@ -68,6 +69,8 @@ jq
 lxappearance
 neofetch
 neovim
+python-neovim
+python3-neovim
 nodejs
 openjdk-11-jdk
 p7zip
