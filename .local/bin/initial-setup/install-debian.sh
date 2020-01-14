@@ -66,6 +66,9 @@ fi
 sudo apt update
 
 sudo apt install postgresql-9.6
+echo "You may want to:"
+echo "* \`sudoedit /etc/postgresql/9.6/main/pg_hba.conf\` and trust local connections"
+echo "* \`sudo su - postgres; createuser --superuser dbernheisel\`"
 
 if ! is_crostini; then
   sudo apt install brave-browser google-chrome-stable papirus-icon-theme adapta-gtk-theme google-drive-ocamlfuse
