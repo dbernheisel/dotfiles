@@ -48,7 +48,7 @@ call plug#begin('~/.config/nvim/plugged')
   inoremap <silent><expr> <c-space> coc#refresh()
 
   " Language servers
-  Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:lang_server.compile_elixir() } }
+  Plug 'elixir-lsp/elixir-ls'
 
   " Language server integration
   "
