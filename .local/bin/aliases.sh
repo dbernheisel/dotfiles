@@ -51,8 +51,8 @@ alias whatprocess='ps -p $$ -oargs='
 # Git
 alias gaa='git add -A'
 alias gs='git status'
-alias gd='git diff'
-alias gds='git diff --staged --color-moved'
+alias gd='git diff -W --color-moved'
+alias gds='git diff -W --staged --color-moved'
 alias undeployed='git fetch --multiple production origin && git log production/master..origin/master'
 
 # Homegit

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -z "$GIT_IMAGE_DIFF_FUZZ" ]; then
+  GIT_IMAGE_DIFF_FUZZ=1000
+fi
+
+compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$2" "$5" png:- | \
+  montage -geometry +4+4 "$2" - "$5" png:- | \
+  kitty +kitten icat

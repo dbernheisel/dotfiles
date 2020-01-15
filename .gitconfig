@@ -40,6 +40,7 @@
 [rebase]
   autosquash = true
 [core]
+  attributesfile = ~/.gitattributes
   compression = -1
   autocrlf = input
   excludesfile = ~/.gitignore
@@ -50,6 +51,9 @@
   tool = vscode
   colorMoved = dimmed-zebra
   colorMovedWS = allow-indentation-change
+[diff "image"]
+  textconv = exif
+  command = ~/.local/bin/git-imgdiff
 [difftool "vscode"]
   cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
 [difftool "kitty"]
@@ -71,7 +75,7 @@
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
 [url "ssh://git@bitbucket.org/"]
-  insteadOf = https://bitbucket.org
+  insteadOf = https://bitbucket.org/
 [url "ssh://git@bitbucket.org/taxjar/"]
   insteadOf = tj:
 [url "ssh://git@github.com/"]
@@ -86,9 +90,9 @@
   newNormal = green bold
   newHighlight = green bold 22
 [color "diff"]
-  meta = 227
-  frag = yellow bold
-  commit = 227 bold
+  meta = 11
+  frag = magenta bold
+  commit = yellow bold
   old = red bold
   new = green bold
   whitespace = red reverse
