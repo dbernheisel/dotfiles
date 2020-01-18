@@ -1,6 +1,3 @@
---map-typescript=+.ts
---map-typescript=+.tsx
-
 --exclude=.git
 --exclude=vendor
 --exclude=priv/static/js

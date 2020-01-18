@@ -92,6 +92,7 @@ wget
 xclip
 xdg-utils
 xdotool
+universal-ctags
 
 # Polybar
 libasound2-dev
