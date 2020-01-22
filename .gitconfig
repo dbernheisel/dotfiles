@@ -37,6 +37,9 @@
   up = !git fetch origin && git rebase origin/master
   undeployed = !git fetch production && git diff origin/master production/master
   ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
+  hide = update-index --assume-unchanged
+  unhide = update-index --no-assume-unchanged
+  hidden = ! git ls-files -v | grep '^h' | cut -c3-
 [rebase]
   autosquash = true
 [core]

@@ -1,6 +1,5 @@
 *.ex diff=elixir
 *.exs diff=elixir
-mix.lock diff=elixir
 *.rb diff=ruby
 *.rake diff=ruby
 *.png diff=image
