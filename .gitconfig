@@ -6,7 +6,7 @@
 [color]
   ui = auto
 [interactive]
-  diffFilter = diff-so-fancy --patch-mode
+  diffFilter = (echo && diff-so-fancy)
 [format]
   pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [credential]
