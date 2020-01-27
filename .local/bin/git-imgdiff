@@ -1,9 +1,20 @@
 #!/bin/sh
 
+if ! type montage > /dev/null || ! type montage > /dev/null; then
+  exit 0
+fi
+
 if [ -z "$GIT_IMAGE_DIFF_FUZZ" ]; then
   GIT_IMAGE_DIFF_FUZZ=1000
 fi
 
-compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$2" "$5" png:- | \
-  montage -geometry +4+4 "$2" - "$5" png:- | \
-  kitty +kitten icat
+if [ -f "$2" ] && [ -f "$5" ]; then
+  compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$2" "$5" png:- | \
+    montage -geometry +4+4 "$2" - "$5" png:- | \
+    kitty +kitten icat
+elif [ -f "$2" ]; then
+  kitty +kitten icat "$2"
+elif [ -f "$5" ]; then
+  kitty +kitten icat "$5"
+fi
+
