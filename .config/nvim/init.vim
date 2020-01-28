@@ -14,6 +14,13 @@ set noshowmode
 
 set mouse=a                 " Disable mouse
 
+" Netrw, make it more like a project drawer
+"
+let g:netrw_preview   = 1
+let g:netrw_liststyle = 3
+let g:netrw_winsize   = 30
+let g:netrw_banner = 0
+
 " Generally configure tabs to 2, and convert to spaces
 set tabstop=2
 set backspace=2
@@ -121,16 +128,7 @@ if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
 endif
 
-nmap <leader>b :call ToggleFileTree()<CR>
-" Don't fuck up the icons on reloading this file
-function! ToggleFileTree()
-  if exists("g:loaded_webdevicons")
-    if exists("g:NERDTree")
-      call webdevicons#refresh()
-    endif
-  endif
-  :NERDTreeToggle
-endfun
+nmap <leader>b :Drawer<CR>
 nmap <leader>/ <leader>c<space>
 vmap <leader>/ <leader>c<space>
 
@@ -263,6 +261,21 @@ function! LightMode()
   set background=light
   colorscheme onehalflight
   let g:lightline.colorscheme='onehalflight'
+  let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
 endfunction
 nmap <leader>lm :call LightMode()<cr>
 
@@ -270,6 +283,21 @@ function! DarkMode()
   set background=dark
   colorscheme monokai-phoenix
   let g:lightline.colorscheme='wombat'
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'TabLine'],
+    \ 'bg':      ['bg', 'LineNr'],
+    \ 'hl':      ['fg', 'Statement'],
+    \ 'fg+':     ['fg', 'TermCursor', 'TermCursorNC', 'Statement'],
+    \ 'bg+':     ['bg', 'TermCursor', 'DiffAdd'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
   " Transparent Backgrounds
   hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
 endfunction

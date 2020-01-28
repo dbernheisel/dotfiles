@@ -2,11 +2,7 @@ map K <Nop>
 
 " Use the floating windows for FZF
 if exists("*nvim_open_win")
-  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
   function! FloatingFZF()
-    let buf = nvim_create_buf(v:false, v:true)
-
     let height = &lines - 3
     let width = float2nr(&columns - (&columns * 2 / 20))
     let col = float2nr((&columns - width) / 2)
@@ -16,12 +12,92 @@ if exists("*nvim_open_win")
           \ 'row': 1,
           \ 'col': col,
           \ 'width': width,
+          \ 'style': 'minimal',
           \ 'height': height
           \ }
 
-    call nvim_open_win(buf, v:true, opts)
+    let buf = nvim_create_buf(v:false, v:true)
+    let win = nvim_open_win(buf, v:true, opts)
+    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
+  endfunction
+
+  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+  function! FloatingDrawer()
+    let height = float2nr(&lines)
+    let width = float2nr(&columns * 0.25)
+    let horizontal = float2nr(width - &columns)
+    let vertical = 1
+
+    let opts = {
+          \ 'relative': 'editor',
+          \ 'row': vertical,
+          \ 'col': horizontal,
+          \ 'width': width,
+          \ 'style': 'minimal',
+          \ 'height': height
+          \ }
+
+    let buf = nvim_create_buf(v:false, v:true)
+    let win = nvim_open_win(buf, v:true, opts)
+    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
+  endfunction
+
+endif
+
+let g:fzf_postprocess=' | sort -V'
+if executable('devicon-lookup')
+  let g:fzf_postprocess=' | sort -V | devicon-lookup'
+
+  function! s:line_handler(lines)
+    if len(a:lines) < 2
+      return
+    endif
+    normal! m'
+    echom a:lines
+
+    let cmd = s:action_for(a:lines[0])
+    echom cmd
+    if !empty(cmd) && stridx('edit', cmd) < 0
+      execute 'silent' cmd
+    endif
+
+    let keys = split(a:lines[1], '\t')
+    execute 'buffer' keys[0]
+    execute keys[2]
+    normal! ^zvzz
   endfunction
 endif
+
+function! FZFWithDevIcons()
+  function! s:edit_file(items)
+    let items = a:items
+    let i = 1
+    let ln = len(items)
+    while i < ln
+      let item = items[i]
+      let parts = split(item, ' ')
+      let file_path = get(parts, 1, '')
+      let items[i] = file_path
+      let i += 1
+    endwhile
+    call s:Sink(items)
+  endfunction
+
+  let opts = fzf#wrap({})
+  let opts.source = $FZF_DEFAULT_COMMAND . g:fzf_postprocess
+  let s:Sink = opts['sink*']
+  let opts['sink*'] = function('s:edit_file')
+  call fzf#run(opts)
+endfunction
+
+command! Files call FZFWithDevIcons()<CR>
+
+command! Drawer call fzf#run(fzf#wrap({
+      \ 'source': $FZF_DEFAULT_COMMAND . g:fzf_postprocess,
+      \ 'options': ['--layout=reverse', '--tiebreak=end,length'],
+      \ 'window': 'call FloatingDrawer()'
+      \ }))
 
 " install vim-plug if needed.
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -76,10 +152,6 @@ call plug#begin('~/.config/nvim/plugged')
   " <C-n> to select next word with new cursor
   Plug 'terryma/vim-multiple-cursors'
 
-  " Sidebar file explorer
-  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-  let NERDTreeShowLineNumbers = 0
-
   " Easier block commenting.
   Plug 'scrooloose/nerdcommenter'
   let g:NERDDefaultAlign = 'left'
@@ -128,9 +200,9 @@ call plug#begin('~/.config/nvim/plugged')
     Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
   endif
   Plug 'junegunn/fzf.vim'             " Fuzzy-finder
+  let g:fzf_buffers_jump = 1
 
   " Cosmetic
-  Plug 'ryanoasis/vim-devicons'       " :)
   Plug 'crater2150/vim-theme-chroma'  " Theme - Light
   Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
   Plug 'Erichain/vim-monokai-pro'     " Theme - Dark
