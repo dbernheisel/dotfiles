@@ -35,6 +35,10 @@ if [ -d ~/.yarn/bin ]; then
   export PATH=~/.yarn/bin:$PATH
 fi
 
+if [ -d ~/.cargo/bin ]; then
+  export PATH=~/.cargo/bin:$PATH
+fi
+
 if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
   export PATH="$(brew --prefix)/bin:$PATH"
 fi
