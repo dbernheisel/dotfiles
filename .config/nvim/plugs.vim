@@ -67,31 +67,31 @@ if executable('devicon-lookup')
     execute keys[2]
     normal! ^zvzz
   endfunction
-endif
 
-function! FZFWithDevIcons()
-  function! s:edit_file(items)
-    let items = a:items
-    let i = 1
-    let ln = len(items)
-    while i < ln
-      let item = items[i]
-      let parts = split(item, ' ')
-      let file_path = get(parts, 1, '')
-      let items[i] = file_path
-      let i += 1
-    endwhile
-    call s:Sink(items)
+  function! FZFWithDevIcons()
+    function! s:edit_file(items)
+      let items = a:items
+      let i = 1
+      let ln = len(items)
+      while i < ln
+        let item = items[i]
+        let parts = split(item, ' ')
+        let file_path = get(parts, 1, '')
+        let items[i] = file_path
+        let i += 1
+      endwhile
+      call s:Sink(items)
+    endfunction
+
+    let opts = fzf#wrap({})
+    let opts.source = $FZF_DEFAULT_COMMAND . g:fzf_postprocess
+    let s:Sink = opts['sink*']
+    let opts['sink*'] = function('s:edit_file')
+    call fzf#run(opts)
   endfunction
 
-  let opts = fzf#wrap({})
-  let opts.source = $FZF_DEFAULT_COMMAND . g:fzf_postprocess
-  let s:Sink = opts['sink*']
-  let opts['sink*'] = function('s:edit_file')
-  call fzf#run(opts)
-endfunction
-
-command! Files call FZFWithDevIcons()<CR>
+  command! Files call FZFWithDevIcons()<CR>
+endif
 
 command! Drawer call fzf#run(fzf#wrap({
       \ 'source': $FZF_DEFAULT_COMMAND . g:fzf_postprocess,
@@ -234,7 +234,8 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
-  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh", "ini=dosini"]
+  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
+        \ "ini=dosini", "patch=diff"]
   let g:vim_markdown_strikethrough = 1
   let g:vim_markdown_frontmatter = 1
 
