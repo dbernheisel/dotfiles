@@ -1,104 +1,5 @@
 map K <Nop>
 
-" Use the floating windows for FZF
-if exists("*nvim_open_win")
-  function! FloatingFZF()
-    let height = &lines - 3
-    let width = float2nr(&columns - (&columns * 2 / 20))
-    let col = float2nr((&columns - width) / 2)
-
-    let opts = {
-          \ 'relative': 'editor',
-          \ 'row': 1,
-          \ 'col': col,
-          \ 'width': width,
-          \ 'style': 'minimal',
-          \ 'height': height
-          \ }
-
-    let buf = nvim_create_buf(v:false, v:true)
-    let win = nvim_open_win(buf, v:true, opts)
-    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
-  endfunction
-
-  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-  function! FloatingDrawer()
-    let height = float2nr(&lines)
-    let width = float2nr(&columns * 0.25)
-    let horizontal = float2nr(width - &columns)
-    let vertical = 1
-
-    let opts = {
-          \ 'relative': 'editor',
-          \ 'row': vertical,
-          \ 'col': horizontal,
-          \ 'width': width,
-          \ 'style': 'minimal',
-          \ 'height': height
-          \ }
-
-    let buf = nvim_create_buf(v:false, v:true)
-    let win = nvim_open_win(buf, v:true, opts)
-    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
-  endfunction
-
-endif
-
-let g:fzf_postprocess=' | sort -V'
-if executable('devicon-lookup')
-  let g:fzf_postprocess=' | sort -V | devicon-lookup'
-
-  function! s:line_handler(lines)
-    if len(a:lines) < 2
-      return
-    endif
-    normal! m'
-    echom a:lines
-
-    let cmd = s:action_for(a:lines[0])
-    echom cmd
-    if !empty(cmd) && stridx('edit', cmd) < 0
-      execute 'silent' cmd
-    endif
-
-    let keys = split(a:lines[1], '\t')
-    execute 'buffer' keys[0]
-    execute keys[2]
-    normal! ^zvzz
-  endfunction
-
-  function! FZFWithDevIcons()
-    function! s:edit_file(items)
-      let items = a:items
-      let i = 1
-      let ln = len(items)
-      while i < ln
-        let item = items[i]
-        let parts = split(item, ' ')
-        let file_path = get(parts, 1, '')
-        let items[i] = file_path
-        let i += 1
-      endwhile
-      call s:Sink(items)
-    endfunction
-
-    let opts = fzf#wrap({})
-    let opts.source = $FZF_DEFAULT_COMMAND . g:fzf_postprocess
-    let s:Sink = opts['sink*']
-    let opts['sink*'] = function('s:edit_file')
-    call fzf#run(opts)
-  endfunction
-
-  command! Files call FZFWithDevIcons()<CR>
-endif
-
-command! Drawer call fzf#run(fzf#wrap({
-      \ 'source': $FZF_DEFAULT_COMMAND . g:fzf_postprocess,
-      \ 'options': ['--layout=reverse', '--tiebreak=end,length'],
-      \ 'window': 'call FloatingDrawer()'
-      \ }))
-
 " install vim-plug if needed.
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -258,3 +159,98 @@ call plug#begin('~/.config/nvim/plugged')
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
 call plug#end()
+
+"========= FZF ===========
+
+let g:fzf_postprocess = ' | sort -V'
+let g:fzf_spec = {}
+let g:fzf_drawer_spec = {}
+let g:fzf_drawer_options = ' --layout=reverse --tiebreak=end,length'
+
+if exists("*nvim_open_win")
+  function! FloatingFZF()
+    let height = &lines - 3
+    let width = float2nr(&columns - (&columns * 2 / 20))
+    let col = float2nr((&columns - width) / 2)
+
+    let opts = {
+          \ 'relative': 'editor',
+          \ 'row': 1,
+          \ 'col': col,
+          \ 'width': width,
+          \ 'style': 'minimal',
+          \ 'height': height
+          \ }
+
+    let buf = nvim_create_buf(v:false, v:true)
+    let win = nvim_open_win(buf, v:true, opts)
+    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
+  endfunction
+
+  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+  function! FloatingDrawer()
+    let height = float2nr(&lines)
+    let width = float2nr(&columns * 0.25)
+    let horizontal = float2nr(width - &columns)
+    let vertical = 1
+
+    let opts = {
+          \ 'relative': 'editor',
+          \ 'row': vertical,
+          \ 'col': horizontal,
+          \ 'width': width,
+          \ 'style': 'minimal',
+          \ 'height': height
+          \ }
+
+    let buf = nvim_create_buf(v:false, v:true)
+    let win = nvim_open_win(buf, v:true, opts)
+    call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
+  endfunction
+
+  let g:fzf_drawer_spec.window = 'call FloatingDrawer()'
+endif
+
+let g:use_devicon = 0
+if executable('devicon-lookup')
+  let g:use_devicon = 1
+  let g:fzf_postprocess = g:fzf_postprocess.' | devicon-lookup'
+endif
+
+let g:fzf_spec.source = $FZF_DEFAULT_COMMAND . g:fzf_postprocess
+
+function! DevIconToVim(item)
+  if g:use_devicon
+    return get(split(a:item, ' '), 1, '')
+  else
+    return a:item
+  endif
+endfunction
+
+function! FzfEditFile(lines)
+  let action = a:lines[0]
+  let lines = map(a:lines[1:], 'DevIconToVim(v:val)')
+  call s:fzf_sink([action] + lines)
+endfunction
+
+function! FZFFiles()
+  let opts = fzf#wrap({})
+  let s:fzf_sink = function(opts['sink*'])
+  let opts = extend(opts, g:fzf_spec)
+  let opts['sink*'] = function('FzfEditFile')
+  call fzf#run(opts)
+endfunction
+
+function! FZFDrawer()
+  let opts = fzf#wrap({})
+  let s:fzf_sink = function(opts['sink*'])
+  let opts = extend(opts, g:fzf_spec)
+  let opts = extend(opts, g:fzf_drawer_spec)
+  let opts['sink*'] = function('FzfEditFile')
+  let opts.options .= g:fzf_drawer_options
+  call fzf#run(opts)
+endfunction
+
+command! Drawer call FZFDrawer()<CR>
+command! Files call FZFFiles()<CR>

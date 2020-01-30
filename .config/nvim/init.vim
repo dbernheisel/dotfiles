@@ -15,11 +15,14 @@ set noshowmode
 set mouse=a                 " Disable mouse
 
 " Netrw, make it more like a project drawer
-"
 let g:netrw_preview   = 1
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 30
 let g:netrw_banner = 0
+
+" More bash-like command complete selection
+cnoremap <Left> <Space><BS><Left>
+cnoremap <Right> <Space><BS><Right>
 
 " Generally configure tabs to 2, and convert to spaces
 set tabstop=2
@@ -173,7 +176,12 @@ nmap <silent> <leader>l :call RunTest('TestLast')<CR>
 nmap <silent> <leader>g :call RunTest('TestVisit')<CR>
 
 nnoremap <C-P> :Files<CR>
-nnoremap <leader>f :RipGrep<Space>
+nnoremap <leader>f :Rg<Space>
+
+if executable('rg')
+  set grepprg="rg --vimgrep"   " use ripgrep
+endif
+
 if executable('fzf')
   if executable('/home/linuxbrew/.linuxbrew/bin/fzf')
     set rtp+=/home/linuxbrew/.linuxbrew/bin/fzf
@@ -186,9 +194,6 @@ if executable('fzf')
   if executable('/usr/bin/fzf')
     set rtp+=/usr/bin/fzf
   endif
-
-  set grepprg=rg\ --vimgrep   " use ripgrep
-  command! -bang -nargs=* RipGrep call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!_build/**/*" --glob "!tags" --glob "!priv/static/**/*" --glob "!bower_components/**/*" --glob "!storage/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!public/**/*" --glob "!*.cache" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 endif
 
 function! LightlineFileformat()

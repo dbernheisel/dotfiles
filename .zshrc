@@ -22,6 +22,10 @@ if type aws &> /dev/null && [ -f ~/usr/local/share/zsh/site-functions/_aws ]; th
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
+if type rg &>/dev/null; then
+  export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+fi
+
 # Android Development
 if [ -d ~/Libray/Android/sdk ]; then
   export ANDROID_HOME=~/Library/Android/sdk
@@ -98,7 +102,7 @@ fi
 
 # RipGrep
 export FZF_DEFAULT_OPTS='--color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/**/*" --glob "!_build/**/*" --glob "!.elixir_ls/**/*" --glob "!node_modules/**/*" --glob "!bower_components/**/*" --glob "!tmp/**/*" --glob "!coverage/**/*" --glob "!deps/**/*" --glob "!.hg/**/*" --glob "!.svn/**/*" --glob "!.sass-cache/**/*" --glob "!.Trash/**/*"'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 [ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh
 [ -e $HOME/.local/bin/aliases.zsh ] && source $HOME/.local/bin/aliases.zsh
