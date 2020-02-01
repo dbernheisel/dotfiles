@@ -1,5 +1,4 @@
 " General
-set nocompatible
 if has('mac')
   set clipboard=unnamed
 else
@@ -71,7 +70,7 @@ set smartcase
 map <silent> <CR> :nohl<CR>
 
 function! ModernTerminal()
-  if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo"
+  if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo" || $KITTY_WINDOW_ID != ""
     return 1
   else
     return 0
@@ -81,11 +80,13 @@ endfunction
 if ModernTerminal()
   " Turn on 24bit color
   set termguicolors
+
+  " https://sw.kovidgoyal.net/kitty/faq.html#using-a-color-theme-with-a-background-color-does-not-work-well-in-vim
+  let &t_ut=''
+
+  " https://github.com/vim/vim/issues/993#issuecomment-255651605
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  let g:truecolor = 1
-else
-  let g:truecolor = 0
 endif
 
 " Automatically :write before running commands
@@ -263,8 +264,8 @@ nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -he
 syntax on
 
 function! LightMode()
-  set background=light
   colorscheme onehalflight
+  set background=light
   let g:lightline.colorscheme='onehalflight'
   let g:fzf_colors =
     \ { 'fg':      ['fg', 'Normal'],

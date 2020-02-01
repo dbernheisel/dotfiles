@@ -104,9 +104,7 @@ call plug#begin('~/.config/nvim/plugged')
   let g:fzf_buffers_jump = 1
 
   " Cosmetic
-  Plug 'crater2150/vim-theme-chroma'  " Theme - Light
   Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-  Plug 'Erichain/vim-monokai-pro'     " Theme - Dark
   Plug 'reewr/vim-monokai-phoenix'    " Theme - Darker
   Plug 'itchyny/lightline.vim'        " Statusline
   let g:lightline = {
