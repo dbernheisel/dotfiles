@@ -107,7 +107,6 @@ if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
 fi
 
 # RipGrep
-export FZF_DEFAULT_OPTS='--color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
 export FZF_DEFAULT_COMMAND='rg --files'
 
 [ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh

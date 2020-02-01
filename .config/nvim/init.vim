@@ -268,20 +268,20 @@ function! LightMode()
   set background=light
   colorscheme onehalflight
   let g:lightline.colorscheme='onehalflight'
-  let g:fzf_colors =
-    \ { 'fg':      ['fg', 'Normal'],
-    \ 'bg':      ['bg', 'Normal'],
-    \ 'hl':      ['fg', 'Comment'],
-    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'border':  ['fg', 'Ignore'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment'] }
+  let g:fzf_colors = {
+        \ 'fg':      ['fg', 'Normal'],
+        \ 'bg':      ['bg', 'Normal'],
+        \ 'hl':      ['fg', 'Comment'],
+        \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+        \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+        \ 'hl+':     ['fg', 'Statement'],
+        \ 'info':    ['fg', 'PreProc'],
+        \ 'border':  ['fg', 'Ignore'],
+        \ 'prompt':  ['fg', 'Conditional'],
+        \ 'pointer': ['fg', 'Exception'],
+        \ 'marker':  ['fg', 'Keyword'],
+        \ 'spinner': ['fg', 'Label'],
+        \ 'header':  ['fg', 'Comment'] }
 
 endfunction
 nmap <leader>lm :call LightMode()<cr>
@@ -291,8 +291,8 @@ function! DarkMode()
   set background=dark
   colorscheme monokai-phoenix
   let g:lightline.colorscheme='wombat'
-  let g:fzf_colors =
-  \ { 'fg':      ['fg', 'TabLine'],
+  let g:fzf_colors = {
+    \ 'fg':      ['fg', 'TabLine'],
     \ 'bg':      ['bg', 'LineNr'],
     \ 'hl':      ['fg', 'Statement'],
     \ 'fg+':     ['fg', 'TermCursor', 'TermCursorNC', 'Statement'],
@@ -361,4 +361,3 @@ augroup netrwEx
 augroup END
 
 filetype on
-

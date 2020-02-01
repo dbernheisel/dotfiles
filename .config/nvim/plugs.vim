@@ -237,7 +237,7 @@ endfunction
 
 function! FZFFiles()
   let opts = fzf#wrap({})
-  let s:fzf_sink = function(opts['sink*'])
+  let s:fzf_sink = opts['sink*']
   let opts = extend(opts, g:fzf_spec)
   let opts['sink*'] = function('FzfEditFile')
   call fzf#run(opts)
@@ -245,7 +245,7 @@ endfunction
 
 function! FZFDrawer()
   let opts = fzf#wrap({})
-  let s:fzf_sink = function(opts['sink*'])
+  let s:fzf_sink = opts['sink*']
   let opts = extend(opts, g:fzf_spec)
   let opts = extend(opts, g:fzf_drawer_spec)
   let opts['sink*'] = function('FzfEditFile')
@@ -253,5 +253,5 @@ function! FZFDrawer()
   call fzf#run(opts)
 endfunction
 
-command! Drawer call FZFDrawer()<CR>
-command! Files call FZFFiles()<CR>
+command! Drawer call FZFDrawer()
+command! Files call FZFFiles()
