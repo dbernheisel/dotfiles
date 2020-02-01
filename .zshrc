@@ -65,8 +65,10 @@ fi
 if type fzf &> /dev/null; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
   elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
     source /usr/share/doc/fzf/examples/key-bindings.zsh
+    source /usr/share/doc/fzf/examples/completion.zsh
   elif [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
   else
@@ -75,6 +77,10 @@ if type fzf &> /dev/null; then
       $(brew --prefix)/opt/fzf/install
     fi
   fi
+  export FZF_COMPLETION_TRIGGER=''
+  bindkey '^T' fzf-completion
+  bindkey '^I' $fzf_default_completion
+
 fi
 
 if type awsume &> /dev/null; then
@@ -107,6 +113,31 @@ export FZF_DEFAULT_COMMAND='rg --files'
 [ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh
 [ -e $HOME/.local/bin/aliases.zsh ] && source $HOME/.local/bin/aliases.zsh
 [ -e $HOME/.secrets ] && source $HOME/.secrets
+
+gcof() {
+  if [ -z $1 ]; then
+    local tags branches target
+    branches=$(
+      git --no-pager branch --all \
+          --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
+          | sed '/^$/d'
+    ) || return
+    tags=$(git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
+    target=$(
+      (echo "$branches"; echo "$tags") | \
+      fzf --no-hscroll --no-multi -n 2 --ansi --preview="git --no-pager log -150 --pretty=format:%s '..{2}'"
+    ) || return
+    if [[ "$target" =~ origin/ ]]; then
+      git checkout --track "$(awk '{print $2}' <<< "$target")"
+    else
+      git checkout "$(awk '{print $2}' <<< "$target")"
+    fi
+  else
+   git checkout $1
+  fi
+}
+
+bindkey '^GB' gcof
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 
