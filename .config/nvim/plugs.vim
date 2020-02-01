@@ -28,7 +28,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'elixir-lsp/elixir-ls'
 
   " Language server integration
-  "
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
         \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
@@ -38,6 +37,10 @@ call plug#begin('~/.config/nvim/plugged')
   if has('mac')
     Plug 'rizzatti/dash.vim', { 'on': 'Dash' }
   endif
+
+  " Indent line guides... wish I didn't need this.
+  Plug 'Yggdroot/indentLine'
+  let g:indentLine_char_list = ['|']
 
   " Wiki
   let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'syntax': 'markdown'}]

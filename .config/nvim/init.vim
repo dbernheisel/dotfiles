@@ -264,8 +264,9 @@ nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -he
 syntax on
 
 function! LightMode()
-  colorscheme onehalflight
+  let g:indentLine_color_gui = '#EAEAEA'
   set background=light
+  colorscheme onehalflight
   let g:lightline.colorscheme='onehalflight'
   let g:fzf_colors =
     \ { 'fg':      ['fg', 'Normal'],
@@ -286,6 +287,7 @@ endfunction
 nmap <leader>lm :call LightMode()<cr>
 
 function! DarkMode()
+  let g:indentLine_color_gui = '#373737'
   set background=dark
   colorscheme monokai-phoenix
   let g:lightline.colorscheme='wombat'
