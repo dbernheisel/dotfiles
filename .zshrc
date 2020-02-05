@@ -52,9 +52,6 @@ export POSTGRES_USER=$(whoami)
 
 # Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
-if [ -f ~/.elixir_ls/release/language_server.sh ]; then
-  export PATH="$HOME/.elixir_ls/release:$PATH"
-fi
 
 # Kotlin
 if [ -f ~/.kotlin_ls/build/install/kotlin-language-server/bin/kotlin-language-server ]; then
@@ -66,9 +63,9 @@ if type fzf &> /dev/null; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     source /usr/share/fzf/key-bindings.zsh
     source /usr/share/fzf/completion.zsh
+    bindkey '^I' $fzf_default_completion
   elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
     source /usr/share/doc/fzf/examples/key-bindings.zsh
-    source /usr/share/doc/fzf/examples/completion.zsh
   elif [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
   else
@@ -79,7 +76,6 @@ if type fzf &> /dev/null; then
   fi
   export FZF_COMPLETION_TRIGGER=''
   bindkey '^T' fzf-completion
-  bindkey '^I' $fzf_default_completion
 
 fi
 
