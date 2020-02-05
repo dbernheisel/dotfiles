@@ -103,8 +103,11 @@ call plug#begin('~/.config/nvim/plugged')
   if isdirectory('/usr/share/doc/fzf/examples')
     Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
   endif
+
   Plug 'junegunn/fzf.vim'             " Fuzzy-finder
   let g:fzf_buffers_jump = 1
+
+  Plug 'liuchengxu/vista.vim'
 
   " Cosmetic
   Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light

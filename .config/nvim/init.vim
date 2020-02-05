@@ -178,6 +178,7 @@ nmap <silent> <leader>g :call RunTest('TestVisit')<CR>
 
 nnoremap <C-P> :Files<CR>
 nnoremap <leader>f :Rg<Space>
+nnoremap <leader>jf :Vista finder coc<CR>
 
 if executable('rg')
   set grepprg="rg --vimgrep"   " use ripgrep
