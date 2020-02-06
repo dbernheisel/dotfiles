@@ -4,16 +4,16 @@
   killall nm-applet
   killall blueman-applet
   killall flameshot
-  killall kalu
 
   # This fixes an issue with the tray using lo-rez icons
   unset GDK_SCALE
   unset GDK_DPI_SCALE
 
-  nm-applet & disown
+  nm-applet --indicator & disown
   blueman-applet & disown
-  flameshot & disown
-  kalu & disown
+  if [ "$XDG_SESSION_TYPE" != "wayland" ]; then
+    flameshot & disown
+  fi
 )
 
 disown

@@ -243,11 +243,14 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 # Specific Scratchpads
-for_window [class="Brave-browser"] floating enable, move to scratchpad, scratchpad show
-bindsym $mod+b [class="Brave-browser"] scratchpad show
+for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
+bindsym $mod+b [class="Google-chrome"] scratchpad show
+# for_window [class="Brave-browser"] floating enable, move to scratchpad, scratchpad show
+# bindsym $mod+b [class="Brave-browser"] scratchpad show
 
 # App shortcuts
-bindsym $mod+w exec "/usr/bin/brave"
+# bindsym $mod+w exec "/usr/bin/brave"
+bindsym $mod+w exec "/usr/bin/google-chrome-stable"
 bindsym $mod+e exec "/usr/bin/thunar"
 bindsym $mod+Tab exec "rofi -show window"
 bindsym $mod+space exec "zsh -lc \\"rofi -show combi 'window,run'\\""

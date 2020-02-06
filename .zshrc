@@ -17,8 +17,12 @@ unsetopt nomatch
 typeset -U path
 path[1,0]=$HOME/.local/bin
 
+if [ -f /usr/share/applications/google-chrome.desktop ]; then
+  export BROWSER=/usr/bin/google-chrome-stable
+fi
+
 # awscli from brew auto-completion
-if type aws &> /dev/null && [ -f ~/usr/local/share/zsh/site-functions/_aws ]; then
+if type aws &> /dev/null && [ -f /usr/local/share/zsh/site-functions/_aws ]; then
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
