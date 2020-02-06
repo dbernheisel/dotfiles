@@ -25,7 +25,7 @@ call plug#begin('~/.config/nvim/plugged')
   inoremap <silent><expr> <c-space> coc#refresh()
 
   " Language servers
-  Plug 'elixir-lsp/elixir-ls'
+  Plug 'elixir-lsp/elixir-ls', { 'for': 'elixir' }
 
   " Language server integration
   Plug 'neoclide/coc.nvim', {'branch': 'release'}

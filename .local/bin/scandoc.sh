@@ -10,7 +10,7 @@
 set -euo pipefail
 
 DPI=300
-SCANNER="brother5:net1:dev0"
+SCANNER="brother5:net1;dev0"
 TESSERACT_LANG=eng # Language that Tesseract uses for OCR
 
 FILENAME=$1
