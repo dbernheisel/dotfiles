@@ -10,20 +10,6 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
-
   " Language servers
   Plug 'elixir-lsp/elixir-ls', { 'for': 'elixir' }
 
@@ -33,6 +19,9 @@ call plug#begin('~/.config/nvim/plugged')
         \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
         \ 'coc-elixir', 'coc-tsserver', 'coc-diagnostic']
 
+  Plug 'justinmk/vim-dirvish'
+  Plug 'kristijanhusak/vim-dirvish-git'
+
   " :Dash
   if has('mac')
     Plug 'rizzatti/dash.vim', { 'on': 'Dash' }
@@ -41,6 +30,8 @@ call plug#begin('~/.config/nvim/plugged')
   " Indent line guides... wish I didn't need this.
   Plug 'Yggdroot/indentLine'
   let g:indentLine_char_list = ['|']
+  let g:indentLine_faster = 1
+  let g:indentLine_bufTypeExclude = ['help', 'terminal']
 
   " Wiki
   let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/', 'syntax': 'markdown'}]
@@ -193,27 +184,20 @@ if exists("*nvim_open_win")
 
   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
-  function! FloatingDrawer()
+  function! LeftFloater()
     let height = float2nr(&lines)
-    let width = float2nr(&columns * 0.25)
+    let width = float2nr(&columns * 0.34)
     let horizontal = float2nr(width - &columns)
     let vertical = 1
 
-    let opts = {
-          \ 'relative': 'editor',
-          \ 'row': vertical,
-          \ 'col': horizontal,
-          \ 'width': width,
-          \ 'style': 'minimal',
-          \ 'height': height
-          \ }
+    let opts = { 'relative': 'editor', 'row': vertical, 'col': horizontal, 'width': width, 'style': 'minimal', 'height': height }
 
+    let s:drawer_target = bufnr("%")
     let buf = nvim_create_buf(v:false, v:true)
     let win = nvim_open_win(buf, v:true, opts)
     call setwinvar(win, '&winhl', 'NormalFloat:TabLine')
+    :Dirvish
   endfunction
-
-  let g:fzf_drawer_spec.window = 'call FloatingDrawer()'
 endif
 
 let g:use_devicon = 0
@@ -246,15 +230,43 @@ function! FZFFiles()
   call fzf#run(opts)
 endfunction
 
-function! FZFDrawer()
-  let opts = fzf#wrap({})
-  let s:fzf_sink = opts['sink*']
-  let opts = extend(opts, g:fzf_spec)
-  let opts = extend(opts, g:fzf_drawer_spec)
-  let opts['sink*'] = function('FzfEditFile')
-  let opts.options .= g:fzf_drawer_options
-  call fzf#run(opts)
+command! Files call FZFFiles()
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-command! Drawer call FZFDrawer()
-command! Files call FZFFiles()
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+let g:loaded_netrwPlugin = 1
+command! -nargs=? -complete=dir Explore Dirvish <args>
+command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
+command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>
+command! -nargs=? -complete=dir Lexplore leftabove vsplit | silent Dirvish <args>
+
+let g:LexploreOpen=0
+function! ToggleDirvish()
+  if g:LexploreOpen
+    let i = bufnr("$")
+    while (i >= 1)
+      if (getbufvar(i, "&filetype") == "dirvish")
+        silent exe "bwipeout " . i
+      endif
+      let i-=1
+    endwhile
+    let g:LexploreOpen=0
+  else
+    let g:LexploreOpen=1
+    silent Lexplore
+  endif
+endfunction
+
+command! Drawer call ToggleDirvish()
