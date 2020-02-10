@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "Available: --firmware, --kernel"
+
 is_crostini() {
   if [ -d /etc/systemd/user/sommelier@0.service.d ]; then
     return 0
@@ -14,7 +16,7 @@ is_crostini() {
 if [ -f "/etc/arch-release" ]; then
   IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
-  if [ "$1" = "--kernel" ]; then
+  if [[ "$1" = *--kernel* ]]; then
     shift;
     if is_crostini; then
       echo "Cannot upgrade kernel within Crostini"
@@ -22,7 +24,6 @@ if [ -f "/etc/arch-release" ]; then
     fi
 
     sudo pacman -Syyu
-    if type yay &> /dev/null; then yay -Su --aur; fi
   else
     echo "Ignoring packages: ${IGNORE[*]}"
     IGNORE_FLAGS=""
@@ -31,7 +32,12 @@ if [ -f "/etc/arch-release" ]; then
     done
     # shellcheck disable=SC2086
     sudo pacman -Syyu $IGNORE_FLAGS
-    if type yay &> /dev/null; then yay -Su --aur; fi
+  fi
+  if type yay &> /dev/null; then yay -Su --aur; fi
+
+  if ! is_crostini && type fwupdmgr &> /dev/null && [[ "$1" = *--firmware* ]]; then
+    fwupdmgr refresh
+    fwupdmgr get-updates --no-unreported-check
   fi
 fi
 
@@ -58,4 +64,9 @@ if [ -f "/etc/debian_release" ]; then
       sudo apt-mark unhold "$IGNORABLE"
     done
   fi
+fi
+
+if ! is_crostini && type fwupdmgr &> /dev/null && [[ "$1" = *--firmware* ]]; then
+  fwupdmgr refresh
+  fwupdmgr get-updates --no-unreported-check
 fi
