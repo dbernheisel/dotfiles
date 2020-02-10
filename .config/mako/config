@@ -1,0 +1,22 @@
+default-timeout=7000
+font=Fira Code 16
+background-color=#1d2021ed
+text-color=#ebdbb2
+border-color=#458588
+border-size=3
+
+ignore-timeout=1
+anchor=top-right
+
+width=400
+height=200
+margin=3
+padding=3,6
+
+[hidden]
+format=(and %h more)
+text-color=#777777
+
+[urgency=high]
+background-color=#c00000
+border-color=#ff0000

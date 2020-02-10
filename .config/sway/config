@@ -1,0 +1,285 @@
+# Please see man 5 sway for more information
+
+output "*" bg `find /usr/share/backgrounds/mine -type f | shuf -n 1` fill
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+  repeat_delay 350
+  repeat_rate 50
+}
+
+input "7185:45133:Input_Club_Infinity_Ergodox/QMK" {
+  repeat_delay 350
+  repeat_rate 50
+}
+
+font pango:monospace 9
+
+seat * hide_cursor 8000
+
+set $mod Mod4
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+focus_follows_mouse no
+
+bindswitch --reload --locked lid:on exec ~/.local/bin/swayshut.sh
+bindswitch --reload --locked lid:off output eDP-1 enable
+
+set $mode_notifications Notifications (d) dismiss, (Shift+d) dismiss all
+bindsym $mod+Shift+n mode "$mode_notifications"
+mode "$mode_notifications" {
+  bindsym d exec makoctl dismiss; mode "default"
+  bindsym Shift+d exec makoctl dismiss -a; mode "default"
+
+  bindcode 9 mode "default"
+}
+
+set $mode_recording Recording (s) start, (t) stop, (a) status
+bindsym $mod+Shift+s mode "$mode_recording"
+mode "$mode_recording" {
+  bindsym s exec ~/.local/bin/screenshare-webcam.sh start, mode "default"
+  bindsym t exec ~/.local/bin/screenshare-webcam.sh stop, mode "default"
+  bindsym a exec ~/.local/bin/screenshare-webcam.sh is-recording, mode "default"
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+set $mode_screenshot (g f) region edit, (w e) window, (d s) desktop
+bindsym $mod+Shift+f mode "$mode_screenshot"
+mode "$mode_screenshot" {
+  bindsym g exec ~/.local/bin/swayshot.sh region, mode "default"
+  bindsym f exec ~/.local/bin/swayshot.sh region-edit, mode "default"
+  bindsym w exec ~/.local/bin/swayshot.sh window, mode "default"
+  bindsym e exec ~/.local/bin/swayshot.sh window-edit, mode "default"
+  bindsym d exec ~/.local/bin/swayshot.sh desktop, mode "default"
+  bindsym s exec ~/.local/bin/swayshot.sh desktop-edit, mode "default"
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+set $mode_system System (l) lock, (s) suspend, (e) logout, (r) reboot, (Shift+s) shutdown
+bindsym $mod+Shift+x mode "$mode_system"
+mode "$mode_system" {
+  bindsym l exec "loginctl lock-session $XDG_SESSION_ID"
+  bindsym e exit
+  bindsym s exec systemctl suspend
+  bindsym r exec systemctl reboot
+  bindsym Shift+s exec systemctl poweroff -i
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+# resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+mode "resize" {
+  # These bindings trigger as soon as you enter the resize mode
+
+  # Pressing left will shrink the window’s width.
+  # Pressing right will grow the window’s width.
+  # Pressing up will shrink the window’s height.
+  # Pressing down will grow the window’s height.
+  bindsym --to-code {
+    h resize shrink width 10 px or 10 ppt
+    j resize grow height 10 px or 10 ppt
+    k resize shrink height 10 px or 10 ppt
+    l resize grow width 10 px or 10 ppt
+
+    # same bindings, but for the arrow keys
+    Left resize shrink width 10 px or 10 ppt
+    Down resize grow height 10 px or 10 ppt
+    Up resize shrink height 10 px or 10 ppt
+    Right resize grow width 10 px or 10 ppt
+
+    # back to normal: Enter or Escape
+    Return mode "default"
+    Escape mode "default"
+  }
+}
+
+bindsym --to-code {
+  # start a terminal
+  $mod+Return exec kitty
+
+  # kill focused window
+  $mod+Shift+Q kill
+
+  $mod+Shift+equal move scratchpad
+  $mod+equal scratchpad show
+
+  # change focus
+  $mod+h focus left
+  $mod+j focus down
+  $mod+k focus up
+  $mod+l focus right
+
+  # alternatively, you can use the cursor keys:
+  $mod+Left focus left
+  $mod+Down focus down
+  $mod+Up focus up
+  $mod+Right focus right
+
+  # move focused window
+  $mod+Shift+H move left
+  $mod+Shift+J move down
+  $mod+Shift+K move up
+  $mod+Shift+L move right
+
+  # alternatively, you can use the cursor keys:
+  $mod+Shift+Left move left
+  $mod+Shift+Down move down
+  $mod+Shift+Up move up
+  $mod+Shift+Right move right
+
+  $mod+backslash split h
+  $mod+bar split h
+  $mod+minus split v
+
+  # enter fullscreen mode for the focused container
+  $mod+f fullscreen toggle
+
+  # change container layout (stacked, tabbed, toggle split)
+  # $mod+Shift+S layout stacking
+  $mod+Shift+W layout tabbed
+  $mod+Shift+E layout toggle split
+
+  # toggle tiling / floating
+  $mod+Shift+space floating toggle
+
+  # focus the parent container
+  $mod+a focus parent
+
+  # focus the child container
+  #bindsym $mod+d focus child
+
+  # switch to workspace
+  $mod+1 workspace 1
+  $mod+2 workspace 2
+  $mod+3 workspace 3
+  $mod+4 workspace 4
+  $mod+5 workspace 5
+  $mod+6 workspace 6
+  $mod+7 workspace 7
+  $mod+8 workspace 8
+  $mod+9 workspace 9
+  $mod+0 workspace 10
+
+  # move focused container to workspace
+  $mod+Shift+1 move container to workspace 1
+  $mod+Shift+2 move container to workspace 2
+  $mod+Shift+3 move container to workspace 3
+  $mod+Shift+4 move container to workspace 4
+  $mod+Shift+5 move container to workspace 5
+  $mod+Shift+6 move container to workspace 6
+  $mod+Shift+7 move container to workspace 7
+  $mod+Shift+8 move container to workspace 8
+  $mod+Shift+9 move container to workspace 9
+  $mod+Shift+0 move container to workspace 10
+
+  # reload the configuration file
+  $mod+Shift+r reload
+
+  # volume
+  XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+  XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
+  XF86AudioMute exec amixer sset Master toggle
+  # granular volume control
+  $mod+XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+
+  $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
+  # Redirect sound to headphones
+  $mod+m exec "/usr/local/bin/switch-audio-port"
+
+  ## Multimedia Keys
+  XF86AudioPlay exec playerctl play
+  XF86AudioPause exec playerctl pause
+  XF86AudioPrev exec playerctl previous
+  XF86AudioNext exec playerctl next
+  $mod+F5 exec playerctl play
+  $mod+F6 exec playerctl pause
+  $mod+F7 exec playerctl previous
+  $mod+F8 exec playerctl next
+
+  XF86MonBrightnessUp exec brightnessctl s +10%
+  XF86MonBrightnessDown exec brightnessctl s 10%-
+
+  # App shortcuts
+  # bindsym $mod+w exec "/usr/bin/brave"
+  $mod+w exec "/usr/bin/google-chrome-stable"
+  $mod+e exec "/usr/bin/thunar"
+  $mod+Tab exec "rofi -show window"
+  $mod+space exec "rofi -show combi 'window,run' -sorting-method 'fzf'"
+  $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
+}
+
+set $color0 #2f343f
+set $color1 #2f343f
+set $color2 #a0a0a0
+set $color3 #e53935
+set $color4 #676e7d
+set $color7 #f3f4f5
+set $color15  #676e7d
+set $black  #000000
+
+# set window colors
+#client.class           border             background         text
+client.focused          $color15           $color0            $color7
+client.focused_inactive $color2            $color4            $color2
+client.unfocused        $black             $color4            $color2
+client.urgent           $color3            $color15           $color7
+
+bar {
+  swaybar_command waybar
+}
+
+# gaps
+smart_gaps on
+smart_borders on
+gaps inner 8
+hide_edge_borders smart
+default_border pixel 3
+
+# floating windows
+for_window [app_id="pavucontrol"] floating enable
+for_window [class="Peek"] floating enable
+for_window [title="^Zoom.*$"] floating enable
+for_window [title="^zoom$"] floating enable
+for_window [app_id="^blueman.*"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="org.ksnip.ksnip"] floating enable
+
+for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, border none
+for_window [class="ffplay"] floating enable, sticky enable
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enablE
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="GtkFileChooserDialog"] resize set 1024 px 50 ppt
+for_window [title="Open File"] resize set 1024 px 50 ppt
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+# Specific Scratchpads
+for_window [class="Google-chrome" title="^!Open File"] floating enable, move to scratchpad, scratchpad show
+bindsym $mod+b [class="Google-chrome"] scratchpad show
+
+# Disable title bar
+# for_window [class="^.*"] border none
+
+# Autostart apps
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec "~/.local/bin/launch_tray.sh &> ~/.launch_tray.log"
+exec "xrdb -merge ~/.Xwayland"
+exec "kanshi" # auto-switch displays monitor hotplugging
+
+exec_always "~/.local/bin/swayidle.sh"
+exec_always "mako" # notification daemon
+exec_always {
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adapta-Eta'
+  gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+  gsettings set org.gnome.desktop.interface cursor-theme 'Breeze_Snow'
+}

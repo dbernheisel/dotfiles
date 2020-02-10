@@ -45,6 +45,25 @@ yarn
 zoom
 zsh
 
+# Wayland
+grim
+kanshi
+libindicator-gtk3
+mako
+network-manager-applet-indicator
+slurp
+sway-git
+swaybg-git
+swayidle
+swaylock
+waybar-git
+wayland
+wf-recorder-git
+xorg-server-xwayland
+glfw-wayland
+wl-clipboard
+ksnip-git
+
 # Ruby
 libffi
 libyaml

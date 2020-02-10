@@ -1,0 +1,75 @@
+{
+  "layer": "top",
+  "height": 30,
+  "modules-left": ["sway/workspaces", "sway/mode"],
+  "modules-center": ["sway/window"],
+  "modules-right": [
+    "backlight",
+    "pulseaudio",
+    "idle_inhibitor",
+    "battery",
+    "clock",
+    "tray"
+  ],
+  "sway/window": {
+    "format": "<span font_desc=\"Fira Code\">{}</span>"
+  },
+  "sway/mode": {
+    "format": "<span font_desc=\"Fira Code\">{}</span>"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "tray": {
+    "spacing": 10
+  },
+  "clock": {
+    "format": "{:%I:%M %p}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%a, %Y-%m-%d}"
+  },
+  "backlight": {
+    "format": "{percent}% {icon}",
+    "format-icons": ["○", "◐", "●"],
+    "on-click-right": "wdisplays",
+    "on-scroll-up": "brightnessctl s +1%",
+    "on-scroll-down": "brightnessctl s 1%-"
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-alt": "{time} {icon}",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": "⨯ {icon} {format_source}",
+    "format-muted": "⨯ {format_source}",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "speaker": "",
+      "hdmi": "🖳",
+      "headset": "",
+      "hands-free": "",
+      "portable": "",
+      "car": "🚗",
+      "hifi": "",
+      "phone": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol"
+  }
+}

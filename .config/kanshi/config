@@ -1,0 +1,11 @@
+{
+  output "Acer Technologies Acer XR382CQK 0x0000F739" position 0,0 mode 3840x1600@59.939999Hz
+  output "eDP-1" position 960,1600 mode 3840x2160@60.001999Hz scale 2
+}
+{
+  output "Acer Technologies Acer XR382CQK 0x0000F739" position 0,0 mode 3840x1600@59.939999Hz
+  output "eDP-1" disable
+}
+{
+  output "eDP-1" position 0,0 mode 3840x2160@60.001999Hz scale 2
+}
