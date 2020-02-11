@@ -129,6 +129,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
 
   Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
+  let g:vim_markdown_conceal = 0
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
   let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
         \ "ini=dosini", "patch=diff"]
