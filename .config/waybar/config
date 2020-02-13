@@ -1,8 +1,12 @@
 {
   "layer": "top",
-  "height": 30,
-  "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": ["sway/window"],
+  "height": 40,
+  "modules-left": [
+    "sway/workspaces",
+    "sway/mode",
+    "sway/window"
+  ],
+  "modules-center": [],
   "modules-right": [
     "backlight",
     "pulseaudio",
@@ -12,7 +16,7 @@
     "tray"
   ],
   "sway/window": {
-    "format": "<span font_desc=\"Fira Code\">{}</span>"
+    "format": "<span weight=\"bold\" font_desc=\"Fira Code\">{}</span>"
   },
   "sway/mode": {
     "format": "<span font_desc=\"Fira Code\">{}</span>"
@@ -33,8 +37,8 @@
     "format-alt": "{:%a, %Y-%m-%d}"
   },
   "backlight": {
-    "format": "{percent}% {icon}",
-    "format-icons": ["○", "◐", "●"],
+    "format": "{icon} {percent}",
+    "format-icons": ["○", "◐", "◐", "●", "●"],
     "on-click-right": "wdisplays",
     "on-scroll-up": "brightnessctl s +1%",
     "on-scroll-down": "brightnessctl s 1%-"
@@ -52,11 +56,11 @@
     "format-icons": ["", "", "", "", ""]
   },
   "pulseaudio": {
-    "format": "{volume}% {icon} {format_source}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": "⨯ {icon} {format_source}",
+    "format": "{icon} {volume}% {format_source}",
+    "format-bluetooth": "{icon} {volume}% {format_source}",
+    "format-bluetooth-muted": "{icon}⨯ {format_source}",
     "format-muted": "⨯ {format_source}",
-    "format-source": "{volume}% ",
+    "format-source": " {volume}%",
     "format-source-muted": "",
     "format-icons": {
       "headphone": "",

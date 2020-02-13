@@ -1,7 +1,6 @@
 #!/bin/bash
 DESKSHOT="$HOME/.deskshot.png"
 LOCKSHOT="$HOME/.lockshot.png"
-FONT="Fira-Code-Bold"
 
 if ! pgrep -u $UID '^swaylock$'; then
   grim "$DESKSHOT"

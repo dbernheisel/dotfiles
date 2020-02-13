@@ -1,7 +1,5 @@
 # Please see man 5 sway for more information
 
-output "*" bg `find /usr/share/backgrounds/mine -type f | shuf -n 1` fill
-
 input "1:1:AT_Translated_Set_2_keyboard" {
   repeat_delay 350
   repeat_rate 50
@@ -34,10 +32,12 @@ mode "$mode_notifications" {
   bindcode 9 mode "default"
 }
 
-set $mode_recording Recording (s) start, (t) stop, (a) status
+set $mode_recording Recording (d) desktop, (w) window, (r) region, (t) stop, (a) status
 bindsym $mod+Shift+s mode "$mode_recording"
 mode "$mode_recording" {
-  bindsym s exec ~/.local/bin/screenshare-webcam.sh start, mode "default"
+  bindsym d exec ~/.local/bin/screenshare-webcam.sh desktop, mode "default"
+  bindsym w exec ~/.local/bin/screenshare-webcam.sh window, mode "default"
+  bindsym r exec ~/.local/bin/screenshare-webcam.sh region, mode "default"
   bindsym t exec ~/.local/bin/screenshare-webcam.sh stop, mode "default"
   bindsym a exec ~/.local/bin/screenshare-webcam.sh is-recording, mode "default"
 
@@ -251,7 +251,7 @@ for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="org.ksnip.ksnip"] floating enable
 
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, border none
-for_window [class="ffplay"] floating enable, sticky enable
+for_window [class="ffplay" title="screenshare-preview"] floating enable, sticky enable, resize set 600 px 300 px
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
@@ -264,7 +264,7 @@ for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
 # Specific Scratchpads
-for_window [class="Google-chrome" title="^!Open File"] floating enable, move to scratchpad, scratchpad show
+for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
 bindsym $mod+b [class="Google-chrome"] scratchpad show
 
 # Disable title bar
@@ -276,8 +276,9 @@ exec "~/.local/bin/launch_tray.sh &> ~/.launch_tray.log"
 exec "xrdb -merge ~/.Xwayland"
 exec "kanshi" # auto-switch displays monitor hotplugging
 
-exec_always "~/.local/bin/swayidle.sh"
+exec_always "~/.local/bin/swaybg.sh"
 exec_always "mako" # notification daemon
+exec_always "~/.local/bin/swayidle.sh"
 exec_always {
   gsettings set org.gnome.desktop.interface gtk-theme 'Adapta-Eta'
   gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
