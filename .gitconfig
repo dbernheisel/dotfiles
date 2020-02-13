@@ -83,6 +83,8 @@
   insteadOf = tj:
 [url "ssh://git@github.com/"]
   insteadOf = gh:
+[url "ssh://git@gitlab.com/"]
+  insteadOf = gl:
 [url "ssh://git@github.com/dbernheisel/"]
   insteadOf = db:
 [url "ssh://git@heroku.com/"]
