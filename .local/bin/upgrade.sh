@@ -17,7 +17,6 @@ if [ -f "/etc/arch-release" ]; then
   IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
   if [[ "$1" = *--kernel* ]]; then
-    shift;
     if is_crostini; then
       echo "Cannot upgrade kernel within Crostini"
       exit 1
@@ -34,11 +33,6 @@ if [ -f "/etc/arch-release" ]; then
     sudo pacman -Syyu $IGNORE_FLAGS
   fi
   if type yay &> /dev/null; then yay -Su --aur; fi
-
-  if ! is_crostini && type fwupdmgr &> /dev/null && [[ "$1" = *--firmware* ]]; then
-    fwupdmgr refresh
-    fwupdmgr get-updates --no-unreported-check
-  fi
 fi
 
 ## DEBIAN
@@ -47,7 +41,6 @@ if [ -f "/etc/debian_release" ]; then
   IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
   if [ "$1" = "--kernel" ]; then
-    shift;
     if is_crostini; then
       echo "Cannot upgrade kernel within Crostini"
       exit 1
