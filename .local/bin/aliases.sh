@@ -153,7 +153,9 @@ function extract() {
 }
 
 # Protect thyself from self
-alias rm='nocorrect rm -i --preserve-root'
+if ! [[ "$OSTYPE" == darwin* ]]; then
+  alias rm='nocorrect rm -i --preserve-root'
+fi
 
 alias memhog='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'
 

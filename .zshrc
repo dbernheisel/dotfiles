@@ -78,8 +78,8 @@ if type fzf &> /dev/null; then
       $(brew --prefix)/opt/fzf/install
     fi
   fi
-  export FZF_COMPLETION_TRIGGER=''
-  bindkey '^T' fzf-completion
+  # export FZF_COMPLETION_TRIGGER=''
+  # bindkey '^T' fzf-completion
 
 fi
 
