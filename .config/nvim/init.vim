@@ -114,7 +114,7 @@ map ; :
 inoremap jj <Esc>
 
 " Shortcuts for editing vimrc. I do it too much
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>ev :tabnew $MYVIMRC<CR> :vs ~/.config/nvim/plugs.vim<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>c :<c-u>CocList commands<CR>
 
