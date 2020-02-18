@@ -247,6 +247,14 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+call coc#config('languageserver', {
+  \ 'elixir': {
+  \   'command': $HOME . '/.config/nvim/plugged/elixir-ls/release/language_server.sh',
+  \   'trace.server': 'verbose',
+  \   'filetypes': ['elixir', 'eelixir']
+  \ }
+  \})
+
 let g:loaded_netrwPlugin = 1
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>

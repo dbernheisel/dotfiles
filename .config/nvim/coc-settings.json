@@ -7,7 +7,9 @@
   "solargraph.references": true,
   "solargraph.formatting": true,
   "solargraph.autoformat": false,
+  "codeLens.enable": true,
   "elixir.pathToElixirLS": "/home/dbernheisel/.config/nvim/plugged/elixir-ls/release/language_server.sh",
+  "javascript.suggestionActions.enabled": false,
   "languageserver": {
     "sorbet": {
       "command": "/home/dbernheisel/.asdf/shims/srb",
