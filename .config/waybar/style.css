@@ -51,7 +51,9 @@ window#waybar.chromium {
 }
 
 #mode {
-  background-color: #64727d;
+  margin-right: 10px;
+  margin-left: -10px;
+  background-color: rgba(100,114,125, 0.9);
   border-bottom: 3px solid #ffffff;
 }
 
@@ -62,9 +64,9 @@ window#waybar.chromium {
 #temperature,
 #backlight,
 #network,
+#mode,
 #pulseaudio,
 #custom-media,
-#mode,
 #idle_inhibitor,
 #mpd {
   padding: 0 10px;
