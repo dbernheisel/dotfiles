@@ -11,14 +11,6 @@
   "elixir.pathToElixirLS": "/home/dbernheisel/.config/nvim/plugged/elixir-ls/release/language_server.sh",
   "javascript.suggestionActions.enabled": false,
   "languageserver": {
-    "sorbet": {
-      "command": "/home/dbernheisel/.asdf/shims/srb",
-      "args": ["tc", "--lsp", "--enable-all-experimental-lsp-features"],
-      "filetypes": ["ruby"],
-      "rootPatterns": ["sorbet/config"],
-      "initializationOptions": {},
-      "settings": {}
-    },
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
