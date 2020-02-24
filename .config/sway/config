@@ -214,21 +214,21 @@ bindsym --to-code {
   $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 }
 
-set $color0 #2f343f
-set $color1 #2f343f
-set $color2 #a0a0a0
-set $color3 #e53935
-set $color4 #676e7d
-set $color7 #f3f4f5
+set $color0   #2f343f
+set $color1   #2f343f
+set $color2   #a0a0a0
+set $color3   #e53935
+set $color4   #676e7d
+set $color7   #f3f4f5
 set $color15  #676e7d
-set $black  #000000
+set $black    #000000
 
 # set window colors
-#client.class           border             background         text
-client.focused          $color15           $color0            $color7
-client.focused_inactive $color2            $color4            $color2
-client.unfocused        $black             $color4            $color2
-client.urgent           $color3            $color15           $color7
+#client.class           border   background text     indicator view_border
+client.focused          $color2  $color0    $color7  $color2   $color2
+client.focused_inactive $color1  $color4    $color2  $color2   $color1
+client.unfocused        $black   $color4    $color2  $color2   $black
+client.urgent           $color3  $color15   $color7  $color2   $color3
 
 bar {
   swaybar_command waybar

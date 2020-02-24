@@ -47,13 +47,13 @@ window#waybar.chromium {
 }
 
 #workspaces button.urgent {
-  background-color: #eb4d4b;
+  background-color: rgba(235, 77, 75, 0.9);
 }
 
 #mode {
   margin-right: 10px;
   margin-left: -10px;
-  background-color: rgba(100,114,125, 0.9);
+  background-color: rgba(235, 77, 75, 0.9);
   border-bottom: 3px solid #ffffff;
 }
 
