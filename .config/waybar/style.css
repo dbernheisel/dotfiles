@@ -75,6 +75,7 @@ window#waybar.chromium {
 }
 
 #tray {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   padding: 0 10px;
   color: #ffffff;
 }
