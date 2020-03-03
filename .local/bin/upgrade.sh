@@ -14,7 +14,7 @@ is_crostini() {
 ## ARCH LINUX
 
 if [ -f "/etc/arch-release" ]; then
-  IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
+  IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch sysdig v4l2loopback)
 
   if [[ "$1" = *--kernel* ]]; then
     if is_crostini; then
