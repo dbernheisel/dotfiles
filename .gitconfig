@@ -34,6 +34,7 @@
   dd = diff develop
   dl = diff HEAD~1
   uf = reset --hard HEAD
+  ufo = !git fetch origin && git reset --hard origin/master && git clean -f -d
   up = !git fetch origin && git rebase origin/master
   undeployed = !git fetch production && git diff origin/master production/master
   ctags = "!sh -c '[ -f .git/hooks/ctags ] || git init; .git/hooks/ctags' git-ctags"
