@@ -132,7 +132,7 @@ if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
 endif
 
-nmap <leader>b :Drawer<CR>
+nmap <leader>b :Findr<CR>
 nmap <leader>/ <leader>c<space>
 vmap <leader>/ <leader>c<space>
 
