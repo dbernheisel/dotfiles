@@ -291,8 +291,8 @@ function ElixirLS.compile()
 endfunction
 
 call coc#config('elixir', {
-\   'command': g:ElixirLS.lsp,
-\   'filetypes': ['elixir', 'eelixir']
+  \ 'command': g:ElixirLS.lsp,
+  \ 'filetypes': ['elixir', 'eelixir']
   \})
 call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
 
