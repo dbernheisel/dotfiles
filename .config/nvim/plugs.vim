@@ -17,7 +17,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
         \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
-        \ 'coc-elixir', 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
+        \ 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
 
   Plug 'justinmk/vim-dirvish'
 
@@ -290,11 +290,9 @@ function ElixirLS.compile()
   let me.id = jobstart('cd ' . me.path . ' && git pull && ' . me.cmd, me)
 endfunction
 
-call coc#config('languageserver', {
-  \ 'elixir': {
-  \   'command': ElixirLS.lsp,
-  \   'filetypes': ['elixir', 'eelixir']
-  \ }
+call coc#config('elixir', {
+\   'command': g:ElixirLS.lsp,
+\   'filetypes': ['elixir', 'eelixir']
   \})
 
 let g:loaded_netrwPlugin = 1
