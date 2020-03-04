@@ -11,7 +11,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
   " Language servers
-  Plug 'elixir-lsp/elixir-ls', { 'for': 'elixir' }
+  Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:ElixirLS.compile() } }
 
   " Language server integration
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -142,6 +142,7 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
   let g:vim_markdown_conceal = 0
+  let g:vim_markdown_conceal_code_blocks = 0
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
   let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
         \ "ini=dosini", "patch=diff"]
@@ -253,10 +254,45 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+let g:ElixirLS = {}
+let ElixirLS.path = printf('%s/%s', stdpath('config'), 'plugged/elixir-ls')
+let ElixirLS.lsp = printf('%s/%s', ElixirLS.path, 'release/language_server.sh')
+let ElixirLS.cmd = join([
+        \ 'asdf install &&',
+        \ 'mix do',
+        \ 'local.hex --force --if-missing,',
+        \ 'local.rebar --force,',
+        \ 'deps.get,',
+        \ 'compile,',
+        \ 'elixir_ls.release'
+        \ ], ' ')
+
+function ElixirLS.on_stdout(_job_id, data, _event)
+  let self.output[-1] .= a:data[0]
+  call extend(self.output, a:data[1:])
+endfunction
+
+let ElixirLS.on_stderr = function(ElixirLS.on_stdout)
+
+function ElixirLS.on_exit(_job_id, exitcode, _event)
+  if a:exitcode[0] == 0
+    echom '>>> ElixirLS compiled'
+  else
+    echoerr join(self.output, ' ')
+    echoerr '>>> ElixirLS compilation failed'
+  endif
+endfunction
+
+function ElixirLS.compile()
+  let me = copy(g:ElixirLS)
+  echom '>>> compiling ElixirLS'
+  let me.output = ['']
+  let me.id = jobstart('cd ' . me.path . ' && git pull && ' . me.cmd, me)
+endfunction
+
 call coc#config('languageserver', {
   \ 'elixir': {
-  \   'command': $HOME . '/.config/nvim/plugged/elixir-ls/release/language_server.sh',
-  \   'trace.server': 'verbose',
+  \   'command': ElixirLS.lsp,
   \   'filetypes': ['elixir', 'eelixir']
   \ }
   \})
