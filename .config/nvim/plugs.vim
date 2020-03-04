@@ -17,7 +17,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
         \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
-        \ 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
+        \ 'coc-elixir', 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
 
   Plug 'justinmk/vim-dirvish'
 
