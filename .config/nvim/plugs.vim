@@ -294,6 +294,7 @@ call coc#config('elixir', {
 \   'command': g:ElixirLS.lsp,
 \   'filetypes': ['elixir', 'eelixir']
   \})
+call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
 
 let g:loaded_netrwPlugin = 1
 command! -nargs=? -complete=dir Explore Dirvish <args>
