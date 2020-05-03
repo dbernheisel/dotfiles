@@ -92,8 +92,11 @@ if type awsume &> /dev/null; then
 fi
 
 # asdf version manager
-[ -e $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
-[ -e $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/completions/asdf.bash
+if [ -e $HOME/.asdf/asdf.sh ]; then
+  source $HOME/.asdf/asdf.sh
+  fpath=("$ASDF_DIR/completions" $fpath)
+  autoload -Uz compinit && compinit
+fi
 
 # Newer git
 if type brew &> /dev/null && [ -f $(brew --prefix git)/bin/git ]; then
