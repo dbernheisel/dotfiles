@@ -44,7 +44,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
   " <C-n> to select next word with new cursor
-  Plug 'terryma/vim-multiple-cursors'
+  Plug 'mg979/vim-visual-multi'
 
   " Easier block commenting.
   Plug 'scrooloose/nerdcommenter'
@@ -171,7 +171,7 @@ call plug#end()
 
 "========= FZF ===========
 
-let g:fzf_postprocess = ' | sort -V'
+let g:fzf_postprocess = ''
 let g:fzf_spec = {}
 
 if exists("*nvim_open_win")
