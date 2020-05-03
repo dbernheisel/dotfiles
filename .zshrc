@@ -26,6 +26,10 @@ if type aws &> /dev/null && [ -f /usr/local/share/zsh/site-functions/_aws ]; the
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
+if type gigalixir &> /dev/null; then
+  eval "$(_GIGALIXIR_COMPLETE=source gigalixir)"
+fi
+
 if type rg &>/dev/null; then
   export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 fi
