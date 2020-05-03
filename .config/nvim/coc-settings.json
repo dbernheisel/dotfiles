@@ -9,6 +9,7 @@
   "solargraph.autoformat": false,
   "codeLens.enable": true,
   "javascript.suggestionActions.enabled": false,
+  "disableWorkspaceFolders": true,
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
@@ -20,7 +21,7 @@
   "diagnostic-languageserver.filetypes" : {
     "sh": ["shellcheck"],
     "markdown": ["markdownlint", "write-good"],
-    "elixir": ["mix_credo"],
-    "eelixir": ["mix_credo"]
+    "elixir": ["mix_credo", "mix_credo_compile"],
+    "eelixir": ["mix_credo", "mix_credo_compile"]
   }
 }

@@ -284,7 +284,12 @@ function! LightMode()
         \ 'spinner': ['fg', 'Label'],
         \ 'header':  ['fg', 'Comment'] }
 
+  if ModernTerminal()
+    " Comments should be italics
+    hi Comment gui=italic
+  endif
 endfunction
+
 nmap <leader>lm :call LightMode()<cr>
 
 function! DarkMode()
@@ -293,22 +298,26 @@ function! DarkMode()
   colorscheme monokai-phoenix
   let g:lightline.colorscheme='wombat'
   let g:fzf_colors = {
-    \ 'fg':      ['fg', 'TabLine'],
-    \ 'bg':      ['bg', 'LineNr'],
-    \ 'hl':      ['fg', 'Statement'],
-    \ 'fg+':     ['fg', 'TermCursor', 'TermCursorNC', 'Statement'],
-    \ 'bg+':     ['bg', 'TermCursor', 'DiffAdd'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'border':  ['fg', 'Ignore'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment'] }
+        \ 'fg':      ['fg', 'TabLine'],
+        \ 'bg':      ['bg', 'LineNr'],
+        \ 'hl':      ['fg', 'Statement'],
+        \ 'fg+':     ['fg', 'TermCursor', 'TermCursorNC', 'Statement'],
+        \ 'bg+':     ['bg', 'TermCursor', 'DiffAdd'],
+        \ 'hl+':     ['fg', 'Statement'],
+        \ 'info':    ['fg', 'PreProc'],
+        \ 'border':  ['fg', 'Ignore'],
+        \ 'prompt':  ['fg', 'Conditional'],
+        \ 'pointer': ['fg', 'Exception'],
+        \ 'marker':  ['fg', 'Keyword'],
+        \ 'spinner': ['fg', 'Label'],
+        \ 'header':  ['fg', 'Comment'] }
 
   " Transparent Backgrounds
   hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+  if ModernTerminal()
+    " Comments should be italics
+    hi Comment gui=italic
+  endif
 endfunction
 nmap <leader>dm :call DarkMode()<cr>
 
@@ -318,10 +327,6 @@ endif
 
 :call DarkMode()
 
-if ModernTerminal()
-  " Comments should be italics
-  hi Comment gui=italic
-endif
 
 augroup vimrcEx
   autocmd!

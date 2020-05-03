@@ -8,7 +8,7 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-  Plug 'ludovicchabant/vim-gutentags' " Ctags support.
+  " Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
   " Language servers
   Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:ElixirLS.compile() } }
@@ -292,7 +292,7 @@ endfunction
 
 call coc#config('elixir', {
   \ 'command': g:ElixirLS.lsp,
-  \ 'filetypes': ['elixir', 'eelixir']
+  \ 'filetypes': ['eelixir', 'elixir']
   \})
 call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
 
