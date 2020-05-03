@@ -54,6 +54,7 @@ awscli
 ctags
 inotify-tools
 curl
+fd
 feh
 fonts-firacode
 fonts-font-awesome

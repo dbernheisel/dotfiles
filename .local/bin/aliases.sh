@@ -4,6 +4,10 @@ function have() {
   type "$1" &> /dev/null
 }
 
+if have "fdfind"; then
+  alias fd=fdfind
+fi
+
 # Neovim
 if have "nvim"; then
   function vim() {

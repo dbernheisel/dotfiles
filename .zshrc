@@ -69,12 +69,15 @@ fi
 # fzf Autocompletions
 if type fzf &> /dev/null; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
+    # If Arch
     source /usr/share/fzf/key-bindings.zsh
     source /usr/share/fzf/completion.zsh
     bindkey '^I' $fzf_default_completion
   elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    # If Debian
     source /usr/share/doc/fzf/examples/key-bindings.zsh
   elif [ -f ~/.fzf.zsh ]; then
+    # If Homebrew
     source ~/.fzf.zsh
   else
     if type brew &> /dev/null; then
@@ -85,6 +88,18 @@ if type fzf &> /dev/null; then
   # export FZF_COMPLETION_TRIGGER=''
   # bindkey '^T' fzf-completion
 
+  # RipGrep
+  if type rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --files'
+  fi
+
+  if type fd &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='fd --type f'
+  fi
+
+  if type fdfind &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='fdfind --type f'
+  fi
 fi
 
 if type awsume &> /dev/null; then
@@ -112,9 +127,6 @@ fi
 if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
   kitty + complete setup zsh | source /dev/stdin
 fi
-
-# RipGrep
-export FZF_DEFAULT_COMMAND='rg --files'
 
 [ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh
 [ -e $HOME/.local/bin/aliases.zsh ] && source $HOME/.local/bin/aliases.zsh
