@@ -10,6 +10,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+function have() {
+  type "$1" &> /dev/null
+}
+
 # Customize to your needs...
 setopt extended_glob
 unsetopt nomatch
@@ -22,15 +26,11 @@ if [ -f /usr/share/applications/google-chrome.desktop ]; then
 fi
 
 # awscli from brew auto-completion
-if type aws &> /dev/null && [ -f /usr/local/share/zsh/site-functions/_aws ]; then
+if have aws && [ -f /usr/local/share/zsh/site-functions/_aws ]; then
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
-if type gigalixir &> /dev/null; then
-  eval "$(_GIGALIXIR_COMPLETE=source gigalixir)"
-fi
-
-if type rg &>/dev/null; then
+if have rg; then
   export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 fi
 
@@ -66,96 +66,26 @@ if [ -f ~/.kotlin_ls/build/install/kotlin-language-server/bin/kotlin-language-se
   export PATH="$HOME/.kotlin_ls/build/install/kotlin-language-server/bin:$PATH"
 fi
 
-# fzf Autocompletions
-if type fzf &> /dev/null; then
-  if [ -f /usr/share/fzf/key-bindings.zsh ]; then
-    # If Arch
-    source /usr/share/fzf/key-bindings.zsh
-    source /usr/share/fzf/completion.zsh
-    bindkey '^I' $fzf_default_completion
-  elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-    # If Debian
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-  elif [ -f ~/.fzf.zsh ]; then
-    # If Homebrew
-    source ~/.fzf.zsh
-  else
-    if type brew &> /dev/null; then
-      echo "Running fzf install"
-      $(brew --prefix)/opt/fzf/install
-    fi
-  fi
-  # export FZF_COMPLETION_TRIGGER=''
-  # bindkey '^T' fzf-completion
-
+# fzf default command
+if have fzf; then
   # RipGrep
-  if type rg &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --files'
-  fi
-
-  if type fd &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='fd --type f'
-  fi
-
-  if type fdfind &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='fdfind --type f'
-  fi
-fi
-
-if type awsume &> /dev/null; then
-  compdef _awsume awsume-autocomplete
-fi
-
-# asdf version manager
-if [ -e $HOME/.asdf/asdf.sh ]; then
-  source $HOME/.asdf/asdf.sh
-  fpath=("$ASDF_DIR/completions" $fpath)
-  autoload -Uz compinit && compinit
+  type rg &> /dev/null && export FZF_DEFAULT_COMMAND='rg --files'
+  type fd &> /dev/null && export FZF_DEFAULT_COMMAND='fd --type f'
+  type fdfind &> /dev/null && export FZF_DEFAULT_COMMAND='fdfind --type f'
 fi
 
 # Newer git
-if type brew &> /dev/null && [ -f $(brew --prefix git)/bin/git ]; then
+if have brew && [ -f $(brew --prefix git)/bin/git ]; then
   export PATH=$(brew --prefix git)/bin:$PATH
 fi
 
 # Rust
-if [ -d "$HOME/.cargo/bin" ]; then
-  export PATH="$HOME/.cargo/bin:$PATH"
-fi
+[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 
-# Kitty
-if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
-  kitty + complete setup zsh | source /dev/stdin
-fi
-
-[ -e $HOME/.local/bin/aliases.sh ] && source $HOME/.local/bin/aliases.sh
-[ -e $HOME/.local/bin/aliases.zsh ] && source $HOME/.local/bin/aliases.zsh
-[ -e $HOME/.secrets ] && source $HOME/.secrets
-
-gcof() {
-  if [ -z $1 ]; then
-    local tags branches target
-    branches=$(
-      git --no-pager branch --all \
-          --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
-          | sed '/^$/d'
-    ) || return
-    tags=$(git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
-    target=$(
-      (echo "$branches"; echo "$tags") | \
-      fzf --no-hscroll --no-multi -n 2 --ansi --preview="git --no-pager log -150 --pretty=format:%s '..{2}'"
-    ) || return
-    if [[ "$target" =~ origin/ ]]; then
-      git checkout --track "$(awk '{print $2}' <<< "$target")"
-    else
-      git checkout "$(awk '{print $2}' <<< "$target")"
-    fi
-  else
-   git checkout $1
-  fi
-}
-
-bindkey '^GB' gcof
+[ -e "$HOME/.local/bin/.autocomplete.zsh" ] && source "$HOME/.local/bin/.autocomplete.zsh"
+[ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
+[ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"
+[ -e "$HOME/.secrets" ] && source "$HOME/.secrets"
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 

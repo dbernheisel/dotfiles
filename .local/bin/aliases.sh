@@ -15,6 +15,7 @@ if have "nvim"; then
   }
 fi
 
+
 if [[ $TERMINFO =~ "kitty" ]];  then
   function icat() {
     kitty +kitten icat "${@}"
@@ -59,6 +60,31 @@ alias gd='git diff -W --color-moved'
 alias gds='git diff -W --staged --color-moved'
 alias undeployed='git fetch --multiple production origin && git log production/master..origin/master'
 
+gcof() {
+  if [ -z "$1" ]; then
+    local tags branches target
+    branches=$(
+      git --no-pager branch --all \
+          --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
+          | sed '/^$/d'
+    ) || return
+    tags=$(git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
+    target=$(
+      (echo "$branches"; echo "$tags") | \
+      fzf --no-hscroll --no-multi -n 2 --ansi --preview="git --no-pager log -150 --pretty=format:%s '..{2}'"
+    ) || return
+    if [[ "$target" =~ origin/ ]]; then
+      git checkout --track "$(awk '{print $2}' <<< "$target")"
+    else
+      git checkout "$(awk '{print $2}' <<< "$target")"
+    fi
+  else
+   git checkout "$1"
+  fi
+}
+
+bindkey '^GB' gcof
+
 # Homegit
 alias config='git --git-dir="$HOME/.cfg/" --work-tree="$HOME"'
 
@@ -77,12 +103,6 @@ fi
 
 if have "terraform"; then
   alias tf='terraform'
-fi
-
-if have "hub"; then
-  function git() {
-    hub "${@}"
-  }
 fi
 
 # Android development
@@ -116,16 +136,13 @@ if have "xclip"; then
   alias pbpaste='xclip -o -selection clipboard'
 fi
 
-# Alias SourceTree to open in current dir
-alias sourcetree='open -a SourceTree ./'
-
 alias :q='exit'
 alias weather='curl wttr.in'
 
 alias ll='LC_COLLATE=C ls -lah'
 alias df='df -h'
 
-if have 'exa'; then
+if have "exa"; then
   alias l='exa -1a'
   alias ls='exa'
   alias ll='exa -lh --git'
