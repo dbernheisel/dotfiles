@@ -25,30 +25,25 @@ if [ -f /usr/share/applications/google-chrome.desktop ]; then
   export BROWSER=/usr/bin/google-chrome-stable
 fi
 
-# awscli from brew auto-completion
-if have aws && [ -f /usr/local/share/zsh/site-functions/_aws ]; then
-  source /usr/local/share/zsh/site-functions/_aws
-fi
-
 if have rg; then
   export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 fi
 
 # Android Development
 if [ -d ~/Libray/Android/sdk ]; then
-  export ANDROID_HOME=~/Library/Android/sdk
+  export ANDROID_HOME="~/Library/Android/sdk"
 fi
 
 if [ -d ~/flutter/bin ]; then
-  export PATH=~/flutter/bin:$PATH
+  export PATH="~/flutter/bin:$PATH"
 fi
 
 if [ -d ~/.yarn/bin ]; then
-  export PATH=~/.yarn/bin:$PATH
+  export PATH="~/.yarn/bin:$PATH"
 fi
 
 if [ -d ~/.cargo/bin ]; then
-  export PATH=~/.cargo/bin:$PATH
+  export PATH="~/.cargo/bin:$PATH"
 fi
 
 if [ -d /home/linuxbrew/.linuxbrew/bin ]; then

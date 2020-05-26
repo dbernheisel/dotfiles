@@ -9,11 +9,7 @@
 # General
 #
 
-fpath=(~/.local/bin/zsh ~/.awsume/zsh-autocomplete $fpath)
-
-if [[ -v ASDF_DIR ]]; then
-  fpath=(%{ASDF_DIR}/completions $fpath)
-fi
+fpath=(~/.local/bin/zsh $fpath)
 
 # Set case-sensitivity for completion, history lookup, etc.
 # zstyle ':prezto:*:*' case-sensitive 'yes'

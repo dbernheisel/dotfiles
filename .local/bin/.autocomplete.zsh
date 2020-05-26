@@ -20,10 +20,6 @@ if type fzf &> /dev/null; then
   fi
 fi
 
-if type awsume &> /dev/null; then
-  compdef _awsume awsume-autocomplete
-fi
-
 # asdf version manager
 if [ -e $HOME/.asdf/asdf.sh ]; then
   source $HOME/.asdf/asdf.sh
