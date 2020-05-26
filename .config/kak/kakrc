@@ -1,0 +1,129 @@
+# Swap : and ;
+# : will now open the prompt
+# ; will now clear the selection a single character
+map global normal ';' ':'
+map global normal ':' ';'
+
+# map global user normal <space> 'ga'
+# map global user normal gd ':lsp-definition'
+# map global user normal '/' ':comment-line'
+
+# Set <space> to user mappings (leader key)
+map global normal <space> , -docstring 'leader'
+
+set-option global tabstop 2
+set-option global indentwidth 2
+
+add-highlighter global/ number-lines
+add-highlighter global/ show-whitespaces -lf ' ' -spc ' ' -nbsp '⋅'
+add-highlighter global/ show-matching
+
+# map jj to <esc>
+hook global InsertChar j %{ try %{
+  exec -draft hH <a-k>jj<ret> d
+  exec <esc>
+}}
+
+map global insert <tab> '<a-;><gt>'
+map global insert <s-tab> '<a-;><lt>'
+
+# Escape also removes selection
+map global normal '<esc>' ' ;<esc>' -docstring 'remove all selection except main, reduce selection to cursor, and stop highlighting search matches'
+
+# Enable <tab> to make completion selection
+hook global InsertCompletionShow .* %{
+  try %{
+    execute-keys -draft 'h<a-K>\h<ret>'
+    map window insert <tab>   <c-n>
+    map window insert <s-tab> <c-p>
+  }
+}
+
+hook global InsertCompletionHide .* %{
+  unmap window insert <tab>   <c-n>
+  unmap window insert <s-tab> <c-p>
+}
+
+# use ripgrep as regex search tool
+set-option global grepcmd 'rg -L --hidden --with-filename --column'
+
+# map global normal '//' ": comment-line<ret>" -docstring "comment line"
+
+# Remove tailing spaces on write
+hook global BufWritePre .* %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
+
+try %{
+  source "%val{config}/plugins/plug.kak/rc/plug.kak"
+  plug "andreyorst/plug.kak" noload
+  plug "andreyorst/fzf.kak" domain gitlab.com config %{
+    # set-option global fzf_highlight_command 'bat'
+    map global normal <c-p> ': fzf-mode<ret>'
+  } defer fzf %{
+    # set-option global fzf_terminal_command "zsh -lc"
+    set-option global fzf_file_command %sh{
+      if type fd &> /dev/null; then
+        echo "fd . --no-ignore --type f --follow"
+      else
+        echo "find . -prune -o -type f -follow -print"
+      fi
+    }
+  }
+  plug "alexherbo2/surround.kak"
+  plug "andreyorst/smarttab.kak" defer smarttab %{
+    set-option global softtabstop 2
+  } config %{
+    # these languages will use `expandtab' behavior
+    hook global WinSetOption filetype=(elixir|markdown|kak|sh) expandtab
+    # these languages will use `noexpandtab' behavior
+    hook global WinSetOption filetype=(makefile|python) noexpandtab
+  }
+
+  plug "markolenik/kakoune-darkokai-theme" domain "gitlab.com" theme config %{
+    colorscheme darkokai
+  }
+
+  plug "ul/kak-lsp" do %{
+    cargo install --locked --force --path .
+  } config %{
+    set global lsp_cmd "kak-lsp -s %val{session} --config %val{config}/kak-lsp.toml"
+    set global lsp_diagnostic_line_error_sign '║'
+    set global lsp_diagnostic_line_warning_sign '┊'
+
+    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
+
+    hook global WinSetOption filetype=(elixir|ruby|shell|javascript|typescript) %{
+      set-option window lsp_auto_highlight_references true
+      set-option window lsp_hover_anchor false
+      map window user <k> ':lsp-hover<ret>' -docstring 'LSP-Show Docs'
+      echo -debug "Enabling LSP for filtetype %opt{filetype}"
+      lsp-enable-window
+    }
+
+    hook global KakEnd .* lsp-exit
+  }
+
+  evaluate-commands %sh{kak-lsp --kakoune -s $kak_session}
+  lsp-enable
+  set global lsp_cmd "kak-lsp -s %val{session} -vvv --log /tmp/kak-lsp.log"
+}
+
+declare-option -docstring "name of git branch holding the current buffer" \
+  str modeline_git_branch
+
+
+# hook global WinCreate .* %{
+  # hook window NormalIdle .* %{
+    # evaluate-commands %sh{
+      # branch=$(cd "$(dirname "${kak_buffile}")" && git rev-parse --abbrev-ref HEAD 2> /dev/null)
+#
+      # if [ -n "%{branch}" ]; then
+        # printf 'set window modeline_git_branch %%{%s}' "${branch}"
+      # fi
+    # }
+  # }
+# }
+
+hook global WinSetOption filetype=(elixir) %{
+  hook window BufWritePre .exs lsp-formatting-sync
+  hook window BufWritePre .ex lsp-formatting-sync
+}

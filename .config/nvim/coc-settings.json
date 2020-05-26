@@ -8,6 +8,7 @@
   "solargraph.formatting": true,
   "solargraph.autoformat": false,
   "codeLens.enable": true,
+  "tailwindCSS.headwind.runOnSave": false,
   "javascript.suggestionActions.enabled": false,
   "disableWorkspaceFolders": true,
   "languageserver": {

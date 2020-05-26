@@ -45,6 +45,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
   brew 'coreutils'      # CLI GNU utilities
+  brew 'fd'             # CLI find replacement
   brew 'ffmpeg'         # CLI ffmpeg Media encoder/decoder
   brew 'fontconfig'     # CLI fontconfig Font utility for patching fonts
   brew 'freetype'       # Library Render fonts
