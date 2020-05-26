@@ -10,6 +10,10 @@ input "7185:45133:Input_Club_Infinity_Ergodox/QMK" {
   repeat_rate 50
 }
 
+input "2:1:PS/2_Synaptics_TouchPad" {
+  middle_emulation disabled
+}
+
 font pango:monospace 9
 
 seat * hide_cursor 8000
