@@ -5,8 +5,8 @@ map global normal ';' ':'
 map global normal ':' ';'
 
 # map global user normal <space> 'ga'
-# map global user normal gd ':lsp-definition'
-# map global user normal '/' ':comment-line'
+# map global user 'gd' ':lsp-definition'
+map global user '/' ':comment-line<ret>' -docstring "Comment Selected Lines"
 
 # Set <space> to user mappings (leader key)
 map global normal <space> , -docstring 'leader'
@@ -47,6 +47,9 @@ hook global InsertCompletionHide .* %{
 # use ripgrep as regex search tool
 set-option global grepcmd 'rg -L --hidden --with-filename --column'
 
+
+map global user <space> ':buffer-previous<ret>' -docstring 'Previous Buffer'
+
 # map global normal '//' ": comment-line<ret>" -docstring "comment line"
 
 # Remove tailing spaces on write
@@ -55,20 +58,22 @@ hook global BufWritePre .* %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
 try %{
   source "%val{config}/plugins/plug.kak/rc/plug.kak"
   plug "andreyorst/plug.kak" noload
+
+  plug "markolenik/kakoune-darkokai-theme" domain "gitlab.com" config %{
+    colorscheme darkokai
+  }
+
+  plug "alexherbo2/surround.kak"
+
   plug "andreyorst/fzf.kak" domain gitlab.com config %{
-    # set-option global fzf_highlight_command 'bat'
     map global normal <c-p> ': fzf-mode<ret>'
   } defer fzf %{
-    # set-option global fzf_terminal_command "zsh -lc"
-    set-option global fzf_file_command %sh{
-      if type fd &> /dev/null; then
-        echo "fd . --no-ignore --type f --follow"
-      else
-        echo "find . -prune -o -type f -follow -print"
-      fi
-    }
+    set-option global fzf_highlight_command 'bat'
+    set-option global fzf_terminal_command 'kitty-terminal'
+    set-option global fzf_file_command 'fdfind --type f'
   }
-  plug "alexherbo2/surround.kak"
+
+
   plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 2
   } config %{
@@ -78,9 +83,6 @@ try %{
     hook global WinSetOption filetype=(makefile|python) noexpandtab
   }
 
-  plug "markolenik/kakoune-darkokai-theme" domain "gitlab.com" theme config %{
-    colorscheme darkokai
-  }
 
   plug "ul/kak-lsp" do %{
     cargo install --locked --force --path .
@@ -104,11 +106,10 @@ try %{
 
   evaluate-commands %sh{kak-lsp --kakoune -s $kak_session}
   lsp-enable
-  set global lsp_cmd "kak-lsp -s %val{session} -vvv --log /tmp/kak-lsp.log"
 }
 
-declare-option -docstring "name of git branch holding the current buffer" \
-  str modeline_git_branch
+# declare-option -docstring "name of git branch holding the current buffer" \
+#   str modeline_git_branch
 
 
 # hook global WinCreate .* %{
@@ -127,3 +128,31 @@ hook global WinSetOption filetype=(elixir) %{
   hook window BufWritePre .exs lsp-formatting-sync
   hook window BufWritePre .ex lsp-formatting-sync
 }
+
+# Yank/Paste should work with system clipboard
+evaluate-commands %sh{
+  case $(uname) in
+    Linux) copy="xclip -i"; paste="xclip -o" ;;
+    Darwin)  copy="pbcopy"; paste="pbpaste" ;;
+  esac
+
+  printf "map global user -docstring 'paste (after) from clipboard' p '!%s<ret>'\n" "$paste"
+  printf "map global user -docstring 'paste (before) from clipboard' P '<a-!>%s<ret>'\n" "$paste"
+  printf "map global user -docstring 'yank to primary' y '<a-|>%s<ret>:echo -markup %%{{Information}copied selection to X11 primary}<ret>'\n" "$copy"
+  printf "map global user -docstring 'yank to clipboard' Y '<a-|>%s<ret>:echo -markup %%{{Information}copied selection to X11 clipboard}<ret>'\n" "$copy -selection clipboard"
+  printf "map global user -docstring 'replace from clipboard' R '|%s<ret>'\n" "$paste"
+}
+
+map global user -docstring "Enable Git keymap mode for next key" g ": enter-user-mode<space>git<ret>"
+
+declare-user-mode git
+map global git -docstring "blame - Show what revision and author last modified each line of the current file" b ': repl tig blame -C "+%val{cursor_line}" -- "%val{buffile}"<ret>'
+map global git -docstring "commit - Record changes to the repository" c ": git commit<ret>"
+map global git -docstring "diff - Show changes between HEAD and working tree" d ": git diff<ret>"
+map global git -docstring "git - Explore the repository history" g ": repl tig<ret>"
+map global git -docstring "github - Copy canonical GitHub URL to system clipboard" h ": github-url<ret>"
+map global git -docstring "log - Show commit logs for the current file" l ': repl tig log -- "%val{buffile}"<ret>'
+map global git -docstring "prompt - Run a free-form Git command prompt" p ":repl tig "
+map global git -docstring "status - Show the working tree status" s ": repl tig status<ret>"
+map global git -docstring "staged - Show staged changes" t ": git diff --staged<ret>"
+map global git -docstring "write - Write and stage the current file" w ": write<ret>: git add<ret>: git update-diff<ret>"
