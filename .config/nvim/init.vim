@@ -184,20 +184,6 @@ if executable('rg')
   set grepprg="rg --vimgrep"   " use ripgrep
 endif
 
-if executable('fzf')
-  if executable('/home/linuxbrew/.linuxbrew/bin/fzf')
-    set rtp+=/home/linuxbrew/.linuxbrew/bin/fzf
-  endif
-
-  if executable('/usr/local/opt/fzf')
-    set rtp+=/usr/local/opt/fzf
-  endif
-
-  if executable('/usr/bin/fzf')
-    set rtp+=/usr/bin/fzf
-  endif
-endif
-
 function! LightlineFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
 endfunction
@@ -342,8 +328,9 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.md setf markdown
   autocmd BufNewFile,BufRead *.drab setf eelixir
   autocmd BufNewFile,BufRead *.arb setf ruby
-  autocmd BufNewFile,BufRead irbrc setf ruby
-  autocmd BufNewFile,BufRead pryrc setf ruby
+  autocmd BufNewFile,BufRead irbrc,pryrc setf ruby
+
+  " JSON w/ comments
   autocmd BufNewFile,BufRead *.jsonc setf json
   autocmd FileType json syntax match Comment +\/\/.\+$+
 

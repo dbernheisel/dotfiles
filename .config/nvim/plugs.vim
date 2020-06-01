@@ -95,27 +95,30 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
 
-  " FZF and RipGrep
-  if isdirectory('/home/linuxbrew/.linuxbrew/opt/fzf')
-    Plug '/home/linuxbrew/.linuxbrew/opt/fzf' " Use brew-installed fzf
-  endif
 
-  if isdirectory('/usr/local/opt/fzf')
-    Plug '/usr/local/opt/fzf'         " Use arch-installed fzf
-  endif
+  if executable('fzf')
+    if executable('/usr/local/opt/fzf')
+      set rtp+=/usr/local/opt/fzf
+      Plug '/usr/local/opt/fzf'         " Use arch-installed fzf
+    endif
 
-  if isdirectory('/usr/share/doc/fzf/examples')
-    Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
-  endif
+    if executable('/usr/bin/fzf')
+      set rtp+=/usr/bin/fzf
+    endif
 
-  Plug 'junegunn/fzf.vim'             " Fuzzy-finder
-  let g:fzf_buffers_jump = 1
+    if isdirectory('/usr/share/doc/fzf/examples')
+      Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
+    endif
+
+    Plug 'junegunn/fzf.vim'             " Fuzzy-finder
+    let g:fzf_buffers_jump = 1
+  endif
 
   Plug 'liuchengxu/vista.vim'
 
   " Cosmetic
   Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-  Plug 'reewr/vim-monokai-phoenix'    " Theme - Darker
+  Plug 'reewr/vim-monokai-phoenix'    " Theme - Dark
   Plug 'itchyny/lightline.vim'        " Statusline
   let g:lightline = {
     \ 'active': {
@@ -229,6 +232,8 @@ endfunction
 
 command! Files call FZFFiles()
 
+"" COC
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -239,6 +244,11 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+"" Findr
 
 function! FindrFloatingWindow()
   return {
@@ -251,8 +261,7 @@ function! FindrFloatingWindow()
         \ }
 endfunction
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+"" ELixirLS
 
 let g:ElixirLS = {}
 let ElixirLS.path = printf('%s/%s', stdpath('config'), 'plugged/elixir-ls')
@@ -295,6 +304,8 @@ call coc#config('elixir', {
   \ 'filetypes': ['eelixir', 'elixir']
   \})
 call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
+
+"" Dirvish
 
 let g:loaded_netrwPlugin = 1
 command! -nargs=? -complete=dir Explore Dirvish <args>

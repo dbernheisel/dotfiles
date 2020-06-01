@@ -25,30 +25,12 @@ if [ -f /usr/share/applications/google-chrome.desktop ]; then
   export BROWSER=/usr/bin/google-chrome-stable
 fi
 
-if have rg; then
-  export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-fi
+have rg && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-# Android Development
-if [ -d ~/Libray/Android/sdk ]; then
-  export ANDROID_HOME="~/Library/Android/sdk"
-fi
-
-if [ -d ~/flutter/bin ]; then
-  export PATH="~/flutter/bin:$PATH"
-fi
-
-if [ -d ~/.yarn/bin ]; then
-  export PATH="~/.yarn/bin:$PATH"
-fi
-
-if [ -d ~/.cargo/bin ]; then
-  export PATH="~/.cargo/bin:$PATH"
-fi
-
-if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
-  export PATH="$(brew --prefix)/bin:$PATH"
-fi
+[[ -d ~/flutter/bin ]] && export PATH="~/flutter/bin:$PATH"
+[[ -d ~/.yarn/bin ]] && export PATH="~/.yarn/bin:$PATH"
+[[ -d ~/.cargo/bin ]] && export PATH="~/.cargo/bin:$PATH"
+[[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
 
 # PostgreSQL
 export POSTGRES_USER=$(whoami)
@@ -56,17 +38,12 @@ export POSTGRES_USER=$(whoami)
 # Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# Kotlin
-if [ -f ~/.kotlin_ls/build/install/kotlin-language-server/bin/kotlin-language-server ]; then
-  export PATH="$HOME/.kotlin_ls/build/install/kotlin-language-server/bin:$PATH"
-fi
-
 # fzf default command
 if have fzf; then
   # RipGrep
-  type rg &> /dev/null && export FZF_DEFAULT_COMMAND='rg --files'
-  type fd &> /dev/null && export FZF_DEFAULT_COMMAND='fd --type f'
-  type fdfind &> /dev/null && export FZF_DEFAULT_COMMAND='fdfind --type f'
+  have rg && export FZF_DEFAULT_COMMAND='rg --files'
+  have fd && export FZF_DEFAULT_COMMAND='fd --type f'
+  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f'
 fi
 
 # Newer git
