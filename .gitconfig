@@ -56,7 +56,7 @@
   colorMoved = dimmed-zebra
   colorMovedWS = allow-indentation-change
 [diff "image"]
-  textconv = exif
+  textconv = exiftool
   command = ~/.local/bin/git-imgdiff
 [difftool "vscode"]
   cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"

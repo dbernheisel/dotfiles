@@ -1,20 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
-if ! type montage > /dev/null || ! type montage > /dev/null; then
-  exit 0
-fi
-
+# ignore most compression artifacts from showing in comparisons
 if [ -z "$GIT_IMAGE_DIFF_FUZZ" ]; then
   GIT_IMAGE_DIFF_FUZZ=1000
 fi
 
-if [ -f "$2" ] && [ -f "$5" ]; then
-  compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$2" "$5" png:- | \
-    montage -geometry +4+4 "$2" - "$5" png:- | \
-    kitty +kitten icat
-elif [ -f "$2" ]; then
-  kitty +kitten icat "$2"
-elif [ -f "$5" ]; then
-  kitty +kitten icat "$5"
-fi
+display_comparison() {
+  if type montage > /dev/null && type montage > /dev/null && [ -z "$NVIM_LISTEN_ADDRESS" ]; then
+    compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$1" "$2" png:- | \
+      montage -geometry +4+4 "$1" - "$2" png:- | \
+      kitty +kitten icat
+  fi
+}
 
+display_image() {
+  [[ $TERMINFO =~ "kitty" ]] && kitty +kitten icat "$1"
+}
+
+if [ -f "$2" ] && [ -f "$5" ]; then
+  echo "~ Changing $5"
+  display_comparison "$2" "$5"
+elif [ -f "$2" ]; then
+  echo "- Removing $2"
+  display_image "$2"
+elif [ -f "$5" ]; then
+  echo "+ Adding $5"
+  display_image "$5"
+fi
