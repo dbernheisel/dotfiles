@@ -249,6 +249,7 @@ nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -he
 
 " Theme
 syntax on
+set redrawtime=10000
 
 function! LightMode()
   let g:indentLine_color_gui = '#EAEAEA'

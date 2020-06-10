@@ -33,7 +33,7 @@ call plug#begin('~/.config/nvim/plugged')
   let g:indentLine_bufTypeExclude = ['help', 'terminal']
 
   " Wiki
-  let g:vimwiki_list = [{'path': '~/keybase/private/dbernheisel/vimwiki/', 'syntax': 'markdown'}]
+  let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
   let g:vimwiki_use_calendar = 1
   Plug 'vimwiki/vimwiki'
   Plug 'itchyny/calendar.vim'
