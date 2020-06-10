@@ -83,8 +83,6 @@ gcof() {
   fi
 }
 
-bindkey '^GB' gcof
-
 # Homegit
 alias config='git --git-dir="$HOME/.cfg/" --work-tree="$HOME"'
 
