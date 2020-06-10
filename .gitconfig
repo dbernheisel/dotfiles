@@ -6,7 +6,7 @@
 [color]
   ui = auto
 [interactive]
-  diffFilter = (echo && diff-so-fancy)
+  diffFilter = delta --color-only
 [format]
   pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 [credential]
@@ -48,7 +48,7 @@
   compression = -1
   autocrlf = input
   excludesfile = ~/.gitignore
-  pager = diff-so-fancy | less --tabs=4 -RX
+  pager = delta --theme='Monokai Extended Bright'
 [fetch]
   prune = true
 [diff]
@@ -106,3 +106,5 @@
   oldMovedDimmed = red dim italic
   newMoved = green italic
   newMovedDimmed = green dim italic
+[pull]
+	ff = only
