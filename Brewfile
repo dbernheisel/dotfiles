@@ -90,7 +90,7 @@ end
 
 brew 'ccat'           # CLI utility. Colorized cat
 brew 'dfu-util'       # CLI Firmware loader for keyboard
-brew 'diff-so-fancy'  # CLI diff-highlight for git
+brew 'delta'          # CLI diff-highlight for git
 brew 'exercism'       # CLI exercism.io
 brew 'fzf'            # CLI Fuzzy Finder CLI
 brew 'git'            # CLI Git version control
