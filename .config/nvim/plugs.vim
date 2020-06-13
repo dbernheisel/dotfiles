@@ -97,20 +97,20 @@ call plug#begin('~/.config/nvim/plugged')
 
 
   if executable('fzf')
-    if executable('/usr/local/opt/fzf')
-      set rtp+=/usr/local/opt/fzf
-      Plug '/usr/local/opt/fzf'         " Use arch-installed fzf
+    if executable('/usr/local/opt/fzf/bin/fzf')
+      Plug '/usr/local/opt/fzf'
+      set rtp+=/usr/local/opt/fzf     " Use brew-installed fzf
     endif
 
     if executable('/usr/bin/fzf')
-      set rtp+=/usr/bin/fzf
+      set rtp+=/usr/bin/fzf           " Use arch-installed fzf
     endif
 
     if isdirectory('/usr/share/doc/fzf/examples')
       Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
     endif
 
-    Plug 'junegunn/fzf.vim'             " Fuzzy-finder
+    Plug 'junegunn/fzf.vim'           " Fuzzy-finder
     let g:fzf_buffers_jump = 1
   endif
 
