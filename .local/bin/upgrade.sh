@@ -16,7 +16,7 @@ is_crostini() {
 if [ -f "/etc/arch-release" ]; then
   IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch sysdig v4l2loopback)
 
-  if [[ "$1" = *--kernel* ]]; then
+  if [[ "$*" = *--kernel* ]]; then
     if is_crostini; then
       echo "Cannot upgrade kernel within Crostini"
       exit 1
@@ -40,7 +40,7 @@ fi
 if [ -f "/etc/debian_release" ]; then
   IGNORE=(linux linux-lts linux-headers virtualbox-host-modules-arch)
 
-  if [ "$1" = "--kernel" ]; then
+  if [ "$*" = "--kernel" ]; then
     if is_crostini; then
       echo "Cannot upgrade kernel within Crostini"
       exit 1
@@ -59,7 +59,7 @@ if [ -f "/etc/debian_release" ]; then
   fi
 fi
 
-if ! is_crostini && type fwupdmgr &> /dev/null && [[ "$1" = *--firmware* ]]; then
+if ! is_crostini && type fwupdmgr &> /dev/null && [[ "$*" = *--firmware* ]]; then
   fwupdmgr refresh
   fwupdmgr get-updates --no-unreported-check
 fi
