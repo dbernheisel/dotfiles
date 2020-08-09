@@ -1,4 +1,4 @@
 ruby 2.5.5
-nodejs 12.16.3
-elixir 1.10.3-otp-23
-erlang 23.0.2
+nodejs 12.18.2
+elixir 1.10.4-otp-23
+erlang 23.0.3
