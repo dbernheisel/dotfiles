@@ -21,11 +21,6 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'justinmk/vim-dirvish'
 
-  " :Dash
-  if has('mac')
-    Plug 'rizzatti/dash.vim', { 'on': 'Dash' }
-  endif
-
   " Indent line guides... wish I didn't need this.
   Plug 'Yggdroot/indentLine'
   let g:indentLine_char_list = ['|']
@@ -143,14 +138,15 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
 
-  Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
+  Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
   let g:vim_markdown_conceal = 0
   let g:vim_markdown_conceal_code_blocks = 0
-  Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
   let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
         \ "ini=dosini", "patch=diff"]
   let g:vim_markdown_strikethrough = 1
   let g:vim_markdown_frontmatter = 1
+  let g:vimwiki_global_ext=0
+  Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
 
   " Syntax highlighting
   let g:polyglot_disabled = ['markdown', 'elixir', 'eelixir']
