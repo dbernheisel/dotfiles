@@ -27,9 +27,9 @@ fi
 
 have rg && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-[[ -d ~/flutter/bin ]] && export PATH="~/flutter/bin:$PATH"
-[[ -d ~/.yarn/bin ]] && export PATH="~/.yarn/bin:$PATH"
-[[ -d ~/.cargo/bin ]] && export PATH="~/.cargo/bin:$PATH"
+[[ -d $HOME/flutter/bin ]] && export PATH="$HOME/flutter/bin:$PATH"
+[[ -d $HOME/.yarn/bin ]] && export PATH="$HOME/.yarn/bin:$PATH"
+[[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
 
 # PostgreSQL
@@ -42,8 +42,8 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 if have fzf; then
   # RipGrep
   have rg && export FZF_DEFAULT_COMMAND='rg --files'
-  have fd && export FZF_DEFAULT_COMMAND='fd --type f'
-  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f'
+  have fd && export FZF_DEFAULT_COMMAND='fd --type f --hidden'
+  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f --hidden'
 fi
 
 # Newer git
@@ -51,8 +51,8 @@ if have brew && [ -f $(brew --prefix git)/bin/git ]; then
   export PATH=$(brew --prefix git)/bin:$PATH
 fi
 
-# Rust
-[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
+# asdf
+[[ -d $HOME/.asdf ]] && source $HOME/.asdf/asdf.sh
 
 [ -e "$HOME/.local/bin/.autocomplete.zsh" ] && source "$HOME/.local/bin/.autocomplete.zsh"
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"

@@ -220,6 +220,6 @@ if have "heroku"; then
 
     heroku pg:backups:capture --app "$heroku_app" && \
     heroku pg:backups:download --app "$heroku_app" && \
-    pg_restore --verbose --clean --no-acl --no-owner -h localhost -d "$1" latest.dump
+    pg_restore --verbose --clean --no-acl --no-owner -h localhost -d "$local_db" latest.dump
   }
 fi
