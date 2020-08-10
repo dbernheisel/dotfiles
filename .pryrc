@@ -1,8 +1,17 @@
 Pry.config.editor = 'nvim'
 
 unless Pry::VERSION.include?("0.9.")
+  Pry.config.pager = false
+
   # Prompt with ruby version
-  Pry.prompt = [proc { |obj, nest_level| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, proc { |obj, nest_level| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }]
+  Pry.config.prompt = Pry::Prompt.new(
+    "Ruby Version Prompt",
+    "Ruby Version Prompt",
+    [
+      proc { |obj, nest_level| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " },
+      proc { |obj, nest_level| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }
+    ]
+  )
 
   # loading rails configuration if it is running as a rails console
   # load File.dirname(__FILE__) + '/.railsrc' if defined?(Rails) && Rails.env
