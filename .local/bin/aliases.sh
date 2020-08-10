@@ -143,7 +143,7 @@ alias df='df -h'
 if have "exa"; then
   alias l='exa -1a'
   alias ls='exa'
-  alias ll='exa -lh --git'
+  alias ll='exa -lha --git'
   alias lt='exa -lT --git'
 fi
 
