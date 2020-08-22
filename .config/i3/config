@@ -205,7 +205,6 @@ smart_borders on
 # floating windows
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Kalu"] floating enable
-for_window [name="Record or load frames"] floating enable
 for_window [class="Peek"] floating enable
 for_window [class="zoom"] floating enable
 for_window [class="(?i)blueman"] floating enable
@@ -244,17 +243,17 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 # Specific Scratchpads
-for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
-bindsym $mod+b [class="Google-chrome"] scratchpad show
-# for_window [class="Brave-browser"] floating enable, move to scratchpad, scratchpad show
-# bindsym $mod+b [class="Brave-browser"] scratchpad show
+# for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
+# bindsym $mod+b [class="Google-chrome"] scratchpad show
+for_window [class="Brave-browser"] floating enable, move to scratchpad, scratchpad show
+bindsym $mod+b [class="Brave-browser"] scratchpad show
 
 # App shortcuts
-# bindsym $mod+w exec "/usr/bin/brave"
-bindsym $mod+w exec "/usr/bin/google-chrome-stable"
+bindsym $mod+w exec "/usr/bin/brave"
+# bindsym $mod+w exec "/usr/bin/google-chrome-stable"
 bindsym $mod+e exec "/usr/bin/thunar"
 bindsym $mod+Tab exec "rofi -show window"
-bindsym $mod+space exec "zsh -lc \\"rofi -show combi 'window,run'\\""
+bindsym $mod+space exec "zsh -lc \\"rofi -combi-modi window,drun,run,ssh -show combi -modi combi\\""
 bindsym $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
 bindsym $mod+Shift+d exec --no-startup-id ~/.local/bin/switch-displays.sh
 bindsym $mod+Shift+f exec --no-startup-id flameshot gui
@@ -266,7 +265,7 @@ exec --no-startup-id "allow_rgb10_configs=false picom --config ~/.config/picom/p
 exec --no-startup-id "~/.local/bin/launch_polybar.sh"
 exec --no-startup-id "~/.local/bin/launch_tray.sh"
 # Set background and theme from background
-exec --no-startup-id "feh --randomize --bg-fill /usr/share/backgrounds/mine"
+exec --no-startup-id "feh --randomize --bg-fill ~/backgrounds"
 exec --no-startup-id "wal -Rn"
 # Hide cursor when idle over background.
 exec --no-startup-id "unclutter -root &"

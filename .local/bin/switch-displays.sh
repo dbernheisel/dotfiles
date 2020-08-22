@@ -1,5 +1,4 @@
 #!/bin/bash
-# DISPLAY_SCRIPTS=(~/.screenlayout/*.sh)
 
 INTERNAL="eDP-1"
 EXTERNAL1="DP-1"
@@ -8,6 +7,8 @@ LOWER_DPI=$(grep Xft.dpi "$HOME/.Xresources-lower" | cut -d\  -f2)
 HIGHER_DPI=$(grep Xft.dpi "$HOME/.Xresources" | cut -d\  -f2)
 
 source "$HOME/.local/bin/monitor-detection.sh"
+
+if [ "$(hostname)" == "zest" ]; then exit 0; fi
 
 function notify() {
   local NOTIFYSTATUS=$?
@@ -70,5 +71,3 @@ else
     --output "$EXTERNAL2" --off \
     --output "$INTERNAL" --primary --mode 3840x2160 --pos 0x0 --rotate normal
 fi
-
-exit 0

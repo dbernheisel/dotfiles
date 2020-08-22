@@ -1,4 +1,4 @@
-Xft.dpi: 256
+Xft.dpi: 128
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
@@ -9,7 +9,7 @@ Xft.rgba: rgb
 Xcursor.size: 64
 Xcursor.theme: Breeze Snow
 
-rofi.dpi: 256
+rofi.dpi: 128
 polybar.font0: FuraCode Nerd Font:size=10:style=Regular;2
 polybar.font1: FontAwesome:size=14;-2
 polybar.font2: siji:size=8;0
