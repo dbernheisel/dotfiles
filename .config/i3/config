@@ -205,6 +205,7 @@ smart_borders on
 # floating windows
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Kalu"] floating enable
+for_window [name="Record or load frames"] floating enable
 for_window [class="Peek"] floating enable
 for_window [class="zoom"] floating enable
 for_window [class="(?i)blueman"] floating enable
