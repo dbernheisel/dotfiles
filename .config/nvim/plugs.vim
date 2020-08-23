@@ -263,13 +263,15 @@ let g:ElixirLS = {}
 let ElixirLS.path = printf('%s/%s', stdpath('config'), 'plugged/elixir-ls')
 let ElixirLS.lsp = printf('%s/%s', ElixirLS.path, 'release/language_server.sh')
 let ElixirLS.cmd = join([
+        \ 'cp .release-tool-versions .tool-versions &&',
         \ 'asdf install &&',
         \ 'mix do',
         \ 'local.hex --force --if-missing,',
         \ 'local.rebar --force,',
         \ 'deps.get,',
         \ 'compile,',
-        \ 'elixir_ls.release'
+        \ 'elixir_ls.release &&',
+        \ 'rm .tool-versions'
         \ ], ' ')
 
 function ElixirLS.on_stdout(_job_id, data, _event)
