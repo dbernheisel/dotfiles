@@ -60,6 +60,7 @@ zsh
 docker
 docker-compose
 audacity
+bat
 kubectl
 picom
 rofi-calc
