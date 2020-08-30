@@ -252,7 +252,7 @@ bindsym $mod+b [class="Brave-browser"] scratchpad show
 # App shortcuts
 bindsym $mod+w exec "/usr/bin/brave"
 # bindsym $mod+w exec "/usr/bin/google-chrome-stable"
-bindsym $mod+e exec "/usr/bin/thunar"
+bindsym $mod+e exec "/usr/bin/nautilus"
 bindsym $mod+Tab exec "rofi -show window"
 bindsym $mod+space exec "zsh -lc \\"rofi -combi-modi window,drun,run,ssh -show combi -modi combi\\""
 bindsym $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
@@ -262,16 +262,13 @@ bindsym $mod+Shift+f exec --no-startup-id flameshot gui
 # Autostart apps
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id "xrdb -merge ~/.Xresources"
-exec --no-startup-id "allow_rgb10_configs=false picom --config ~/.config/picom/picom.conf -b"
+exec --no-startup-id "picom --config ~/.config/picom/picom.conf -b"
 exec --no-startup-id "~/.local/bin/launch_polybar.sh"
 exec --no-startup-id "~/.local/bin/launch_tray.sh"
 # Set background and theme from background
 exec --no-startup-id "feh --randomize --bg-fill ~/backgrounds"
-exec --no-startup-id "wal -Rn"
 # Hide cursor when idle over background.
 exec --no-startup-id "unclutter -root &"
-# Set cursor to pointer when over background
-exec --no-startup-id "xsetroot -cursor_name left_ptr"
 # Increase key-repeat rate
 exec --no-startup-id "xset r rate 350 50"
 # Set screensaver to 5 min, turning off display at 10min

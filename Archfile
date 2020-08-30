@@ -4,8 +4,14 @@ aws-cli
 blueman
 brave-browser
 california
+chamber
 ctags
-diff-so-fancy
+git-delta-bin
+pulseaudio-modules-bt
+ldac
+pavucontrol
+xss-lock
+yay
 exiftool
 feh
 fzf
@@ -26,8 +32,12 @@ papirus-icon-theme
 polybar
 python-pillow
 python-pip
-python-pip2
+python2-pip
 ripgrep
+redis
+exa
+flameshot
+fwupd
 rofi
 scrot
 shellcheck
@@ -36,6 +46,9 @@ thunar
 ttf-font-awesome
 ttf-fira-code
 ttf-roboto
+ttf-twemoji
+ttf-twemoji-color
+nerd-fonts-fira-code
 unclutter
 vlc
 xautolock
@@ -44,6 +57,12 @@ xcursor-breeze
 yarn
 zoom
 zsh
+docker
+docker-compose
+audacity
+kubectl
+picom
+rofi-calc
 
 # Wayland
 grim
@@ -71,6 +90,7 @@ openssl
 zlib
 
 # Erlang
+gcc9
 libssh
 ncurses
 glu
