@@ -64,13 +64,14 @@ bat
 kubectl
 picom
 rofi-calc
+rofimoji
 
 # Wayland
 grim
 kanshi
 libindicator-gtk3
 mako
-network-manager-applet-indicator
+network-manager-applet
 slurp
 sway-git
 swaybg-git
