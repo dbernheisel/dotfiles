@@ -53,6 +53,7 @@
   prune = true
 [diff]
   tool = vscode
+  guitool = vscode
   colorMoved = dimmed-zebra
   colorMovedWS = allow-indentation-change
 [diff "image"]
@@ -62,6 +63,8 @@
   cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
 [difftool "kitty"]
   cmd = kitty +kitten diff \"$LOCAL\" \"$REMOTE\"
+[difftool "kitty.gui"]
+  cmd = kitty kitty +kitten diff \"$LOCAL\" \"$REMOTE\"
 [difftool "nvim"]
   cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
 [merge]

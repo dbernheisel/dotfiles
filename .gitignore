@@ -20,6 +20,9 @@ temp
 tmp/**/*
 .solargraph.yml
 
+# Red Tape
+config/definitions.rb
+
 backup
 fzf.bash
 
