@@ -11,6 +11,8 @@ set laststatus=2            " always
 set encoding=utf-8
 set noshowmode
 
+set diffopt+=vertical
+
 set mouse=a                 " Disable mouse
 
 " Netrw, make it more like a project drawer
@@ -47,6 +49,7 @@ set noswapfile
 " Turn off linewise up and down movements
 nmap j gj
 nmap k gk
+nmap gco :GBranches<CR>
 
 " Turn on rendering whitespace
 set listchars+=trail:·,precedes:←,extends:→,tab:¬\ ,nbsp:+,conceal:※
@@ -132,7 +135,6 @@ if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
 endif
 
-nmap <leader>b :Findr<CR>
 nmap <leader>/ <leader>c<space>
 vmap <leader>/ <leader>c<space>
 
@@ -349,4 +351,8 @@ augroup netrwEx
 augroup END
 
 filetype on
+
+if has('python')
+  set pyx=3
+endif
 

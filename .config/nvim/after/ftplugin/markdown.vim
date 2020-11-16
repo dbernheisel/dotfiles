@@ -25,7 +25,7 @@ endif
 function! s:goyo_enter()
   " light theme
   setlocal background=light
-  colorscheme chroma
+  colorscheme onehalflight
 
   " turn off cursor-line-highlight auto-indent, whitespace, and in-progress
   " commands

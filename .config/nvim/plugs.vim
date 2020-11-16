@@ -10,42 +10,75 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   " Plug 'ludovicchabant/vim-gutentags' " Ctags support.
 
-  " Language servers
-  Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:ElixirLS.compile() } }
+  if !exists('g:vscode')
+    " Language servers
+    Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:ElixirLS.compile() } }
 
-  " Language server integration
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
-        \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
-        \ 'coc-elixir', 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
+    " Language server integration
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
+          \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
+          \ 'coc-elixir', 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
 
-  Plug 'justinmk/vim-dirvish'
+    Plug 'justinmk/vim-dirvish'
 
   " Indent line guides... wish I didn't need this.
-  Plug 'Yggdroot/indentLine'
-  let g:indentLine_char_list = ['|']
-  let g:indentLine_faster = 1
-  let g:indentLine_bufTypeExclude = ['help', 'terminal']
+    Plug 'Yggdroot/indentLine'
+    let g:indentLine_char_list = ['|']
+    let g:indentLine_faster = 1
+    let g:indentLine_bufTypeExclude = ['help', 'terminal']
 
-  " Wiki
-  let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
-  let g:vimwiki_use_calendar = 1
-  Plug 'vimwiki/vimwiki'
-  Plug 'itchyny/calendar.vim'
+    " Wiki
+    let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
+    let g:vimwiki_use_calendar = 1
+    Plug 'vimwiki/vimwiki'
+    Plug 'itchyny/calendar.vim'
+
+    " <C-n> to select next word with new cursor
+    Plug 'mg979/vim-visual-multi'
+
+    " Easier block commenting.
+    Plug 'scrooloose/nerdcommenter'
+    let g:NERDDefaultAlign = 'left'
+    let g:NERDSpaceDelims = 1
+    let g:NERDCommentEmptyLines = 1
+
+
+    Plug 'airblade/vim-gitgutter'       " Git gutter
+    Plug 'tpope/vim-fugitive'           " Gblame
+    Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
+
+    " Cosmetic
+    Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
+    Plug 'reewr/vim-monokai-phoenix'    " Theme - Dark
+    Plug 'itchyny/lightline.vim'        " Statusline
+    let g:lightline = {
+      \ 'active': {
+      \   'left':  [
+      \     [ 'mode', 'paste' ],
+      \     [ 'readonly', 'filename', 'modified' ]
+      \   ],
+      \   'right': [
+      \     [ 'lineinfo' ],
+      \     [ 'filetype', 'fileformat', 'fileencoding' ],
+      \     [ 'gitbranch' ]
+      \   ]
+      \ },
+      \ 'component_function': {
+      \   'fileformat': 'LightlineFileformat',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileencoding': 'LightlineFileencoding',
+      \   'gitbranch': 'fugitive#head'
+      \   }
+      \ }
+  endif
 
   " Jump to related files, :A, :AS, :AV, and :AT
   Plug 'tpope/vim-projectionist'
   Plug 'andyl/vim-projectionist-elixir', { 'for': 'elixir' }
   Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
-  " <C-n> to select next word with new cursor
-  Plug 'mg979/vim-visual-multi'
-
-  " Easier block commenting.
-  Plug 'scrooloose/nerdcommenter'
-  let g:NERDDefaultAlign = 'left'
-  let g:NERDSpaceDelims = 1
-  let g:NERDCommentEmptyLines = 1
+  Plug 'kassio/neoterm'
 
   " Add test commands
   Plug 'janko-m/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'] }
@@ -55,6 +88,7 @@ call plug#begin('~/.config/nvim/plugged')
   let g:neoterm_size = 80
   let g:neoterm_fixedsize = 1
   let g:neoterm_keep_term_open = 0
+  let g:neoterm_term_per_tab = 1
   let test#ruby#rspec#options = {
         \ 'nearest': '--backtrace',
         \ 'suite':   '--profile 5',
@@ -62,22 +96,6 @@ call plug#begin('~/.config/nvim/plugged')
   let test#shell#bats#options = {
         \ 'nearest': '-t'
         \ }
-
-  Plug 'conweller/findr.vim'
-  let g:findr_floating_window = {
-        \ 'window': 'FindrFloatingWindow()'
-        \ }
-
-  let g:findr_border = {
-        \   'top':    ['─', '─', '┐'],
-        \   'middle': [' ', ' ', '│'],
-        \   'bottom': ['─', '─', '┘'],
-        \ }
-
-  Plug 'kassio/neoterm'
-
-  Plug 'airblade/vim-gitgutter'       " Git gutter
-  Plug 'tpope/vim-fugitive'           " Gblame
 
   Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
   Plug 'tpope/vim-endwise'            " Auto-close if, do, def
@@ -87,9 +105,6 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'tpope/vim-eunuch'             " Add Bash commands Remove,Move,Find,etc
   Plug 'pbrisbin/vim-mkdir'           " create directories if they don't exist
-
-  Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
-
 
   if executable('fzf')
     if executable('/usr/local/opt/fzf/bin/fzf')
@@ -107,33 +122,12 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'junegunn/fzf.vim'           " Fuzzy-finder
     let g:fzf_buffers_jump = 1
+
+    Plug 'stsewd/fzf-checkout.vim'
   endif
 
-  Plug 'liuchengxu/vista.vim'
+  " Plug 'liuchengxu/vista.vim'
 
-  " Cosmetic
-  Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-  Plug 'reewr/vim-monokai-phoenix'    " Theme - Dark
-  Plug 'itchyny/lightline.vim'        " Statusline
-  let g:lightline = {
-    \ 'active': {
-    \   'left':  [
-    \     [ 'mode', 'paste' ],
-    \     [ 'readonly', 'filename', 'modified' ]
-    \   ],
-    \   'right': [
-    \     [ 'lineinfo' ],
-    \     [ 'filetype', 'fileformat', 'fileencoding' ],
-    \     [ 'gitbranch' ]
-    \   ]
-    \ },
-    \ 'component_function': {
-    \   'fileformat': 'LightlineFileformat',
-    \   'filetype': 'LightlineFiletype',
-    \   'fileencoding': 'LightlineFileencoding',
-    \   'gitbranch': 'fugitive#head'
-    \   }
-    \ }
 
 
   Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
@@ -244,19 +238,6 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-"" Findr
-
-function! FindrFloatingWindow()
-  return {
-        \ 'relative': 'editor',
-        \ 'row': 0,
-        \ 'col': 0,
-        \ 'height': &lines - 2,
-        \ 'style': 'minimal',
-        \ 'width': float2nr(&columns / 3)
-        \ }
-endfunction
-
 "" ELixirLS
 
 let g:ElixirLS = {}
@@ -304,6 +285,60 @@ call coc#config('elixir', {
 call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
 
 "" Dirvish
+
+nmap <silent> - :<C-U>call <SID>dirvish_toggle()<CR>
+nmap <silent> <leader>b :call <SID>dirvish_toggle()<CR>
+
+function! s:dirvish_open(cmd, bg) abort
+  let path = getline('.')
+  if isdirectory(path)
+    if a:cmd ==# 'edit' && a:bg ==# '0'
+      call dirvish#open(a:cmd, 0)
+    endif
+  else
+    if a:bg
+      call dirvish#open(a:cmd, 1)
+    else
+      bwipeout
+      execute a:cmd ' ' path
+    endif
+  endif
+endfunction
+
+function! s:dirvish_toggle() abort
+  let height = float2nr(&lines)
+  let width  = float2nr(&columns * 0.34)
+  let top    = float2nr(width - &columns)
+  let vertical = 1
+  let opts   = {'relative': 'editor', 'row': vertical, 'col': top, 'width': width, 'height': height, 'style': 'minimal' }
+  let fdir = expand('%:h')
+  let path = expand('%:p')
+  call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+  if fdir ==# ''
+    let fdir = '.'
+  endif
+
+  call dirvish#open(fdir)
+
+  if !empty(path)
+    call search('\V\^'.escape(path, '\').'\$', 'cw')
+  endif
+endfunction
+
+augroup vimrc
+    autocmd FileType dirvish nmap <silent> <buffer> <CR>  :<C-U>call <SID>dirvish_open('edit'   , 0)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> v     :<C-U>call <SID>dirvish_open('vsplit' , 0)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> V     :<C-U>call <SID>dirvish_open('vsplit' , 1)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> x     :<C-U>call <SID>dirvish_open('split'  , 0)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> X     :<C-U>call <SID>dirvish_open('split'  , 1)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> t     :<C-U>call <SID>dirvish_open('tabedit', 0)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> T     :<C-U>call <SID>dirvish_open('tabedit', 1)<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> -     <Plug>(dirvish_up)
+    autocmd FileType dirvish nmap <silent> <buffer> <ESC> :bd<CR>
+    autocmd FileType dirvish nmap <silent> <buffer> q     :bd<CR>
+augroup END
+
+" Dirvish replace netrw
 
 let g:loaded_netrwPlugin = 1
 command! -nargs=? -complete=dir Explore Dirvish <args>
