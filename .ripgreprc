@@ -21,3 +21,4 @@
 --glob=!public/**/*
 --glob=!*.cache
 --glob=!.Trash/**/*
+--glob=!.licenses/**/*
