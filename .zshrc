@@ -48,7 +48,7 @@ if have fzf; then
   have fd && export FZF_DEFAULT_COMMAND='fd --type f --hidden'
   have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f --hidden'
   FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 "
-  if have bats; then
+  if have bat; then
     FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
   fi
 
