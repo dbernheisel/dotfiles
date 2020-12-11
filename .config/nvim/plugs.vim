@@ -8,17 +8,9 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-  " Plug 'ludovicchabant/vim-gutentags' " Ctags support.
-
   if !exists('g:vscode')
-    " Language servers
-    Plug 'elixir-lsp/elixir-ls', { 'do': { -> g:ElixirLS.compile() } }
-
-    " Language server integration
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    let g:coc_global_extensions = ['coc-emoji', 'coc-highlight', 'coc-eslint',
-          \ 'coc-prettier', 'coc-yaml', 'coc-json', 'coc-css', 'coc-solargraph',
-          \ 'coc-elixir', 'coc-tailwindcss', 'coc-tsserver', 'coc-diagnostic']
+    Plug 'neovim/nvim-lsp'
+    Plug 'nvim-lua/completion-nvim'
 
     Plug 'justinmk/vim-dirvish'
 
@@ -117,21 +109,17 @@ call plug#begin('~/.config/nvim/plugged')
     endif
 
     if isdirectory('/usr/share/doc/fzf/examples')
-      Plug '/usr/share/doc/fzf/examples' " Use apt-installed fzf
+      " Don't use the apt-installed fzf. It's too old
+      Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     endif
-
-    Plug 'junegunn/fzf.vim'           " Fuzzy-finder
-    let g:fzf_buffers_jump = 1
-
-    Plug 'stsewd/fzf-checkout.vim'
   endif
 
-  " Plug 'liuchengxu/vista.vim'
-
-
+  Plug 'junegunn/fzf.vim'           " Fuzzy-finder
+  let g:fzf_buffers_jump = 1
+  Plug 'stsewd/fzf-checkout.vim'
+  Plug 'ojroques/nvim-lspfuzzy'
 
   Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
-
   Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
   let g:vim_markdown_conceal = 0
   let g:vim_markdown_conceal_code_blocks = 0
@@ -222,67 +210,10 @@ endfunction
 
 command! Files call FZFFiles()
 
-"" COC
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-"" ELixirLS
-
-let g:ElixirLS = {}
-let ElixirLS.path = printf('%s/%s', stdpath('config'), 'plugged/elixir-ls')
-let ElixirLS.lsp = printf('%s/%s', ElixirLS.path, 'release/language_server.sh')
-let ElixirLS.cmd = join([
-        \ 'cp .release-tool-versions .tool-versions &&',
-        \ 'asdf install &&',
-        \ 'mix do',
-        \ 'local.hex --force --if-missing,',
-        \ 'local.rebar --force,',
-        \ 'deps.get,',
-        \ 'compile,',
-        \ 'elixir_ls.release &&',
-        \ 'rm .tool-versions'
-        \ ], ' ')
-
-function ElixirLS.on_stdout(_job_id, data, _event)
-  let self.output[-1] .= a:data[0]
-  call extend(self.output, a:data[1:])
-endfunction
-
-let ElixirLS.on_stderr = function(ElixirLS.on_stdout)
-
-function ElixirLS.on_exit(_job_id, exitcode, _event)
-  if a:exitcode[0] == 0
-    echom '>>> ElixirLS compiled'
-  else
-    echoerr join(self.output, ' ')
-    echoerr '>>> ElixirLS compilation failed'
-  endif
-endfunction
-
-function ElixirLS.compile()
-  let me = copy(g:ElixirLS)
-  echom '>>> compiling ElixirLS'
-  let me.output = ['']
-  let me.id = jobstart('cd ' . me.path . ' && git pull && ' . me.cmd, me)
-endfunction
-
-call coc#config('elixir', {
-  \ 'command': g:ElixirLS.lsp,
-  \ 'filetypes': ['eelixir', 'elixir']
-  \})
-call coc#config('elixir.pathToElixirLS', g:ElixirLS.lsp)
 
 "" Dirvish
 

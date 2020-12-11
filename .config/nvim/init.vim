@@ -119,7 +119,6 @@ inoremap jj <Esc>
 " Shortcuts for editing vimrc. I do it too much
 nnoremap <leader>ev :tabnew $MYVIMRC<CR> :vs ~/.config/nvim/plugs.vim<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
-nnoremap <leader>c :<c-u>CocList commands<CR>
 
 " Set lines and number gutter
 set cursorline " turn on row highlighting where cursor is
@@ -134,6 +133,55 @@ nnoremap <leader><leader> <c-^>
 if filereadable(expand("~/.config/nvim/plugs.vim"))
   source ~/.config/nvim/plugs.vim
 endif
+
+:lua << LUA
+  local lsp = require 'lspconfig'
+
+  lsp.bashls.setup {}
+  lsp.cssls.setup {}
+  lsp.dockerls.setup {}
+  lsp.elixirls.setup {}
+  lsp.html.setup {}
+  lsp.jsonls.setup {}
+  lsp.solargraph.setup {}
+  lsp.sqlls.setup {}
+  lsp.tsserver.setup {}
+  lsp.vimls.setup {}
+  lsp.vuels.setup {}
+  lsp.yamlls.setup {}
+
+  require('lspfuzzy').setup {}
+LUA
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+set omnifunc=v:lua.vim.lsp.omnifunc
+
+nnoremap <silent>gd <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <silent>gt <cmd>lua vim.lsp.buf.type_definition()<cr>
+nnoremap <silent>K :call <SID>show_documentation()<cr>
+nnoremap <silent><leader>gr <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap <silent><leader>gs <cmd>lua vim.lsp.buf.document_symbol()<cr>
+nnoremap <silent><leader>gw <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+nnoremap <silent><leader>rn <cmd>lua vim.lsp.buf.rename()<cr>
+nnoremap <silent><leader>gi <cmd>lua vim.lsp.buf.incoming_calls()<cr>
+nnoremap <silent><leader>go <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
+command! -nargs=0 Format :lua vim.lsp.buf.formatting()
+
+sign define LspDiagnosticsErrorSign text=❌
+sign define LspDiagnosticsWarningSign text=⚠️
+sign define LspDiagnosticsInformationSign text=ℹ️
+sign define LspDiagnosticsHintSign text=👉
+
+function! s:show_documentation()
+  if (index(['vim', 'help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    lua vim.lsp.buf.hover()
+  endif
+endfunction
 
 nmap <leader>/ <leader>c<space>
 vmap <leader>/ <leader>c<space>
@@ -180,7 +228,6 @@ nmap <silent> <leader>g :call RunTest('TestVisit')<CR>
 
 nnoremap <C-P> :Files<CR>
 nnoremap <leader>f :Rg<Space>
-nnoremap <leader>jf :Vista finder coc<CR>
 
 if executable('rg')
   set grepprg="rg --vimgrep"   " use ripgrep
@@ -197,55 +244,6 @@ endfunction
 function! LightlineFiletype()
   return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
-
-"============ COC Config
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn CocCommand document.renameCurrentWord
-
-nnoremap <silent> K :call <SID>show_documentation()<cr>
-
-function! s:show_documentation()
-  if (index(['vim', 'help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=0 Format :call CocActionAsync('format')
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
-hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
-nmap <leader>rn <Plug>(coc-rename)
-
-augroup cocEx
-  " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup END
-
-"============
 
 nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
@@ -332,6 +330,11 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.drab setf eelixir
   autocmd BufNewFile,BufRead *.arb setf ruby
   autocmd BufNewFile,BufRead irbrc,pryrc setf ruby
+
+  autocmd BufEnter * lua require('completion').on_attach()
+  " autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+  " autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+  " autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
 
   " JSON w/ comments
   autocmd BufNewFile,BufRead *.jsonc setf json
