@@ -9,10 +9,12 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
-    Plug 'neovim/nvim-lsp'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/completion-nvim'
 
     Plug 'justinmk/vim-dirvish'
+
+    Plug 'norcalli/nvim-colorizer.lua'
 
   " Indent line guides... wish I didn't need this.
     Plug 'Yggdroot/indentLine'
@@ -38,6 +40,10 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'airblade/vim-gitgutter'       " Git gutter
     Plug 'tpope/vim-fugitive'           " Gblame
+    Plug 'rhysd/git-messenger.vim'      " GitMessenger floating window
+    let g:git_messenger_include_diff = "current"
+    nmap <Leader>gb <Plug>(git-messenger)
+
     Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
 
     " Cosmetic
@@ -178,6 +184,7 @@ if exists("*nvim_open_win")
   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
 
+
 let g:use_devicon = 0
 if executable('devicon-lookup')
   let g:use_devicon = 1
@@ -209,11 +216,6 @@ function! FZFFiles()
 endfunction
 
 command! Files call FZFFiles()
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
 
 "" Dirvish
 

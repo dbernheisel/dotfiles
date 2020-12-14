@@ -11,6 +11,10 @@ set laststatus=2            " always
 set encoding=utf-8
 set noshowmode
 
+if has('python')
+  set pyx=3
+endif
+
 set diffopt+=vertical
 
 set mouse=a                 " Disable mouse
@@ -110,6 +114,10 @@ imap <Down> <nop>
 imap <Left> <nop>
 imap <Right> <nop>
 
+" Change Tabs
+nnoremap <c-left> :tabprevious<cr>
+nnoremap <c-right> :tabnext<cr>
+
 " Make semicolon the same as colon
 map ; :
 
@@ -130,61 +138,25 @@ set number
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
-if filereadable(expand("~/.config/nvim/plugs.vim"))
-  source ~/.config/nvim/plugs.vim
-endif
-
-:lua << LUA
-  local lsp = require 'lspconfig'
-
-  lsp.bashls.setup {}
-  lsp.cssls.setup {}
-  lsp.dockerls.setup {}
-  lsp.elixirls.setup {}
-  lsp.html.setup {}
-  lsp.jsonls.setup {}
-  lsp.solargraph.setup {}
-  lsp.sqlls.setup {}
-  lsp.tsserver.setup {}
-  lsp.vimls.setup {}
-  lsp.vuels.setup {}
-  lsp.yamlls.setup {}
-
-  require('lspfuzzy').setup {}
-LUA
-
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
-set omnifunc=v:lua.vim.lsp.omnifunc
-
-nnoremap <silent>gd <cmd>lua vim.lsp.buf.definition()<cr>
-nnoremap <silent>gt <cmd>lua vim.lsp.buf.type_definition()<cr>
-nnoremap <silent>K :call <SID>show_documentation()<cr>
-nnoremap <silent><leader>gr <cmd>lua vim.lsp.buf.references()<cr>
-nnoremap <silent><leader>gs <cmd>lua vim.lsp.buf.document_symbol()<cr>
-nnoremap <silent><leader>gw <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
-nnoremap <silent><leader>rn <cmd>lua vim.lsp.buf.rename()<cr>
-nnoremap <silent><leader>gi <cmd>lua vim.lsp.buf.incoming_calls()<cr>
-nnoremap <silent><leader>go <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
-command! -nargs=0 Format :lua vim.lsp.buf.formatting()
-
-sign define LspDiagnosticsErrorSign text=❌
-sign define LspDiagnosticsWarningSign text=⚠️
-sign define LspDiagnosticsInformationSign text=ℹ️
-sign define LspDiagnosticsHintSign text=👉
 
 function! s:show_documentation()
   if (index(['vim', 'help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
-  else
-    lua vim.lsp.buf.hover()
   endif
 endfunction
 
+nmap <silent> gd :call <sid>show_documentation()<cr>
+
 nmap <leader>/ <leader>c<space>
 vmap <leader>/ <leader>c<space>
+
+if filereadable(expand("~/.config/nvim/plugs.vim"))
+  source ~/.config/nvim/plugs.vim
+endif
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
@@ -314,7 +286,6 @@ endif
 
 :call DarkMode()
 
-
 augroup vimrcEx
   autocmd!
 
@@ -355,7 +326,93 @@ augroup END
 
 filetype on
 
-if has('python')
-  set pyx=3
-endif
+:lua << LUA
+  local a = vim.api
+  local lspconfig = require('lspconfig')
 
+  local lsp_servers = {
+    bashls = {},
+    cssls = {
+      root_dir = lspconfig.util.root_pattern("package.json", ".git")
+    },
+    dockerls = {},
+    elixirls = {},
+    html = {},
+    jsonls = {
+      cmd = 'json-languageserver', '--stdio'
+    },
+    solargraph = {},
+    sqlls = {},
+    tsserver = {},
+    vimls = {},
+    vuels = {},
+    yamlls = {},
+  }
+
+  local function make_on_attach(config)
+    return function(client)
+      print('LSP Starting')
+
+      require('completion').on_attach(client)
+
+      local opts = { noremap = true, silent = true }
+      a.nvim_buf_set_keymap(0, 'n', 'K',  '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<c-space>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>gs', '<cmd>lua vim.lsp.buf.document_symbol()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>gw', '<cmd>lua vim.lsp.buf.workspace_symbol()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>gi', '<cmd>lua vim.lsp.buf.incoming_calls()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>go', '<cmd>lua vim.lsp.buf.outgoing_calls()<cr>', opts)
+
+      if client.resolved_capabilities.document_highlight == true then
+        a.nvim_command('augroup lsp_aucmds')
+        a.nvim_command('au CursorHold <buffer> lua vim.lsp.buf.document_highlight()')
+        a.nvim_command('au CursorMoved <buffer> lua vim.lsp.buf.clear_references()')
+        a.nvim_command('augroup END')
+      end
+
+      a.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+    end
+  end
+
+  for lsp_server, config in pairs(lsp_servers) do
+    config.on_attach = make_on_attach(config)
+    local setup = lspconfig[lsp_server]
+    if setup.install and not setup.install_info().is_installed then
+      print('Installing LSP '..lsp_server)
+      setup.install()
+    end
+    lspconfig[lsp_server].setup(config)
+  end
+
+  require('lspfuzzy').setup({})
+
+  require('colorizer').setup({
+    'css',
+    'javascript',
+    'html',
+    'eelixir',
+    'erb'
+  })
+LUA
+
+command! -nargs=0 Format :lua vim.lsp.buf.formatting()
+
+command! -nargs=? LspActiveClients lua print(vim.inspect(vim.lsp.get_active_clients()))
+command! -nargs=? LspLog lua vim.api.nvim_command("split "..vim.lsp.get_log_path())
+
+function! RestartLsp()
+  lua vim.lsp.stop_client(vim.lsp.get_active_clients())
+  edit
+endfunction
+
+command! -nargs=? LspRestart :call RestartLsp()
+
+sign define LspDiagnosticsSignError text=⨯ texthl=LspDiagnosticsSignError linehl= numhl=
+sign define LspDiagnosticsSignWarning text=⚠ texthl=LspDiagnosticsSignWarning linehl= numhl=
+sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=
+sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=
