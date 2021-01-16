@@ -45,8 +45,8 @@ if have fzf; then
 
   # RipGrep
   have rg && export FZF_DEFAULT_COMMAND='rg --files'
-  have fd && export FZF_DEFAULT_COMMAND='fd --type f --hidden'
-  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f --hidden'
+  have fd && export FZF_DEFAULT_COMMAND='fd --type f'
+  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f'
   FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 "
   if have bat; then
     FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
