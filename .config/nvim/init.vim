@@ -124,6 +124,14 @@ map ; :
 " jj maps to Esc while in insert mode
 inoremap jj <Esc>
 
+" Move lines up and down
+nnoremap <silent> <M-k> :move-2<CR>
+nnoremap <silent> <M-j> :move+<CR>
+
+" Indent/Outdent current line
+nnoremap <silent> <M-h> <<
+nnoremap <silent> <M-l> >>
+
 " Shortcuts for editing vimrc. I do it too much
 nnoremap <leader>ev :tabnew $MYVIMRC<CR> :vs ~/.config/nvim/plugs.vim<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
