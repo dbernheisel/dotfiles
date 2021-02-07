@@ -36,6 +36,9 @@ mkdir -p "$TMP_DIR"
 echo -ne "Scan both sides of documents? y/[n] "
 read -r IS_DUPLEX
 case "$IS_DUPLEX" in
+  # Card Slot|Card Slot(Duplex)
+  # Y*|y*) SCAN_SOURCE="Card Slot(Duplex)";;
+  # *) SCAN_SOURCE="Card Slot";;
   Y*|y*) SCAN_SOURCE="Automatic Document Feeder(center aligned,Duplex)";;
   *) SCAN_SOURCE="Automatic Document Feeder(center aligned)";;
 esac
@@ -52,25 +55,39 @@ echo -ne "Color or Grayscale? [Color]/Gray "
 read -r SCAN_MODE
 case "$SCAN_MODE" in
   G*|g*) SCAN_MODE="True Gray";;
-  *) SCAN_MODE="24bit Color[fast]";;
+  *) SCAN_MODE="24bit Color[Fast]";;
 esac
 
-(
-  cd "$TMP_DIR"
+if [ "${OCR:-true}" == "true" ]; then
+  (
+    cd "$TMP_DIR"
 
-  echo Scanning ...
+    echo Scanning ...
+    scanimage \
+      --source="$SCAN_SOURCE" \
+      --device="$SCANNER" \
+      --mode="$SCAN_MODE" \
+      $SCAN_SIZE \
+      --format=tiff \
+      --batch --batch-print \
+      --resolution="$DPI" | \
+    tesseract \
+      -l "$TESSERACT_LANG" \
+      -c stream_filelist=true - - pdf > "$SCANTO"
+  )
+
+  rm -rf "$TMP_DIR"
+  echo "Done scanning - $FILENAME"
+else
+  BASE_SCANTO=${SCANTO##*.}
   scanimage \
     --source="$SCAN_SOURCE" \
     --device="$SCANNER" \
     --mode="$SCAN_MODE" \
     $SCAN_SIZE \
     --format=tiff \
-    --batch --batch-print \
-    --resolution="$DPI" | \
-  tesseract \
-    -l "$TESSERACT_LANG" \
-    -c stream_filelist=true - - pdf > "$SCANTO"
-)
-
-rm -rf "$TMP_DIR"
-echo "Done scanning - $FILENAME"
+    --batch="${BASE_SCANTO}%d.tiff" \
+    --resolution="$DPI" && \
+  convert "${BASE_SCANTO}*.tiff" "$SCANTO" && \
+  rm -f "${BASE_SCANTO}*.tiff"
+fi
