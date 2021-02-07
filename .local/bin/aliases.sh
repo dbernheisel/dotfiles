@@ -51,6 +51,10 @@ if have "awsume"; then
  alias awsume='source awsume'
 fi
 
+if have "kubectl"; then
+  alias kubectx="kubectl config use-context"
+fi
+
 alias whatprocess='ps -p $$ -oargs='
 
 # Git
@@ -58,6 +62,7 @@ alias gaa='git add -A'
 alias gs='git status'
 alias gd='git diff --color-moved'
 alias gds='git diff --staged --color-moved'
+alias gp='git push -u origin'
 alias undeployed='git fetch --multiple production origin && git log production/master..origin/master'
 
 gcof() {
