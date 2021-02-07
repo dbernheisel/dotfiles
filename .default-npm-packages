@@ -3,3 +3,14 @@ prettier
 typescript
 eslint
 @babel/eslint-parser
+bash-language-server
+vscode-css-languageserver-bin
+dockerfile-language-server-nodejs
+vscode-html-languageserver-bin
+vscode-json-languageserver
+typescript-language-server
+svelte-language-server
+vim-language-server
+vls
+yaml-language-server
+sql-language-server

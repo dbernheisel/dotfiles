@@ -344,13 +344,20 @@ filetype on
       root_dir = lspconfig.util.root_pattern("package.json", ".git")
     },
     dockerls = {},
-    elixirls = {},
-    html = {},
-    jsonls = {
-      cmd = 'json-languageserver', '--stdio'
+    elixirls = {
+      cmd = { vim.loop.os_homedir().."/.cache/elixir-ls/release/language_server.sh" };
+      settings = {
+        elixirLS = {
+          dialyzerFormat = "dialyxir_short";
+        }
+      };
     },
+    html = {},
+    jsonls = {},
     solargraph = {},
-    sqlls = {},
+    sqlls = {
+      cmd = {"sql-language-server", "up", "--method", "stdio"};
+    },
     tsserver = {},
     vimls = {},
     vuels = {},
@@ -375,6 +382,7 @@ filetype on
       a.nvim_buf_set_keymap(0, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
       a.nvim_buf_set_keymap(0, 'n', '<leader>gi', '<cmd>lua vim.lsp.buf.incoming_calls()<cr>', opts)
       a.nvim_buf_set_keymap(0, 'n', '<leader>go', '<cmd>lua vim.lsp.buf.outgoing_calls()<cr>', opts)
+      a.nvim_buf_set_keymap(0, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
       if client.resolved_capabilities.document_highlight == true then
         a.nvim_command('augroup lsp_aucmds')
@@ -390,10 +398,6 @@ filetype on
   for lsp_server, config in pairs(lsp_servers) do
     config.on_attach = make_on_attach(config)
     local setup = lspconfig[lsp_server]
-    if setup.install and not setup.install_info().is_installed then
-      print('Installing LSP '..lsp_server)
-      setup.install()
-    end
     lspconfig[lsp_server].setup(config)
   end
 
@@ -412,6 +416,9 @@ command! -nargs=0 Format :lua vim.lsp.buf.formatting()
 
 command! -nargs=? LspActiveClients lua print(vim.inspect(vim.lsp.get_active_clients()))
 command! -nargs=? LspLog lua vim.api.nvim_command("split "..vim.lsp.get_log_path())
+
+" doesn't work
+" command! -nargs=1 SqlSwitch call luaeval('vim.lsp.buf.execute_command(_A)', <f-args>)
 
 function! RestartLsp()
   lua vim.lsp.stop_client(vim.lsp.get_active_clients())
