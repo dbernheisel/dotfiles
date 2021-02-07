@@ -1,34 +1,48 @@
 #!/bin/bash
-#
-# if ! v4l2-ctl --list-devices | grep "OBS Cam" >/dev/null; then
-#   echo "Creating video loopback device 'OBS Cam'"
-#   sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="OBS Cam" exclusive_caps=1
-# fi
-#
-# if ! pacmd list-sources | grep "OBS Mic" >/dev/null; then
-#   echo "Creating audio loopback device 'OBS Mic'"
-#   sudo modprobe snd-aloop index=10 id="OBS Mic"
-#   pacmd 'update-source-proplist alsa_input.platform-snd_aloop.0.analog-stereo device.description="OBS Mic"'
-# fi
-#
-# if ! pacmd list-sinks | grep "<OBSSink>" >/dev/null; then
-#   echo "Creating audio loopback device 'OBS Desktop'"
-#   pacmd load-module module-null-sink sink_name=OBSSink
-#   pacmd update-sink-proplist OBSSink device.description=OBSSink
-# fi
-#
-# if ! pacmd list-sinks | grep "<OBSSink_default>" >/dev/null; then
-#   echo "Creating combined sink 'OBS+Bluetooth'"
-#   pacmd load-module module-combine-sink \
-#     sink_name='OBSSink+default' \
-#     sink_properties=device.description='OBSSink+Bluetooth' \
-#     slaves=OBSSink,bluez_sink.70_26_05_8C_A4_54.a2dp_sink
-#   pacmd set-default-sink OBSSink_default
-# fi
-#
-echo "Starting virtual camera streaming server"
-ffmpeg -probesize 32 -analyzeduration 0 -re \
-  -listen 1 -i rtmp://127.0.0.1:1935/live \
-  -map 0:1 -f v4l2 -vcodec rawvideo /dev/video10 -preset ultrafast \
-  -map 0:0 -f alsa hw:10,1
+
+CAPTURE_CARD=$(v4l2-ctl --list-devices | grep -A2 Live | grep dev | head -n 1 | awk '{ print $1 }')
+if [[ -n $CAPTURE_CARD ]]; then
+  echo "Setting Capture Card to 1920x1080"
+  v4l2-ctl --device="$CAPTURE_CARD" --set-fmt-video=width=1920,height=1080,pixelformat=YUYV
+fi
+
+if ! v4l2-ctl --list-devices | grep "OBS Cam" >/dev/null; then
+  echo "Creating video loopback device 'OBS Cam'"
+  sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="OBS Cam" exclusive_caps=1
+fi
+
+if ! pacmd list-sources | grep "<OBS_Mic_Sink>" >/dev/null; then
+  echo "Creating audio loopback device 'OBS Mic Sink'"
+  sudo modprobe snd-aloop index=10 id="OBS_Mic_Sink"
+  pacmd 'update-source-proplist alsa_input.platform-snd_aloop.0.analog-stereo device.description="OBS Mic Sink"'
+fi
+
+if ! pacmd list-sinks | grep "<OBS_Sink>" >/dev/null; then
+  echo "Creating virtual mic 'OBS Desktop'"
+  pacmd load-module module-null-sink \
+    sink_name='OBS_Sink' \
+    sink_properties=device.description='OBS Sink'
+fi
+
+if ! pacmd list-sinks | grep "<OBS_Sink_Bluetooth>" >/dev/null; then
+  echo "Creating combined sink 'OBS Sink+Bluetooth'"
+  pacmd load-module module-combine-sink \
+    sink_name='OBS_Sink+Bluetooth' \
+    sink_properties=device.description='OBS Sink+Bluetooth' \
+    slaves=OBS_Sink,bluez_sink.70_26_05_8C_A4_54.a2dp_sink
+  pacmd set-default-sink OBSSink_Bluetooth
+fi
+
+if ! pacmd list-sources | grep "<OBS_Mic>" >/dev/null; then
+  pactl load-module module-remap-source \
+    master='OBS_Sink.monitor' \
+    source_name='OBS Mic' \
+    source_properties=device.description='OBS Mic'
+fi
+
+# Configure OBS to have a monitor
+#   File -> Settings -> Audio -> Advanced -> Monitoring Device -> "Monitor of OBS Sink"
+# Configure Zoom to use the mic "OBS Mic"
+# Configure Zoom to output to your specific device, not the OBS Sink
+# Configure pavucontrol to output everythin you want captured to an OBS Sink
 
