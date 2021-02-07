@@ -186,7 +186,7 @@ yarn_install_or_update vscode-css-languageserver-bin
 yarn_install_or_update ocaml-language-server
 yarn_install_or_update typescript-language-server
 yarn_install_or_update bash-language-server
-yarn_install_or_update tailwind-language-server
+yarn_install_or_update tailwindcss-language-server
 yarn_install_or_update markdownlint-cli
 yarn_install_or_update write-good
 

@@ -6,7 +6,6 @@
 .DS\_Store
 .bundle
 .byebug_history
-.elixir_ls/
 .env
 .log
 .secret*
@@ -18,7 +17,6 @@ tags.lock
 tags.temp
 temp
 tmp/**/*
-.solargraph.yml
 
 # Red Tape
 config/definitions.rb
@@ -61,3 +59,9 @@ config/keybase
 .config/gnome-control-center
 .config/gnome-session
 .config/gtk-3.0/bookmarks
+
+# Language Servers
+.sqllsrc.json
+.sqllsrc
+.solargraph.yml
+.elixir_ls/
