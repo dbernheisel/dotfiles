@@ -8,6 +8,8 @@ if have "fdfind"; then
   alias fd=fdfind
 fi
 
+alias genpass='< /dev/urandom tr -dc A-Za-z0-9 | head -c32'
+
 # Neovim
 if have "nvim"; then
   function vim() {
