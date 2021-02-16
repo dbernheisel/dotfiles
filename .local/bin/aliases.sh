@@ -183,6 +183,39 @@ if ! [[ "$OSTYPE" == darwin* ]]; then
   alias rm='nocorrect rm -i --preserve-root'
 fi
 
+if [ $DESKTOP_SESSION = "gnome" ]; then
+  export GNOME_KEYS="$HOME/.config/gnome-keybindings.dconf"
+  export CUSTOM_GNOME_KEYS="$HOME/.config/gnome-custom-keybindings.dconf"
+
+  function backup_keys() {
+    if [ -f $GNOME_KEYS ]; then rm -fv "$GNOME_KEYS"; fi
+    if [ -f $CUSTOM_GNOME_KEYS ]; then rm -fv "$CUSTOM_GNOME_KEYS"; fi
+
+    echo "Backing up keyboard shortcuts"
+    dconf dump '/org/gnome/desktop/wm/keybindings/' > $GNOME_KEYS
+    dconf dump '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/' > $CUSTOM_GNOME_KEYS
+  }
+
+  function restore_keys() {
+    read -p "You want to overwrite your current keybindings with the backup?" yn
+    case $yn in
+      [Yy])
+        if [ -f $GNOME_KEYS ]; then
+          echo "Loading backed-up Gnome keyboard shortcuts"
+          dconf load '/org/gnome/desktop/wm/keybindings/' < "$GNOME_KEYS"
+        fi
+        if [ -f $CUSTOM_GNOME_KEYS ]; then
+          echo "Loading backed-up Gnome customized keyboard shortcuts"
+          dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/' < $CUSTOM_GNOME_KEYS
+        fi
+        break;;
+      *)
+        echo "Cancelling..."
+        break;;
+    esac
+  }
+fi
+
 alias memhog='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'
 
 alias tmuxbase='tmux attach -t base || tmux new -s base'
