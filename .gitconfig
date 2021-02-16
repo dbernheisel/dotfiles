@@ -83,8 +83,8 @@
   insteadOf = https://github.com/
 [url "ssh://git@bitbucket.org/"]
   insteadOf = https://bitbucket.org/
-[url "ssh://git@bitbucket.org/taxjar/"]
-  insteadOf = tj:
+[url "ssh://git@github.com/system76/"]
+  insteadOf = 76:
 [url "ssh://git@github.com/"]
   insteadOf = gh:
 [url "ssh://git@gitlab.com/"]
@@ -111,3 +111,5 @@
   newMovedDimmed = green dim italic
 [pull]
 	ff = only
+[init]
+	defaultBranch = main
