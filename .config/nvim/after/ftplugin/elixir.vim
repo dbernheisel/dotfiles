@@ -1,5 +1,5 @@
 " Highlight character that marks where line is too long
-setlocal textwidth=100
+setlocal textwidth=120
 setlocal colorcolumn=+1
 
 function! ElixirUmbrellaTransform(cmd) abort

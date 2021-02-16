@@ -115,8 +115,8 @@ imap <Left> <nop>
 imap <Right> <nop>
 
 " Change Tabs
-nnoremap <c-left> :tabprevious<cr>
-nnoremap <c-right> :tabnext<cr>
+nnoremap <silent> <c-left> :tabprevious<CR>
+nnoremap <silent> <silent> <c-right> :tabnext<CR>
 
 " Make semicolon the same as colon
 map ; :
