@@ -10,6 +10,7 @@ get_device() {
 }
 
 make_device() {
+  sudo modprobe -r v4l2loopback
   echo "Making device"
   sudo modprobe v4l2loopback exclusive_caps=1 video_nr=9 card_label="Olympus" max_buffers=2
 }

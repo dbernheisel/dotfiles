@@ -7,6 +7,7 @@ if [[ -n $CAPTURE_CARD ]]; then
 fi
 
 if ! v4l2-ctl --list-devices | grep "OBS Cam" >/dev/null; then
+  sudo modprobe -r v4l2loopback
   echo "Creating video loopback device 'OBS Cam'"
   sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="OBS Cam" exclusive_caps=1
 fi
