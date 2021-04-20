@@ -1,6 +1,6 @@
 {
   "layer": "top",
-  "height": 40,
+  "height": 32,
   "modules-left": [
     "sway/workspaces",
     "sway/mode",
@@ -8,6 +8,7 @@
   ],
   "modules-center": [],
   "modules-right": [
+    "custom/playerctl",
     "backlight",
     "pulseaudio",
     "idle_inhibitor",
@@ -75,5 +76,14 @@
       "default": ["", "", ""]
     },
     "on-click": "pavucontrol"
+  },
+  "custom/playerctl": {
+    "format": " {} ",
+    "return-type": "json",
+    "max-length": 40,
+    "exec": "$HOME/.local/bin/waybar-playerctl.sh 2> /dev/null",
+    "on-click": "playerctl play-pause",
+    "on-scroll-up": "playerctl position 3+",
+    "on-scroll-down": "playerctl position 3-"
   }
 }

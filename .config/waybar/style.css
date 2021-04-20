@@ -2,7 +2,7 @@
   border: none;
   border-radius: 0;
   font-family: "FuraCode Nerd Font", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 12pt;
+  font-size: 10pt;
   min-height: 0;
 }
 
@@ -151,18 +151,18 @@ label:focus {
   color: #ffffff;
 }
 
-#custom-media {
-  background-color: #66cc99;
-  color: #2a5c45;
+#custom-playerctl {
+  background-color: #000000;
+  color: #ffffff;
   min-width: 100px;
 }
 
-#custom-media.custom-spotify {
-  background-color: #66cc99;
+#custom-playerctl.playing {
+  background-color: #2980b9;
 }
 
-#custom-media.custom-vlc {
-  background-color: #ffa000;
+#custom-playerctl.paused {
+  background-color: #ec9706;
 }
 
 #temperature {

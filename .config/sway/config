@@ -5,7 +5,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
   repeat_rate 50
 }
 
-input "7185:45133:Input_Club_Infinity_Ergodox/QMK" {
+input "65261:4871:ZSA_Ergodox_EZ" {
   repeat_delay 350
   repeat_rate 50
 }
@@ -13,6 +13,8 @@ input "7185:45133:Input_Club_Infinity_Ergodox/QMK" {
 input "2:1:PS/2_Synaptics_TouchPad" {
   middle_emulation disabled
 }
+
+output "DP-1" scale 1.25
 
 font pango:monospace 9
 
@@ -39,25 +41,23 @@ mode "$mode_notifications" {
 set $mode_recording Recording (d) desktop, (w) window, (r) region, (t) stop, (a) status
 bindsym $mod+Shift+s mode "$mode_recording"
 mode "$mode_recording" {
-  bindsym d exec ~/.local/bin/screenshare-webcam.sh desktop, mode "default"
-  bindsym w exec ~/.local/bin/screenshare-webcam.sh window, mode "default"
-  bindsym r exec ~/.local/bin/screenshare-webcam.sh region, mode "default"
-  bindsym t exec ~/.local/bin/screenshare-webcam.sh stop, mode "default"
-  bindsym a exec ~/.local/bin/screenshare-webcam.sh is-recording, mode "default"
+  bindsym d exec ~/.local/bin/swayrecord.sh desktop, mode "default"
+  bindsym w exec ~/.local/bin/swayrecord.sh window, mode "default"
+  bindsym r exec ~/.local/bin/swayrecord.sh region, mode "default"
+  bindsym t exec ~/.local/bin/swayrecord.sh stop, mode "default"
+  bindsym a exec ~/.local/bin/swayrecord.sh is-recording, mode "default"
 
   bindsym Return mode "default"
   bindsym Escape mode "default"
 }
 
-set $mode_screenshot (g f) region edit, (w e) window, (d s) desktop
+
+set $mode_screenshot (f) region, (w) window, (d) desktop
 bindsym $mod+Shift+f mode "$mode_screenshot"
 mode "$mode_screenshot" {
-  bindsym g exec ~/.local/bin/swayshot.sh region, mode "default"
-  bindsym f exec ~/.local/bin/swayshot.sh region-edit, mode "default"
+  bindsym f exec ~/.local/bin/swayshot.sh region, mode "default"
   bindsym w exec ~/.local/bin/swayshot.sh window, mode "default"
-  bindsym e exec ~/.local/bin/swayshot.sh window-edit, mode "default"
   bindsym d exec ~/.local/bin/swayshot.sh desktop, mode "default"
-  bindsym s exec ~/.local/bin/swayshot.sh desktop-edit, mode "default"
 
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -111,6 +111,9 @@ bindsym --to-code {
   # kill focused window
   $mod+Shift+Q kill
 
+  # hide waybar (maximize-ish)
+  $mod+m exec "killall -SIGUSR1 waybar"
+
   $mod+Shift+equal move scratchpad
   $mod+equal scratchpad show
 
@@ -158,6 +161,10 @@ bindsym --to-code {
 
   # focus the child container
   #bindsym $mod+d focus child
+  $mod+Next workspace next
+  $mod+Prior workspace prev
+  $mod+Shift+Prior move container to workspace prev
+  $mod+Shift+Next move container to workspace next
 
   # switch to workspace
   $mod+1 workspace 1
@@ -194,7 +201,7 @@ bindsym --to-code {
   $mod+XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+
   $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
   # Redirect sound to headphones
-  $mod+m exec "/usr/local/bin/switch-audio-port"
+  # $mod+m exec "/usr/local/bin/switch-audio-port"
 
   ## Multimedia Keys
   XF86AudioPlay exec playerctl play
@@ -210,12 +217,13 @@ bindsym --to-code {
   XF86MonBrightnessDown exec brightnessctl s 10%-
 
   # App shortcuts
-  # bindsym $mod+w exec "/usr/bin/brave"
-  $mod+w exec "/usr/bin/google-chrome-stable"
-  $mod+e exec "/usr/bin/thunar"
+  # $mod+w exec "/usr/bin/brave"
+  $mod+w exec "/usr/bin/google-chrome-stable -enable-features=UseOzonePlatform -ozone-platform=wayland"
+  $mod+e exec "/usr/bin/nautilus"
   $mod+Tab exec "rofi -show window"
-  $mod+space exec "rofi -show combi 'window,run' -sorting-method 'fzf'"
+  $mod+space exec "rofi -combi-modi run,window,drun -font 'Fira Code 12' --sorting-method='fzf' -show run"
   $mod+c exec "rofi -show calc -modi calc -no-show-match -no-sort"
+  $mod+p exec "rofi -show emoji -modi emoji"
 }
 
 set $color0   #2f343f
@@ -238,6 +246,8 @@ bar {
   swaybar_command waybar
 }
 
+swaybg_command { "~/.local/bin/swaybg.sh" }
+
 # gaps
 smart_gaps on
 smart_borders on
@@ -252,11 +262,11 @@ for_window [title="^Zoom.*$"] floating enable
 for_window [title="^zoom$"] floating enable
 for_window [app_id="^blueman.*"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
-for_window [app_id="org.ksnip.ksnip"] floating enable
 
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, border none
 for_window [class="ffplay" title="screenshare-preview"] floating enable, sticky enable, resize set 600 px 300 px
 
+for_window [title="zoom.us is sharing your screen."] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enablE
@@ -268,23 +278,28 @@ for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
 # Specific Scratchpads
-for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
-bindsym $mod+b [class="Google-chrome"] scratchpad show
+# for_window [class="Google-chrome"] floating enable, move to scratchpad, scratchpad show
+# bindsym $mod+b [class="Google-chrome"] scratchpad show
 
 # Disable title bar
 # for_window [class="^.*"] border none
 
+# Enable Screensharing in WebRTC
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec /usr/lib/xdg-desktop-portal -r
+exec /usr/lib/xdg-desktop-portal-wlr -r
+
 # Autostart apps
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec "~/.local/bin/launch_tray.sh &> ~/.launch_tray.log"
-exec "xrdb -merge ~/.Xwayland"
 exec "kanshi" # auto-switch displays monitor hotplugging
+exec swayidle -w \
+  timeout 300 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
+  before-sleep 'loginctl lock-session $XDG_SESSION_ID' \
+  before-sleep 'playerctl -a pause' \
+  lock 'swaylock -f'
 
-exec_always "~/.local/bin/swaybg.sh"
 exec_always "mako" # notification daemon
-exec_always "~/.local/bin/swayidle.sh"
-exec_always {
-  gsettings set org.gnome.desktop.interface gtk-theme 'Adapta-Eta'
-  gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
-  gsettings set org.gnome.desktop.interface cursor-theme 'Breeze_Snow'
-}
+exec_always "~/.local/bin/sway-importgsettings.sh"

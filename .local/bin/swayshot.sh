@@ -2,19 +2,21 @@
 
 set -e
 
-SWAYSHOT_SCREENSHOTS="$HOME/Downloads"
+SWAYSHOT_DIR="$HOME/screenshots"
 
 if [[ -z "$WAYLAND_DISPLAY" ]]; then
   (>&2 echo Wayland is not running)
   exit 1
 fi
 
-if [[ -z $SWAYSHOT_SCREENSHOTS ]]; then
-  SWAYSHOT_SCREENSHOTS=$(xdg-user-dir PICTURES)
+mkdir -p "$SWAYSHOT_DIR" || true &> /dev/null
+
+if [[ -z $SWAYSHOT_DIR ]]; then
+  SWAYSHOT_DIR=$(xdg-user-dir PICTURES)
 fi
 
 SCREENSHOT_TIMESTAMP=$(date "+${SWAYSHOT_DATEFMT:-%Y%m%d-%H%M%S}")
-SCREENSHOT_FULLNAME="$SWAYSHOT_SCREENSHOTS"/screenshot-${SCREENSHOT_TIMESTAMP}.png
+SCREENSHOT_FILE="$SWAYSHOT_DIR"/screenshot-${SCREENSHOT_TIMESTAMP}.png
 
 declare -r filter='
 # returns the focused node by recursively traversing the node tree
@@ -27,13 +29,14 @@ find_focused_node | format_rect
 '
 
 add_shadow() {
-  convert "$SCREENSHOT_FULLNAME" \( +clone -background black -shadow 50x8+0+5 \) +swap -background none -layers merge +repage "$SCREENSHOT_FULLNAME"
+  convert "$SCREENSHOT_FILE" \( +clone -background black -shadow 50x8+0+5 \) +swap -background none -layers merge +repage "$SCREENSHOT_FILE"
 }
 
 get_window() {
   local AREA
   AREA=$(swaymsg --type get_tree --raw | jq --raw-output "${filter}")
-  grim -g "$AREA" "$SCREENSHOT_FULLNAME"
+  grim -g "$AREA" "$SCREENSHOT_FILE"
+  swappy -f "$SCREENSHOT_FILE" -o "$SCREENSHOT_FILE"
   add_shadow
 }
 
@@ -41,37 +44,25 @@ get_region() {
   local AREA
   AREA=$(slurp -b '#45858820' -c '#45858880' -s '#00000000' -w 3 -d)
   [[ "$AREA" == "" ]] && exit 1
-  grim -g "$AREA" "$SCREENSHOT_FULLNAME"
+  grim -g "$AREA" "$SCREENSHOT_FILE"
+  swappy -f "$SCREENSHOT_FILE" -o "$SCREENSHOT_FILE"
 }
 
 get_desktop() {
   local AREA
-  AREA=$(swaymsg --type get_outputs --raw | jq --raw-output '.[] | select(.focused) | .name')
-  grim -o "$AREA" "$SCREENSHOT_FULLNAME"
+  OUTPUT=$(swaymsg --type get_outputs --raw | jq --raw-output '.[] | select(.focused) | .name')
+  grim -o "$OUTPUT" "$SCREENSHOT_FILE"
+  swappy -f "$SCREENSHOT_FILE" -o "$SCREENSHOT_FILE"
 }
 
-edit_image() {
-  local EDITED
-  EDITED=$(ksnip -s -e "$SCREENSHOT_FULLNAME" 2>&1 | grep "Image Saved" | tail -1 | sed 's/Image Saved: Saved to //')
-  if [ "$EDITED" == "" ]; then exit 1; fi
-  SCREENSHOT_FULLNAME="$EDITED"
-}
-
+{
 case "$1" in
   region) get_region;;
-  region-edit) get_region && edit_image;;
   window) get_window;;
-  window-edit) get_window && edit_image;;
   desktop) get_desktop;;
-  desktop-edit) get_desktop && edit_image;;
   *)
-    echo 'Usage: swayshot [region-edit|region|window|window-edit|desktop]'
+    echo 'Usage: swayshot [region|window|desktop]'
     exit 1
     ;;
 esac
-
-notify-send "Screenshot saved" "$(basename "$SCREENSHOT_FULLNAME")"
-
-if type wl-copy &> /dev/null; then
-  wl-copy < "$SCREENSHOT_FULLNAME"
-fi
+} > ~/.swayshot.log 2>&1

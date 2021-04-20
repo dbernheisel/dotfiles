@@ -6,7 +6,7 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 
-Xcursor.size: 64
+Xcursor.size: 48
 Xcursor.theme: Breeze Snow
 
 rofi.dpi: 128
