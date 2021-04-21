@@ -29,7 +29,7 @@ if [ -f /usr/share/applications/google-chrome.desktop ]; then
   export BROWSER=/usr/bin/google-chrome-stable
 fi
 
-if [ $XDG_CURRENT_DESKTOP = "sway" ] || [ $XDG_SESSION_TYPE == "wayland" ]; then
+if [ "$XDG_CURRENT_DESKTOP" = "sway" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   export KITTY_ENABLE_WAYLAND=1
 fi
 
