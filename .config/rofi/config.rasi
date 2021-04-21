@@ -1,0 +1,4 @@
+configuration {
+	dpi: 128;
+	theme: "~/.config/rofi/colors-rofi-light.rasi";
+}
