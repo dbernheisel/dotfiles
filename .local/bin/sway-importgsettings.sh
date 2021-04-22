@@ -14,6 +14,7 @@ gsettings set "$gnome_schema" icon-theme "$icon_theme"
 
 cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | cut -d'=' -f2)"
 gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
+dconf write "/${gnome_schema//\.//}/cursor-theme" "'$cursor_theme'"
 
 cursor_size="$(grep 'gtk-cursor-theme-size' "$config" | cut -d'=' -f2)"
 gsettings set "$gnome_schema" cursor-size "$cursor_size"

@@ -280,7 +280,7 @@ if have "fzf" && have "op" && have "jq"; then
 'Updated: \(.fields.updated)\n\n'\
 '\(.fields.description)'\
 '"'
-    query='assignee=currentUser()'
+    query='assignee=currentUser() AND status!=Done'
     item_1pass_uuid='a5gbmdleufbe5bcn5trkmpf7fa'
     username=$(op get item $item_1pass_uuid --fields username)
     password=$(op get item $item_1pass_uuid --fields token)
@@ -302,7 +302,7 @@ if have "fzf" && have "op" && have "jq"; then
         --preview-window=top:wrap |
       cut -f1 |
       sed -e 's/\. /\t/' -e 's/[^a-zA-Z0-9\t]/-/g' |
-      awk '{printf "%s-%s", tolower($1), tolower($2)}'
+      awk '{printf "%s-%s", $1, tolower($2)}'
     )
 
     if [ -n "$branch_name" ]; then
