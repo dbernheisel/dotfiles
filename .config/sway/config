@@ -20,7 +20,7 @@ input "1739:30383:DELL08AF:00_06CB:76AF_Touchpad" {
 }
 
 output "DP-1" scale 1.25
-outout "Unknown 0x282B 0x00000000" scale 2.0
+output "Unknown 0x282B 0x00000000" scale 2.0
 
 font pango:monospace 9
 
