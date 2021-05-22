@@ -14,3 +14,4 @@ vim-language-server
 vls
 yaml-language-server
 sql-language-server
+tree-sitter-cli

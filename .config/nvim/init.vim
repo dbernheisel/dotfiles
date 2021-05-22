@@ -133,7 +133,6 @@ nnoremap <silent> <M-h> <<
 nnoremap <silent> <M-l> >>
 
 " Shortcuts for editing vimrc. I do it too much
-nnoremap <leader>ev :tabnew $MYVIMRC<CR> :vs ~/.config/nvim/plugs.vim<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Set lines and number gutter
@@ -206,8 +205,6 @@ nmap <silent> <leader>a :call RunTestSuite()<CR>
 nmap <silent> <leader>l :call RunTest('TestLast')<CR>
 nmap <silent> <leader>g :call RunTest('TestVisit')<CR>
 
-nnoremap <C-P> :Files<CR>
-nnoremap <leader>f :Rg<Space>
 
 if executable('rg')
   set grepprg="rg --vimgrep"   " use ripgrep
