@@ -21,14 +21,6 @@ unsetopt nomatch
 typeset -U path
 path[1,0]=$HOME/.local/bin
 
-if [ -f /usr/share/applications/brave-browser.desktop ]; then
-  export BROWSER=/usr/bin/brave
-fi
-
-if [ -f /usr/share/applications/google-chrome.desktop ]; then
-  export BROWSER=/usr/bin/google-chrome-stable
-fi
-
 if [ "$XDG_CURRENT_DESKTOP" = "sway" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   export KITTY_ENABLE_WAYLAND=1
 fi
@@ -47,6 +39,8 @@ export POSTGRES_USER=$(whoami)
 # Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
 export KERL_BUILD_DOCS="yes"
+export KERL_INSTALL_HTMLDOCS="no"
+export KERL_INSTALL_MANPAGES="no"
 
 # fzf default command
 if have fzf; then
