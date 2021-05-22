@@ -1,3 +1,4 @@
 #!/bin/bash
 
-swaymsg "output '*' bg $(find $HOME/backgrounds -type f | shuf -n 1) fill"
+FILE=$(find $HOME/backgrounds -type f -not -path '*/\.*' | shuf -n 1)
+swaymsg "output '*' bg $FILE fill"
