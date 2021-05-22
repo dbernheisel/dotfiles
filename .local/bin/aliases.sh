@@ -183,7 +183,7 @@ if ! [[ "$OSTYPE" == darwin* ]]; then
   alias rm='nocorrect rm -i --preserve-root'
 fi
 
-if [ $DESKTOP_SESSION = "gnome" ]; then
+if [ "$DESKTOP_SESSION" = "gnome" ]; then
   export GNOME_KEYS="$HOME/.config/gnome-keybindings.dconf"
   export CUSTOM_GNOME_KEYS="$HOME/.config/gnome-custom-keybindings.dconf"
 
