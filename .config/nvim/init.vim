@@ -60,10 +60,10 @@ set listchars+=trail:·,precedes:←,extends:→,tab:¬\ ,nbsp:+,conceal:※
 set list
 
 " Turn on undo file so I can undo even after closing a file
-silent !mkdir -p ~/.config/nvim/undo > /dev/null 2>&1
+silent !mkdir -p ~/.cache/nvim/undo > /dev/null 2>&1
 
 set undofile
-set undodir=~/.config/nvim/undo
+set undodir=~/.cache/nvim/undo
 
 " Set map key to space
 let mapleader="\<space>"

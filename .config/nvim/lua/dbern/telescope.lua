@@ -30,6 +30,9 @@ require('telescope').setup({
     winblend = 10,
     width = 0.8,
     show_line = false,
+    prompt_title = '',
+    results_title = '',
+    preview_title = '',
     borderchars = {
       prompt = {'▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' },
       results = {'▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' },
@@ -63,7 +66,7 @@ M.search_vimrc = function()
     prompt_title = "nvimrc",
     cwd = "~/.config/nvim",
     hidden = true,
-    file_ignore_patterns = { "undo/.*", "plugged/.*" }
+    file_ignore_patterns = { ".netrwhist", "undo/.*", "plugged/.*" }
   })
 end
 
