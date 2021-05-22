@@ -6,8 +6,8 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 
-Xcursor.size: 64
-Xcursor.theme: Breeze Snow
+Xcursor.size: 48
+Xcursor.theme: Adwaita
 
 rofi.dpi: 128
 polybar.font0: FuraCode Nerd Font:size=10:style=Regular;2

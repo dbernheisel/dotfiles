@@ -1,5 +1,7 @@
 #!/bin/sh
 
+xrdb -merge ~/.Xresources
+
 # usage: sway-importsettings.sh
 config="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-3.0/settings.ini"
 if [ ! -f "$config" ]; then exit 1; fi

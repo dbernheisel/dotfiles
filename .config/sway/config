@@ -25,6 +25,7 @@ output "Unknown 0x282B 0x00000000" scale 2.0
 font pango:monospace 9
 
 seat * hide_cursor 8000
+seat * xcursor_theme "Adwaita" 48
 
 set $mod Mod4
 
