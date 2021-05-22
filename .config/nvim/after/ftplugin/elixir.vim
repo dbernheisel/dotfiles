@@ -2,6 +2,7 @@
 setlocal textwidth=120
 setlocal colorcolumn=+1
 
+" Only needed for older Elixir Umbrella projects:
 " function! ElixirUmbrellaTransform(cmd) abort
 "   if match(a:cmd, 'apps/') != -1
 "     return substitute(a:cmd, 'mix test apps/\([^/]*\)/', 'mix cmd --app \1 mix test --color ', '')
@@ -18,12 +19,22 @@ let g:projectionist_heuristics['mix.exs'] = {
   \ 'lib/*.ex': {
   \   'type': 'lib',
   \   'alternate': 'test/{}_test.exs',
-  \   'template': ['defmodule {camelcase|capitalize|dot} do', 'end'],
+  \   'template': [
+  \     'defmodule {camelcase|capitalize|dot} do',
+  \     'end'
+  \   ],
   \ },
   \ 'test/*_test.exs': {
   \   'type': 'test',
   \   'alternate': 'lib/{}.ex',
-  \   'template': ['defmodule {camelcase|capitalize|dot}Test do', '  use ExUnit.Case', '', '  alias {camelcase|capitalize|dot}, as: Subject', '', '  doctest Subject', 'end'],
+  \   'template': [
+  \     'defmodule {camelcase|capitalize|dot}Test do',
+  \     '  use ExUnit.Case, async: true',
+  \     '',
+  \     '  alias {camelcase|capitalize|dot}',
+  \     '',
+  \     'end'
+  \   ],
   \ },
   \ 'mix.exs': { 'type': 'mix' },
   \ 'config/*.exs': { 'type': 'config' },
