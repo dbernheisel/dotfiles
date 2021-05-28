@@ -233,20 +233,6 @@ function! LightMode()
   set background=light
   colorscheme onehalflight
   let g:lightline.colorscheme='onehalflight'
-  let g:fzf_colors = {
-        \ 'fg':      ['fg', 'Normal'],
-        \ 'bg':      ['bg', 'Normal'],
-        \ 'hl':      ['fg', 'Comment'],
-        \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-        \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-        \ 'hl+':     ['fg', 'Statement'],
-        \ 'info':    ['fg', 'PreProc'],
-        \ 'border':  ['fg', 'Ignore'],
-        \ 'prompt':  ['fg', 'Conditional'],
-        \ 'pointer': ['fg', 'Exception'],
-        \ 'marker':  ['fg', 'Keyword'],
-        \ 'spinner': ['fg', 'Label'],
-        \ 'header':  ['fg', 'Comment'] }
 
   if ModernTerminal()
     " Comments should be italics
@@ -259,25 +245,10 @@ nmap <leader>lm :call LightMode()<cr>
 function! DarkMode()
   let g:indentLine_color_gui = '#373737'
   set background=dark
-  colorscheme monokai-phoenix
-  let g:lightline.colorscheme='wombat'
-  let g:fzf_colors = {
-        \ 'fg':      ['fg', 'TabLine'],
-        \ 'bg':      ['bg', 'LineNr'],
-        \ 'hl':      ['fg', 'Statement'],
-        \ 'fg+':     ['fg', 'TermCursor', 'TermCursorNC', 'Statement'],
-        \ 'bg+':     ['bg', 'TermCursor', 'DiffAdd'],
-        \ 'hl+':     ['fg', 'Statement'],
-        \ 'info':    ['fg', 'PreProc'],
-        \ 'border':  ['fg', 'Ignore'],
-        \ 'prompt':  ['fg', 'Conditional'],
-        \ 'pointer': ['fg', 'Exception'],
-        \ 'marker':  ['fg', 'Keyword'],
-        \ 'spinner': ['fg', 'Label'],
-        \ 'header':  ['fg', 'Comment'] }
+  colorscheme sonokai
+  let g:lightline.colorscheme='sonokai'
 
   " Transparent Backgrounds
-  hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
   if ModernTerminal()
     " Comments should be italics
     hi Comment gui=italic
@@ -400,10 +371,14 @@ filetype on
 
   require('lspfuzzy').setup({})
 
+  require('spectre').setup()
+
   require('colorizer').setup({
     'css',
     'javascript',
     'html',
+    'lua',
+    'vim',
     'eelixir',
     'erb'
   })

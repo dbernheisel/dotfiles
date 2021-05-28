@@ -26,7 +26,7 @@ require('telescope').setup({
         ["<c-k>"] = actions.move_selection_worse,
       }
     },
-    file_ignore_patterns = {},
+    file_ignore_patterns = { "node_modules/.*", "priv/assets/.*" },
     winblend = 10,
     width = 0.8,
     show_line = false,
@@ -45,6 +45,12 @@ require('telescope').load_extension('fzf')
 
 local M = {}
 
+M.file_browser = function()
+  require('telescope.builtin').file_browser({
+    hidden = true,
+  })
+end
+
 M.search_dotfiles = function()
   require('telescope.builtin').fd({
     prompt_title = "dotfiles",
@@ -57,7 +63,7 @@ M.search_local = function()
   require('telescope.builtin').fd({
     prompt_title = "dotfiles",
     cwd = "~/.local/",
-    file_ignore_patterns = { "kitty.app/.*", "lib/.*", "share/.*" }
+    file_ignore_patterns = { "kitty.app/.*", "lib/.*", "share/.*", "discord/.*", "Insomnia Designer/.*", "BraveSoftware/.*" }
   })
 end
 

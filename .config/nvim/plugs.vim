@@ -19,14 +19,11 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
 
     Plug 'norcalli/nvim-colorizer.lua'
 
-  " Indent line guides... wish I didn't need this.
-    Plug 'Yggdroot/indentLine'
-    let g:indentLine_char_list = ['|']
-    let g:indentLine_faster = 1
-    let g:indentLine_bufTypeExclude = ['help', 'terminal']
+    Plug 'windwp/nvim-spectre'
 
     " Wiki
     let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
@@ -51,7 +48,10 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Cosmetic
     Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-    Plug 'reewr/vim-monokai-phoenix'    " Theme - Dark
+    " Plug 'reewr/vim-monokai-phoenix'    " Theme - Dark
+    " Plug 'bluz71/vim-moonfly-colors'    " Theme - Dark
+    Plug 'sainnhe/sonokai'              " Theme - Dark
+    let g:sonokai_transparent_background = 1
     Plug 'itchyny/lightline.vim'        " Statusline
     let g:lightline = {
       \ 'active': {
@@ -76,7 +76,6 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Jump to related files, :A, :AS, :AV, and :AT
   Plug 'tpope/vim-projectionist'
-  Plug 'andyl/vim-projectionist-elixir', { 'for': 'elixir' }
   Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
   Plug 'kassio/neoterm'
@@ -128,7 +127,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'stsewd/fzf-checkout.vim'
   Plug 'ojroques/nvim-lspfuzzy'
 
-  Plug 'elixir-editors/vim-elixir', {'for': ['elixir', 'eelixir']}
+  Plug 'elixir-editors/vim-elixir', {'for': ['eelixir']}
   Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
   let g:vim_markdown_conceal = 0
   let g:vim_markdown_conceal_code_blocks = 0
@@ -140,7 +139,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
 
   " Syntax highlighting
-  let g:polyglot_disabled = ['markdown', 'elixir', 'eelixir']
+  let g:polyglot_disabled = ['ruby', 'markdown', 'elixir', 'eelixir']
   Plug 'sheerun/vim-polyglot'         " Languages support.
 
   " Theme for markdown editing
@@ -158,17 +157,3 @@ call plug#begin('~/.config/nvim/plugged')
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
 call plug#end()
-
-augroup vimrc
-    autocmd FileType dirvish nmap <silent> <buffer> <CR>  :<C-U>call <SID>dirvish_open('edit'   , 0)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> v     :<C-U>call <SID>dirvish_open('vsplit' , 0)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> V     :<C-U>call <SID>dirvish_open('vsplit' , 1)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> x     :<C-U>call <SID>dirvish_open('split'  , 0)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> X     :<C-U>call <SID>dirvish_open('split'  , 1)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> t     :<C-U>call <SID>dirvish_open('tabedit', 0)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> T     :<C-U>call <SID>dirvish_open('tabedit', 1)<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> -     <Plug>(dirvish_up)
-    autocmd FileType dirvish nmap <silent> <buffer> <ESC> :bd<CR>
-    autocmd FileType dirvish nmap <silent> <buffer> q     :bd<CR>
-augroup END
-
