@@ -1,12 +1,8 @@
 lua require("dbern.treesitter")
 
-au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
-au BufRead,BufNewFile *.eex,*.leex,*.sface set filetype=eelixir
-au BufRead,BufNewFile mix.lock set filetype=elixir
-au BufRead,BufNewFile * call s:DetectElixir()
+hi link TSAttribute TSMethod
+hi link TSSymbol TSNumber
 
-function! s:DetectElixir()
-  if (!did_filetype() || &filetype !=# 'elixir') && getline(1) =~# '^#!.*\<elixir\>'
-    set filetype=elixir
-  endif
-endfunction
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
+

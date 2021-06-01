@@ -47,7 +47,7 @@ function! s:goyo_leave()
   Limelight!
   NoPencil
   NoWordy
-  colorscheme monokai-phoenix
+  colorscheme sonokai
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()

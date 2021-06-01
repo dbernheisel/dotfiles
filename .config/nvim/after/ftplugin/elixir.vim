@@ -87,6 +87,10 @@ let g:projectionist_heuristics['mix.exs'] = {
   \ 'lib/**/views/*_view.ex': {
   \   'type': 'view',
   \   'alternate': 'test/{dirname}/views/{basename}_view_test.exs',
+  \   'related': [
+  \     '{dirname|dirname}/live/{basename}_live.ex',
+  \     '{dirname|dirname}/controllers/{basename}_controller.ex'
+  \   ],
   \   'template': [
   \     'defmodule {dirname|camelcase|capitalize}.{basename|camelcase|capitalize}View do',
   \     '  use {dirname|camelcase|capitalize}, :view',
