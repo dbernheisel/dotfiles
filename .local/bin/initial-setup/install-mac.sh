@@ -53,5 +53,3 @@ fancy_echo "Installing programs" "$yellow"
 brew update
 brew bundle check || brew bundle
 brew cleanup
-
-ln -fs "$HOME/.config/kitty/kitty.conf" "$HOME/Library/Preferences/kitty"

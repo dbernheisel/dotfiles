@@ -32,6 +32,7 @@ have rg && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 [[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ -d $HOME/.config/composer/vendor/bin ]] && export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 [[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
+[[ $TERMINFO =~ "iterm" ]] && export COLORTERM="truecolor"
 
 # PostgreSQL
 export POSTGRES_USER=$(whoami)

@@ -6,7 +6,7 @@ end
 
 parser_config.elixir = {
   install_info = {
-    url = "~/tree-sitter-elixir",
+    url = "https://github.com/ananthakumaran/tree-sitter-elixir",
     files =  { "src/parser.c", "src/scanner.cc" },
     requires_generate_from_grammar  = true,
   }
@@ -21,7 +21,7 @@ parser_config.markdown = {
 }
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'bash', 'css', 'dart', 'dockerfile', 'erlang',
+    ensure_installed = {'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir',
     'go', 'html', 'javascript', 'jsonc', 'kotlin', 'lua', 'php', 'python',
     'regex', 'ruby', 'rust', 'scss', 'svelte', 'toml', 'tsx', 'typescript', 'vue',
     'yaml', 'zig'},
