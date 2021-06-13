@@ -34,4 +34,7 @@ case $yn in
   *) break:;
 esac
 
+echo "Updating Neovim Plugs"
+nvim -c ':PlugUpgrade|:PlugUpdate|:q|:q'
+
 mv ~/.gitconfig-bak-checked ~/.gitconfig
