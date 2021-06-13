@@ -27,6 +27,8 @@ fzf.bash
 config/Keybase
 config/keybase
 
+private_ssh_key
+
 # Linux
 .config/autostart
 .config/configstore
