@@ -9,7 +9,7 @@
 # then copy/paste genesys:libusb:006:003 into SCANNER below.
 set -euo pipefail
 
-DPI=300
+DPI=600
 SCANNER="brother5:net1;dev0"
 TESSERACT_LANG=eng # Language that Tesseract uses for OCR
 
