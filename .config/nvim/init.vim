@@ -73,9 +73,6 @@ let g:html_indent_tags = 'li\|p'
 
 nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
-" Theme
-syntax on
-
 function! s:DetectElixir()
   if (!did_filetype() || &filetype !=# 'elixir') && getline(1) =~# '^#!.*\<elixir\>'
     setf elixir
@@ -95,7 +92,7 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.ex,*.exs setf elixir
   autocmd BufNewFile,BufRead Procfile,Brewfile setf ruby
   autocmd BufNewFile,BufRead *.md setf markdown
-  autocmd BufNewFile,BufRead *.html.eex *.html.leex *.drab setf html
+  autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setf html
   autocmd BufNewFile,BufRead mix.lock setf elixir
   autocmd BufNewFile,BufRead *.arb setf ruby
   autocmd BufNewFile,BufRead irbrc,pryrc setf ruby
@@ -112,7 +109,6 @@ augroup vimrcEx
   autocmd VimResized * :wincmd =
 augroup END
 
-
 filetype on
 
 " install vim-plug if needed.
@@ -125,7 +121,6 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
     Plug 'neovim/nvim-lspconfig'
-    " Plug 'nvim-lua/completion-nvim'
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'nvim-lua/popup.nvim'
@@ -145,10 +140,11 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'windwp/nvim-spectre'
 
     " Wiki
-    let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
-    let g:vimwiki_use_calendar = 1
     Plug 'vimwiki/vimwiki'
     Plug 'itchyny/calendar.vim'
+    let g:vimwiki_ext2syntax = {}
+    let g:vimwiki_list = [{'path': '~/vimwiki/'}]
+    let g:vimwiki_use_calendar = 1
 
     " <C-n> to select next word with new cursor
     Plug 'mg979/vim-visual-multi'
@@ -159,7 +155,7 @@ call plug#begin('~/.config/nvim/plugged')
     let g:NERDSpaceDelims = 1
     let g:NERDCommentEmptyLines = 1
 
-    Plug 'airblade/vim-gitgutter'       " Git gutter
+    Plug 'lewis6991/gitsigns.nvim'      " Git gutter
     Plug 'tpope/vim-fugitive'           " Gblame
 
     Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
@@ -174,8 +170,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-projectionist'
   " Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
-  " Plug 'kassio/neoterm'
-  Plug 'akinsho/nvim-toggleterm.lua'
+  Plug 'numToStr/FTerm.nvim'
 
   " Add test commands
   Plug 'janko-m/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'] }
@@ -209,14 +204,14 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'ojroques/nvim-lspfuzzy'
 
   " Plug 'elixir-editors/vim-elixir', {'for': ['eelixir']}
-  Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
-  let g:vim_markdown_conceal = 0
-  let g:vim_markdown_conceal_code_blocks = 0
-  let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
-        \ "ini=dosini", "patch=diff"]
-  let g:vim_markdown_strikethrough = 1
-  let g:vim_markdown_frontmatter = 1
-  let g:vimwiki_global_ext=0
+  " Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
+  " let g:vim_markdown_conceal = 0
+  " let g:vim_markdown_conceal_code_blocks = 0
+  " let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
+  "       \ "ini=dosini", "patch=diff"]
+  " let g:vim_markdown_strikethrough = 1
+  " let g:vim_markdown_frontmatter = 1
+  " let g:vimwiki_global_ext=0
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
 
   " Theme for markdown editing
@@ -234,3 +229,6 @@ call plug#begin('~/.config/nvim/plugged')
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
 call plug#end()
+
+" Theme
+syntax on

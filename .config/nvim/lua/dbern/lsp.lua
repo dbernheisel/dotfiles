@@ -15,9 +15,13 @@ local lsp_servers = {
       }
     };
   },
-  html = {},
+  html = {
+    filetypes = {"html", "eelixir", "eruby"}
+  },
   jsonls = {},
-  solargraph = {},
+  solargraph = {
+    filetypes = {"eruby"}
+  },
   sqlls = {
     cmd = {"sql-language-server", "up", "--method", "stdio"};
   },

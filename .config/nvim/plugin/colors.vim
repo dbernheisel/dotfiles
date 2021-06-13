@@ -62,3 +62,24 @@ function! SynStack()
 endfunc
 
 map <F10> :call SynStack()<CR>
+
+let g:terminal_color_0  = '#151515'
+let g:terminal_color_1  = '#ac4142'
+let g:terminal_color_2  = '#7e8e50'
+let g:terminal_color_3  = '#e5b567'
+let g:terminal_color_4  = '#6c99bb'
+let g:terminal_color_5  = '#9f4e85'
+let g:terminal_color_6  = '#7dd6cf'
+let g:terminal_color_7  = '#d0d0d0'
+let g:terminal_color_8  = '#505050'
+let g:terminal_color_9  = '#ac4142'
+let g:terminal_color_10 = '#7e8e50'
+let g:terminal_color_11 = '#e5b567'
+let g:terminal_color_12 = '#6c99bb'
+let g:terminal_color_13 = '#9f4e85'
+let g:terminal_color_14 = '#7dd6cf'
+let g:terminal_color_15 = '#f5f5f5'
+
+hi VertSplit ctermbg=255 guibg=bg guifg=bg
+hi BlackBg guibg=#151515
+set fillchars+=vert:\  " don't trim
