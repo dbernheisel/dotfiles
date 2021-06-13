@@ -3,6 +3,14 @@
 alias history='history -f'
 source "$HOME/.local/bin/wvim.zsh"
 
+function have() {
+  type "$1" &> /dev/null
+}
+
+if have kubectl; then
+  source <(kubectl completion zsh)
+fi
+
 function deploy_staging() {
   YELLOW="\033[1;33m"
   RED="\033[1;31m"
