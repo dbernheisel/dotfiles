@@ -46,6 +46,18 @@ require('telescope').load_extension('fzf')
 
 local M = {}
 
+M.find_files = function()
+  require('telescope.builtin').fd({
+    previewer = false
+  })
+end
+
+M.find_git_files = function()
+  require('telescope.builtin').git_files({
+    previewer = false
+  })
+end
+
 M.file_browser = function()
   require('telescope.builtin').file_browser({
     hidden = true,
