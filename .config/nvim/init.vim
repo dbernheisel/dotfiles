@@ -90,11 +90,11 @@ augroup vimrcEx
 
   " Set syntax highlighting
   autocmd BufNewFile,BufRead *.ex,*.exs setf elixir
+  autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setf eelixir
   autocmd BufNewFile,BufRead Procfile,Brewfile setf ruby
   autocmd BufNewFile,BufRead *.md setf markdown
-  autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setf html
   autocmd BufNewFile,BufRead mix.lock setf elixir
-  autocmd BufNewFile,BufRead *.arb setf ruby
+  autocmd BufNewFile,BufRead *.arb setf eruby
   autocmd BufNewFile,BufRead irbrc,pryrc setf ruby
   autocmd BufNewFile,BufRead * call s:DetectElixir()
 

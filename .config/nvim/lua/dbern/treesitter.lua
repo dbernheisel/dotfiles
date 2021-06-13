@@ -5,40 +5,14 @@ local read_query = function(filename)
 end
 
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
--- parser_config.elixir = {
---   install_info = {
---     url = '~/tree-sitter-elixir',
---     files =  { 'src/parser.c', 'src/scanner.cc' },
---     requires_generate_from_grammar  = true,
---   }
--- }
-
--- parser_config.html_eex = {
---   install_info = {
---     url = 'https://github.com/tree-sitter/tree-sitter-embedded-template',
---     files =  { 'src/parser.c' },
---     requires_generate_from_grammar  = true,
---   },
---   filetype = "eelixir",
---   used_by = {'eex', 'eelixir'}
--- }
---
--- parser_config.html_erb = {
---   install_info = {
---     url = 'https://github.com/tree-sitter/tree-sitter-embedded-template',
---     files =  { 'src/parser.c' },
---     requires_generate_from_grammar  = true,
---   },
---   used_by = {'eruby'}
--- }
 
 parser_config.embedded_template = {
   install_info = {
     url = 'https://github.com/tree-sitter/tree-sitter-embedded-template',
-    files =  { 'src/parser.c' }
+    files =  { 'src/parser.c' },
+    requires_generate_from_grammar  = true,
   },
-  filetype = "eelixir",
-  used_by = {'eex', 'eelixir', 'eruby'}
+  used_by = {'eex', 'leex', 'sface', 'eelixir', 'eruby', 'erb'}
 }
 
 parser_config.markdown = {
@@ -51,9 +25,9 @@ parser_config.markdown = {
 
 require('nvim-treesitter.configs').setup({
     ensure_installed = {'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir',
-    'go', 'html', 'javascript', 'jsonc', 'kotlin', 'lua', 'php', 'python',
-    'regex', 'ruby', 'rust', 'scss', 'svelte', 'toml', 'tsx', 'typescript', 'vue',
-    'yaml', 'zig'},
+    'embedded_template', 'go', 'html', 'javascript', 'jsonc', 'kotlin', 'lua',
+    'php', 'python', 'regex', 'ruby', 'rust', 'scss', 'svelte', 'toml', 'tsx',
+    'typescript', 'vue', 'yaml', 'zig'},
 
     indent = { enable = true },
     highlight = { enable = true },
