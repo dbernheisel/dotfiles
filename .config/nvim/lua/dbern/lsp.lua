@@ -1,21 +1,50 @@
 local a = vim.api
 local lspconfig = require('lspconfig')
+local lua_lsp_root = vim.loop.os_homedir().."/.cache/lua-language-server"
 
 local lsp_servers = {
   bashls = {},
   cssls = {
     root_dir = lspconfig.util.root_pattern("package.json", ".git")
   },
+  efm = {
+    filetypes = {"elixir", "eruby", "sh", "javascript", "html", "css", "json"}
+  },
+  sumneko_lua = {
+    cmd = { lua_lsp_root.."/bin/Linux/lua-language-server", "-E", lua_lsp_root.."/main.lua" },
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';')
+        },
+        diagnostics = {
+          globals = {'vim'},
+        },
+        workspace = {
+          library = {
+            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+          }
+        },
+      },
+    },
+  },
   dockerls = {},
   elixirls = {
-    cmd = { vim.loop.os_homedir().."/.cache/elixir-ls/release/language_server.sh" };
+    cmd = { vim.loop.os_homedir().."/.cache/elixir-ls/release/language_server.sh" },
     settings = {
       elixirLS = {
         dialyzerFormat = "dialyxir_short";
       }
-    };
+    },
+    on_init = function(client)
+      client.notify("workspace/didChangeConfiguration")
+      return true
+    end,
   },
   html = {
+    cmd = { "html-languageserver", "--stdio" },
     filetypes = {"html", "eelixir", "eruby"}
   },
   jsonls = {},
@@ -23,7 +52,7 @@ local lsp_servers = {
     filetypes = {"eruby"}
   },
   sqlls = {
-    cmd = {"sql-language-server", "up", "--method", "stdio"};
+    cmd = {"sql-language-server", "up", "--method", "stdio"},
   },
   tsserver = {},
   vimls = {},
@@ -71,10 +100,16 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
+require('lspinstall').setup()
+local installed_servers = require('lspinstall').installed_servers()
+for _, lsp_server in pairs(installed_servers) do
+  local setup = lspconfig[lsp_server]
+  setup.setup(setup['document_config'])
+end
+
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)
   config.capabilities = capabilities
-  local setup = lspconfig[lsp_server]
   lspconfig[lsp_server].setup(config)
 end
 

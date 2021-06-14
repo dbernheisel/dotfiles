@@ -73,12 +73,6 @@ let g:html_indent_tags = 'li\|p'
 
 nnoremap <leader>cal :Calendar -view=year -split=horizontal -position=bottom -height=12<cr>
 
-function! s:DetectElixir()
-  if (!did_filetype() || &filetype !=# 'elixir') && getline(1) =~# '^#!.*\<elixir\>'
-    setf elixir
-  endif
-endfunction
-
 augroup vimrcEx
   autocmd!
 
@@ -88,18 +82,7 @@ augroup vimrcEx
     \   exe "normal! g`\"" |
     \ endif
 
-  " Set syntax highlighting
-  autocmd BufNewFile,BufRead *.ex,*.exs setf elixir
-  autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setf eelixir
-  autocmd BufNewFile,BufRead Procfile,Brewfile setf ruby
-  autocmd BufNewFile,BufRead *.md setf markdown
-  autocmd BufNewFile,BufRead mix.lock setf elixir
-  autocmd BufNewFile,BufRead *.arb setf eruby
-  autocmd BufNewFile,BufRead irbrc,pryrc setf ruby
-  autocmd BufNewFile,BufRead * call s:DetectElixir()
-
   " JSON w/ comments
-  autocmd BufNewFile,BufRead *.jsonc setf json
   autocmd FileType json syntax match Comment +\/\/.\+$+
 
   " Remove trailing whitespace on save
@@ -121,6 +104,7 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
     Plug 'neovim/nvim-lspconfig'
+    Plug 'kabouzeid/nvim-lspinstall'
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'nvim-lua/popup.nvim'
