@@ -1,5 +1,4 @@
 local actions = require('telescope.actions')
-local sorters = require('telescope.sorters')
 
 require('telescope').setup({
   extensions = {
@@ -29,7 +28,6 @@ require('telescope').setup({
     },
     file_ignore_patterns = { "node_modules/.*", "priv/assets/.*" },
     winblend = 10,
-    width = 0.8,
     show_line = false,
     prompt_title = '',
     results_title = '',

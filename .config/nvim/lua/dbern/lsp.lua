@@ -119,10 +119,13 @@ require('spectre').setup()
 
 require('colorizer').setup({
   'css',
+  'scss',
+  'sass',
   'javascript',
   'html',
   'lua',
   'vim',
+  'conf',
   'eelixir',
   'erb'
 })
