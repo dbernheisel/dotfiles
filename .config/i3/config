@@ -269,6 +269,7 @@ exec --no-startup-id "picom --config ~/.config/picom/picom.conf -b"
 exec --no-startup-id "~/.local/bin/launch_polybar.sh"
 # Set background and theme from background
 exec --no-startup-id "feh --randomize --bg-fill ~/backgrounds"
+exec --no-startup-id "dunst"
 # Hide cursor when idle over background.
 exec --no-startup-id "unclutter -root &"
 # Increase key-repeat rate
