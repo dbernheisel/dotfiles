@@ -8,6 +8,7 @@ if have "fdfind"; then
   alias fd=fdfind
 fi
 
+alias luamake="$HOME/.cache/lua-language-server/3rd/luamake/luamake"
 alias genpass='< /dev/urandom tr -dc A-Za-z0-9 | head -c32'
 
 # Neovim
