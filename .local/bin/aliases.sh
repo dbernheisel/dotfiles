@@ -18,6 +18,7 @@ if have "nvim"; then
   }
 fi
 
+[[ -d $HOME/.cache/lua-language-server ]] && alias luamake="$HOME/.cache/lua-language-server/3rd/luamake/luamake"
 
 if [[ $TERMINFO =~ "kitty" ]];  then
   function icat() {
@@ -29,6 +30,12 @@ if [[ $TERMINFO =~ "kitty" ]];  then
       TERM=xterm-kitty command ranger "${@}"
     }
   fi
+fi
+
+if [[ $TERMINFO =~ "iterm" ]]; then
+  function icat() {
+    imgcat "${@}"
+  }
 fi
 
 # Set title easily
@@ -54,7 +61,7 @@ if have "awsume"; then
  alias awsume='source awsume'
 fi
 
-if have "kubectl"; then
+if have "kubectl" && ! have "kubectx"; then
   alias kubectx="kubectl config use-context"
 fi
 
@@ -94,19 +101,6 @@ gcof() {
 # Homegit
 alias config='git --git-dir="$HOME/.cfg/" --work-tree="$HOME"'
 
-# Alias some ansible commands
-if have "ansible-playbook"; then
-  alias aplaybook='ansible-playbook'
-fi
-
-if have "ansible-vault"; then
-  alias avault='ansible-vault'
-fi
-
-if have "ansible-galaxy"; then
-  alias agalaxy='ansible-galaxy'
-fi
-
 if have "terraform"; then
   alias tf='terraform'
 fi
@@ -122,11 +116,6 @@ if have "docker"; then
   alias docker_rm_containers='docker ps --filter status=dead --filter status=exited -aq | xargs -r docker rm -v'
   alias docker_rm_volumes='docker volume ls -qf dangling=true | xargs -r docker volume rm'
   alias docker_reset='docker_rm_images && docker_rm_containers && docker_rm_volumes'
-fi
-
-# Alias some NPM tools
-if have "googler"; then
-  alias google='googler -n 10'
 fi
 
 # Alias some Ruby/Bundler/Rails commands
