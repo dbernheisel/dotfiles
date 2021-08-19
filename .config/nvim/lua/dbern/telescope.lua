@@ -28,6 +28,9 @@ require('telescope').setup({
     },
     file_ignore_patterns = { "node_modules/.*", "priv/assets/.*" },
     winblend = 10,
+    layout_config = {
+      width = 0.8,
+    },
     show_line = false,
     prompt_title = '',
     results_title = '',

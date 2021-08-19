@@ -1,6 +1,13 @@
 local a = vim.api
 local lspconfig = require('lspconfig')
 local lua_lsp_root = vim.loop.os_homedir().."/.cache/lua-language-server"
+local lua_lsp_bin
+
+if a.nvim_get_var("os") == "Darwin" then
+  lua_lsp_bin = lua_lsp_root.."/bin/macOS/lua-language-server"
+elseif a.nvim_get_var("os") == "Linux" then
+  lua_lsp_bin = lua_lsp_root.."/bin/Linux/lua-language-server"
+end
 
 local lsp_servers = {
   bashls = {},
@@ -10,8 +17,13 @@ local lsp_servers = {
   efm = {
     filetypes = {"elixir", "eruby", "sh", "javascript", "html", "css", "json"}
   },
+  sorbet = {
+    cmd = {"pay", "exec", "scripts/bin/typecheck", "--lsp"},
+    filetypes = {"ruby"},
+    root_dir = lspconfig.util.root_pattern("pay-server.sublime-project"),
+  },
   sumneko_lua = {
-    cmd = { lua_lsp_root.."/bin/Linux/lua-language-server", "-E", lua_lsp_root.."/main.lua" },
+    cmd = { lua_lsp_bin, "-E", lua_lsp_root.."/main.lua" },
     settings = {
       Lua = {
         runtime = {
@@ -49,10 +61,13 @@ local lsp_servers = {
   },
   jsonls = {},
   solargraph = {
-    filetypes = {"eruby"}
+    filetypes = {"ruby", "eruby"}
   },
   sqlls = {
     cmd = {"sql-language-server", "up", "--method", "stdio"},
+  },
+  tailwindcss = {
+    cmd = { vim.loop.os_homedir().."/.cache/tailwindcss-intellisense/tailwindcss-language-server", "--stdio" },
   },
   tsserver = {},
   vimls = {},
@@ -99,13 +114,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits',
   }
 }
-
-require('lspinstall').setup()
-local installed_servers = require('lspinstall').installed_servers()
-for _, lsp_server in pairs(installed_servers) do
-  local setup = lspconfig[lsp_server]
-  setup.setup(setup['document_config'])
-end
 
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)

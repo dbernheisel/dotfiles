@@ -34,6 +34,18 @@ imap <Right> <nop>
 nnoremap <silent> <c-left> :tabprevious<CR>
 nnoremap <silent> <c-right> :tabnext<CR>
 
+" Other Editors
+command! Intellij execute ":!idea %:p --line " . line('.')
+command! VSCode execute ":!code -g %:p\:" . line('.') . ":" . col('.')
+
+if !exists("g:os")
+  if has("win64") || has("win32") || has("win16")
+    let g:os = "Windows"
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
 " Make semicolon the same as colon
 map ; :
 
@@ -104,7 +116,6 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
     Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
     Plug 'hrsh7th/nvim-compe'
 
     Plug 'nvim-lua/popup.nvim'
@@ -113,7 +124,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
 
     Plug 'norcalli/snippets.nvim'
