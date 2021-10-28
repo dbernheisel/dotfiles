@@ -27,9 +27,11 @@ fi
 
 have rg && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
+[[ -d $HOME/Library/Python/3.9/bin ]] && export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 [[ -d $HOME/flutter/bin ]] && export PATH="$HOME/flutter/bin:$PATH"
 [[ -d $HOME/.yarn/bin ]] && export PATH="$HOME/.yarn/bin:$PATH"
 [[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
+[[ -d $HOME/go/bin ]] && export PATH="$HOME/go/bin:$PATH"
 [[ -d $HOME/.config/composer/vendor/bin ]] && export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 [[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
 [[ $TERMINFO =~ "iterm" ]] && export COLORTERM="truecolor"
@@ -77,3 +79,4 @@ fi
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 
 [ -e "$HOME/.zshlocal" ] && source "$HOME/.zshlocal"
+[[ -d "$HOME/.local/bin/zsh/zsh-autoenv" ]] && source "$HOME/.local/bin/zsh/zsh-autoenv/autoenv.zsh"

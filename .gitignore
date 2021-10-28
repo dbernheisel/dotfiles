@@ -1,25 +1,34 @@
-!tags/
-!tmp/cache/.keep
 *.pyc
 *.sqlite3
 *.sw[nop]
-.DS\_Store
-.bundle
-.byebug_history
 .env
 .log
 .secret*
-.vscode/
-Icon?
-Thumbs.db
-tags
-tags.lock
-tags.temp
 temp
 tmp/**/*
 
-# Red Tape
+.vscode/
+.autoenv.zsh
+
+# Ruby
+!tmp/cache/.keep
+.bundle
+.byebug_history
 config/definitions.rb
+
+# MacOS
+.DS\_Store
+Icon?
+Thumbs.db
+
+# ctags
+!tags/
+tags
+tags.lock
+tags.temp
+
+# direnv
+.envrc
 
 backup
 fzf.bash
