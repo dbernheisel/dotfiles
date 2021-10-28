@@ -1,4 +1,4 @@
-require('FTerm').setup()
+require('FTerm')
 
 local M = {}
 

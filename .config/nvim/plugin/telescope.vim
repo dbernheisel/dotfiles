@@ -1,14 +1,15 @@
 lua require("dbern.telescope")
 
-silent! !git rev-parse --is-inside-work-tree
-if v:shell_error == 0
-  nnoremap <silent> <c-p> :lua require('dbern.telescope').find_git_files()<CR>
-else
-  nnoremap <silent> <c-p> :lua require('dbern.telescope').find_files()<CR>
-endif
+let g:fzf_buffers_jump = 1
+let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.9, 'relative': v:true, 'yoffset': 1.0 } }
+let g:fzf_preview_window = ['right:40%:hidden', 'ctrl-/']
 
-nnoremap <silent> <leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("> ")})<CR>
-nnoremap <silent> <leader>cw :lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
+nnoremap <silent> <c-p> :Files<CR>
+" nnoremap <silent> <c-p> :lua require('dbern.telescope').find_files()<CR>
+" nnoremap <silent> <c-f> :lua require('dbern.telescope').find_files()<CR>
+" nnoremap <silent> <leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("> ")})<CR>
+nnoremap <silent> <leader>f :Rg<CR>
+" nnoremap <silent> <leader>cw :lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
 
 nnoremap <silent> <leader>b :lua require('dbern.telescope').file_browser()<CR>
 

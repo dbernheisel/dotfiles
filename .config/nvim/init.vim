@@ -63,6 +63,8 @@ nnoremap <silent> <M-l> >>
 " Shortcuts for editing vimrc. I do it too much
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+nnoremap <leader>d :DashWord<CR>
+
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
@@ -116,7 +118,13 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
     Plug 'neovim/nvim-lspconfig'
-    Plug 'hrsh7th/nvim-compe'
+    Plug 'kabouzeid/nvim-lspinstall'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-calc'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'David-Kunz/cmp-npm'
 
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
@@ -128,7 +136,9 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'nvim-treesitter/playground'
 
     Plug 'norcalli/snippets.nvim'
+    Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
+    Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
 
     Plug 'norcalli/nvim-colorizer.lua'
 
@@ -150,7 +160,7 @@ call plug#begin('~/.config/nvim/plugged')
     let g:NERDSpaceDelims = 1
     let g:NERDCommentEmptyLines = 1
 
-    Plug 'lewis6991/gitsigns.nvim'      " Git gutter
+    Plug 'mhinz/vim-signify'            " Git gutter
     Plug 'tpope/vim-fugitive'           " Gblame
 
     Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
@@ -163,7 +173,6 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Jump to related files, :A, :AS, :AV, and :AT
   Plug 'tpope/vim-projectionist'
-  " Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
   Plug 'numToStr/FTerm.nvim'
 
@@ -195,18 +204,8 @@ call plug#begin('~/.config/nvim/plugged')
   endif
 
   Plug 'junegunn/fzf.vim'           " Fuzzy-finder
-  let g:fzf_buffers_jump = 1
   Plug 'ojroques/nvim-lspfuzzy'
 
-  " Plug 'elixir-editors/vim-elixir', {'for': ['eelixir']}
-  " Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
-  " let g:vim_markdown_conceal = 0
-  " let g:vim_markdown_conceal_code_blocks = 0
-  " let g:vim_markdown_fenced_languages = ["erb=eruby", "viml=vim", "bash=sh",
-  "       \ "ini=dosini", "patch=diff"]
-  " let g:vim_markdown_strikethrough = 1
-  " let g:vim_markdown_frontmatter = 1
-  " let g:vimwiki_global_ext=0
   Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
 
   " Theme for markdown editing

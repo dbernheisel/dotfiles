@@ -3,7 +3,7 @@ local lspconfig = require('lspconfig')
 local lua_lsp_root = vim.loop.os_homedir().."/.cache/lua-language-server"
 local lua_lsp_bin
 
-if a.nvim_get_var("os") == "Darwin" then
+if vim.loop.os_uname().sysname == "Darwin" then
   lua_lsp_bin = lua_lsp_root.."/bin/macOS/lua-language-server"
 elseif a.nvim_get_var("os") == "Linux" then
   lua_lsp_bin = lua_lsp_root.."/bin/Linux/lua-language-server"
@@ -63,6 +63,11 @@ local lsp_servers = {
   solargraph = {
     filetypes = {"ruby", "eruby"}
   },
+  sorbet = {
+    cmd = { "srb", "tc", "--lsp" },
+    filetypes = { "ruby" },
+    root_dir = lspconfig.util.root_pattern('sorbet'),
+  },
   sqlls = {
     cmd = {"sql-language-server", "up", "--method", "stdio"},
   },
@@ -118,6 +123,33 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)
   config.capabilities = capabilities
+
+  if lsp_server == 'sorbet' and vim.fn.glob("scripts/bin/typecheck") ~= "" then
+    config.cmd = {
+      "scripts/dev_productivity/while_pay_up_connected.sh",
+      "pay",
+      "exec",
+      "scripts/bin/typecheck",
+      "--lsp",
+      "--enable-all-experimental-lsp-features",
+      "--enable-experimental-lsp-document-formatting-rubyfmt"
+    }
+  elseif lsp_server == 'solargraph' and vim.fn.glob("sorbet") ~= "" then
+    config.filestypes = {}
+  elseif lsp_server == 'sorbet' then
+    local local_sorbet_build = vim.fn.glob(vim.fn.environ().HOME.."/stripe/sorbet/bazel-bin/main/sorbet")
+    if local_sorbet_build ~= "" then
+      -- prefer a local build of sorbet if it's available
+      config.cmd = {
+        local_sorbet_build,
+        "--lsp",
+        "--silence-dev-message",
+        "--enable-all-experimental-lsp-features",
+        "--enable-experimental-lsp-document-formatting-rubyfmt"
+      }
+    end
+  end
+
   lspconfig[lsp_server].setup(config)
 end
 

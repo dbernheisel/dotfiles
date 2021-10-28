@@ -1,5 +1,5 @@
 function! ModernTerminal()
-  if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo" || $KITTY_WINDOW_ID != "" || $SSH_CLIENT != ""
+  if $TERM_PROGRAM == "iTerm.app" || $TERMINFO =~ "kitty\.app" || $TERMINFO =~ "kitty/terminfo" || $KITTY_WINDOW_ID != "" ||  $SSH_CLIENT != "" || $ALACRITTY_LOG != ""
     return 1
   else
     return 0
