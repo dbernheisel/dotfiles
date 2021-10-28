@@ -6,7 +6,7 @@ if [ -z "$GIT_IMAGE_DIFF_FUZZ" ]; then
 fi
 
 display_comparison() {
-  if type montage > /dev/null && type montage > /dev/null && [ -z "$NVIM_LISTEN_ADDRESS" ]; then
+  if type montage > /dev/null && type montage > /dev/null && [ -z "$NVIM_LISTEN_ADDRESS" ] && [[ $TERMINFO =~ "kitty" ]]; then
     compare -fuzz $GIT_IMAGE_DIFF_FUZZ "$1" "$2" png:- | \
       montage -geometry +4+4 "$1" - "$2" png:- | \
       kitty +kitten icat
