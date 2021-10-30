@@ -63,7 +63,9 @@ nnoremap <silent> <M-l> >>
 " Shortcuts for editing vimrc. I do it too much
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-nnoremap <leader>d :DashWord<CR>
+if has('macunix')
+  nnoremap <leader>d :DashWord<CR>
+endif
 
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
@@ -138,7 +140,9 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'norcalli/snippets.nvim'
     Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
-    Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
+    if has('macunix')
+      Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
+    endif
 
     Plug 'norcalli/nvim-colorizer.lua'
 
