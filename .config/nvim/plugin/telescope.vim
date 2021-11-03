@@ -8,7 +8,7 @@ nnoremap <silent> <c-p> :Files<CR>
 " nnoremap <silent> <c-p> :lua require('dbern.telescope').find_files()<CR>
 " nnoremap <silent> <c-f> :lua require('dbern.telescope').find_files()<CR>
 " nnoremap <silent> <leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("> ")})<CR>
-nnoremap <silent> <leader>f :Rg<CR>
+nnoremap <silent> <leader>f :Rg
 " nnoremap <silent> <leader>cw :lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
 
 nnoremap <silent> <leader>b :lua require('dbern.telescope').file_browser()<CR>

@@ -25,8 +25,6 @@ if [ "$XDG_CURRENT_DESKTOP" = "sway" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; t
   export KITTY_ENABLE_WAYLAND=1
 fi
 
-have rg && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-
 [[ -d $HOME/Library/Python/3.9/bin ]] && export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 [[ -d $HOME/flutter/bin ]] && export PATH="$HOME/flutter/bin:$PATH"
 [[ -d $HOME/.yarn/bin ]] && export PATH="$HOME/.yarn/bin:$PATH"
@@ -45,13 +43,14 @@ export KERL_BUILD_DOCS="yes"
 export KERL_INSTALL_HTMLDOCS="no"
 export KERL_INSTALL_MANPAGES="no"
 
+have rg && export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
+
 # fzf default command
 if have fzf; then
-
   # RipGrep
   have rg && export FZF_DEFAULT_COMMAND='rg --files'
-  have fd && export FZF_DEFAULT_COMMAND='fd --type f'
-  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f'
+  have fd && export FZF_DEFAULT_COMMAND="fd --type f --hidden --ignore-file \"$HOME/.config/fd/ignore\""
+  have fdfind && export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --ignore-file \"$HOME/.config/fd/ignore\"'
   FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 "
   if have bat; then
     FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --style=header,grid --line-range :300 {}'"

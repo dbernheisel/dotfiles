@@ -61,7 +61,7 @@ local lsp_servers = {
   },
   jsonls = {},
   solargraph = {
-    filetypes = {"ruby", "eruby"}
+    filetypes = {"ruby"}
   },
   sorbet = {
     cmd = { "srb", "tc", "--lsp" },
