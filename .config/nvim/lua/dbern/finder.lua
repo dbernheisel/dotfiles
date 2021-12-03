@@ -1,4 +1,5 @@
 local actions = require('telescope.actions')
+local utils = require('telescope.utils')
 
 require('telescope').setup({
   extensions = {
@@ -26,7 +27,7 @@ require('telescope').setup({
         ["<c-k>"] = actions.move_selection_worse,
       }
     },
-    file_ignore_patterns = { "node_modules/.*", "priv/assets/.*" },
+    file_ignore_patterns = { "^node_modules/" },
     winblend = 10,
     layout_config = {
       width = 0.8,
@@ -65,11 +66,18 @@ M.file_browser = function()
   })
 end
 
+M.file_browser_from_buffer = function()
+  require('telescope.builtin').file_browser({
+    hidden = true,
+    cwd = utils.buffer_dir()
+  })
+end
+
 M.search_dotfiles = function()
   require('telescope.builtin').fd({
     prompt_title = "dotfiles",
     cwd = "~/.config/",
-    file_ignore_patterns = { "coc/.*", "yarn/.*", "nvim/.*", "pulse/.*", "kak/plugins/.*" }
+    file_ignore_patterns = { "^coc/", "^yarn/", "^nvim/", "^pulse/", "^kak/plugins/" }
   })
 end
 
@@ -77,7 +85,22 @@ M.search_local = function()
   require('telescope.builtin').fd({
     prompt_title = "dotfiles",
     cwd = "~/.local/",
-    file_ignore_patterns = { "kitty.app/.*", "lib/.*", "share/.*", "discord/.*", "Insomnia Designer/.*", "BraveSoftware/.*" }
+    file_ignore_patterns = { "^kitty.app/", "^lib/", "^share/", "^discord/", "^Insomnia Designer/", "^BraveSoftware/" }
+  })
+end
+
+M.search_workspace_lsp = function()
+  require('telescope.builtin').lsp_workspace_symbols({
+    prompt_title = "Rubies",
+    opts = {
+      file_ignore_patterns = { "^generated/", "^.vscode/", "^sorbet/", "^build/" }
+    }
+  })
+end
+
+M.code_actions = function()
+  require('telescope.builtin').lsp_code_actions({
+    prompt_title = "Code Actions"
   })
 end
 

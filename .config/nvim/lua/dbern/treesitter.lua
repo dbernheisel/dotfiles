@@ -18,10 +18,12 @@ parser_config.markdown = {
 }
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir',
-    'embedded_template', 'go', 'heex', 'html', 'javascript', 'jsonc', 'kotlin',
-    'lua', 'php', 'python', 'regex', 'ruby', 'rust', 'scss', 'surface',
-    'svelte', 'toml', 'tsx', 'typescript', 'vue', 'yaml', 'zig'},
+    ensure_installed = {
+      'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir',
+      'embedded_template', 'go', 'heex', 'html', 'javascript', 'jsonc', 'kotlin',
+      'lua', 'php', 'python', 'regex', 'ruby', 'rust', 'scss', 'surface',
+      'svelte', 'toml', 'tsx', 'typescript', 'vue', 'yaml', 'zig'
+    },
 
     indent = { enable = true },
     highlight = { enable = true },

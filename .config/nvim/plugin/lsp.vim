@@ -9,9 +9,12 @@ function! RestartLsp()
   edit
 endfunction
 
+nnoremap <silent> <leader>tr :TroubleToggle lsp_document_diagnostics<CR>
+nnoremap <silent> <leader>TR :TroubleToggle lsp_workspace_diagnostics<CR>
+
 command! -nargs=? LspRestart :call RestartLsp()
 
-sign define LspDiagnosticsSignError text=⨯ texthl=LspDiagnosticsSignError linehl= numhl=
-sign define LspDiagnosticsSignWarning text=⚠ texthl=LspDiagnosticsSignWarning linehl= numhl=
-sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=
-sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=
+sign define DiagnosticSignError text=⨯ texthl=DiagnosticSignError linehl= numhl=
+sign define DiagnosticSignWarn text=⚠ texthl=DiagnosticSignWarn linehl= numhl=
+sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=
+sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=

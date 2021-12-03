@@ -9,38 +9,57 @@ elseif a.nvim_get_var("os") == "Linux" then
   lua_lsp_bin = lua_lsp_root.."/bin/Linux/lua-language-server"
 end
 
+local trouble = require("trouble")
+trouble.setup({
+  auto_preview = false,
+  use_lsp_diagnostic_signs = true,
+  action_keys = {
+    jump = {},
+    jump_close = {"o", "<cr>", "<tab>"}
+  }
+})
+
+local nullls  = require('null-ls')
+nullls.config({
+  sources = {
+    nullls.builtins.diagnostics.credo,
+    nullls.builtins.formatting.zigfmt,
+    nullls.builtins.formatting.surface,
+    nullls.builtins.diagnostics.shellcheck,
+    nullls.builtins.diagnostics.yamllint,
+    nullls.builtins.formatting.prettierd,
+    nullls.builtins.diagnostics.rubocop.with({
+      command = function(params)
+        if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
+          return "scripts/bin/rubocop-daemon/rubocop"
+        else
+          return "bundle exec rubocop"
+        end
+
+      end
+    }),
+    nullls.builtins.formatting.eslint_d.with({
+      cwd = function(params)
+        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
+      end
+    }),
+    nullls.builtins.diagnostics.eslint_d.with({
+      cwd = function(params)
+        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
+      end
+    }),
+    nullls.builtins.code_actions.eslint_d.with({
+      cwd = function(params)
+        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
+      end
+    })
+  }
+})
+
 local lsp_servers = {
   bashls = {},
   cssls = {
     root_dir = lspconfig.util.root_pattern("package.json", ".git")
-  },
-  efm = {
-    filetypes = {"elixir", "eruby", "sh", "javascript", "html", "css", "json"}
-  },
-  sorbet = {
-    cmd = {"pay", "exec", "scripts/bin/typecheck", "--lsp"},
-    filetypes = {"ruby"},
-    root_dir = lspconfig.util.root_pattern("pay-server.sublime-project"),
-  },
-  sumneko_lua = {
-    cmd = { lua_lsp_bin, "-E", lua_lsp_root.."/main.lua" },
-    settings = {
-      Lua = {
-        runtime = {
-          version = 'LuaJIT',
-          path = vim.split(package.path, ';')
-        },
-        diagnostics = {
-          globals = {'vim'},
-        },
-        workspace = {
-          library = {
-            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-          }
-        },
-      },
-    },
   },
   dockerls = {},
   elixirls = {
@@ -71,6 +90,26 @@ local lsp_servers = {
   sqlls = {
     cmd = {"sql-language-server", "up", "--method", "stdio"},
   },
+  sumneko_lua = {
+    cmd = { lua_lsp_bin, "-E", lua_lsp_root.."/main.lua" },
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';')
+        },
+        diagnostics = {
+          globals = {'vim'},
+        },
+        workspace = {
+          library = {
+            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+          }
+        },
+      },
+    },
+  },
   tailwindcss = {
     cmd = { vim.loop.os_homedir().."/.cache/tailwindcss-intellisense/tailwindcss-language-server", "--stdio" },
   },
@@ -79,6 +118,7 @@ local lsp_servers = {
   vuels = {},
   yamlls = {},
 }
+lsp_servers["null-ls"] = {}
 
 local function make_on_attach(config)
   return function(client)
@@ -134,6 +174,8 @@ for lsp_server, config in pairs(lsp_servers) do
       "--enable-all-experimental-lsp-features",
       "--enable-experimental-lsp-document-formatting-rubyfmt"
     }
+  elseif lsp_server == 'solargraph' and vim.fn.glob("scripts/bin/typecheck") ~= "" then
+    config.filetypes = {}
   elseif lsp_server == 'solargraph' and vim.fn.glob("sorbet") ~= "" then
     config.filestypes = {}
   elseif lsp_server == 'sorbet' then
@@ -154,8 +196,6 @@ for lsp_server, config in pairs(lsp_servers) do
 end
 
 require('lspfuzzy').setup({})
-
-require('spectre').setup()
 
 require('colorizer').setup({
   'css',

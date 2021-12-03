@@ -120,7 +120,9 @@ endif
 call plug#begin('~/.config/nvim/plugged')
   if !exists('g:vscode')
     Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
+    Plug 'jose-elias-alvarez/null-ls.nvim'
+    Plug 'folke/trouble.nvim'
+
     Plug 'hrsh7th/nvim-cmp'
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-buffer'
@@ -134,7 +136,12 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
-    Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
+    if has('nvim-0.6')
+      Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+      Plug 'nvim-telescope/telescope-file-browser.nvim'
+    else
+      Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
+    endif
     Plug 'nvim-treesitter/playground'
 
     Plug 'norcalli/snippets.nvim'
@@ -146,7 +153,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'norcalli/nvim-colorizer.lua'
 
-    Plug 'windwp/nvim-spectre'
+    Plug 'windwp/nvim-spectre' " Search and Reaplce
 
     " Wiki
     Plug 'vimwiki/vimwiki'
@@ -165,23 +172,22 @@ call plug#begin('~/.config/nvim/plugged')
     let g:NERDCommentEmptyLines = 1
 
     Plug 'mhinz/vim-signify'            " Git gutter
-    Plug 'tpope/vim-fugitive'           " Gblame
+    Plug 'tpope/vim-fugitive'           " Git
 
     Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
 
     " Cosmetic
     Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-    Plug 'sainnhe/sonokai'              " Theme - Dark
-    Plug 'hoob3rt/lualine.nvim'        " Statusline
+    Plug 'sainnhe/sonokai'                " Theme - Dark
+    Plug 'hoob3rt/lualine.nvim'           " Statusline
   endif
-
-  " Jump to related files, :A, :AS, :AV, and :AT
-  Plug 'tpope/vim-projectionist'
 
   Plug 'numToStr/FTerm.nvim'
 
   " Add test commands
-  Plug 'janko-m/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit'] }
+  Plug 'janko-m/vim-test'
+  Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+  Plug 'mfussenegger/nvim-dap'
 
   Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
   Plug 'tpope/vim-surround'           " Add 's' command to give motions context
@@ -226,6 +232,9 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Weak language checker
   Plug 'reedes/vim-wordy', { 'for': 'markdown' }
+
+  " Jump to related files, :A, :AS, :AV, and :AT
+  Plug 'tpope/vim-projectionist'
 call plug#end()
 
 " Theme
