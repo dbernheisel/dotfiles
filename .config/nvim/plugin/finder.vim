@@ -9,23 +9,25 @@ let s:git_project = v:shell_error == 0
 
 function! g:FzfFilesSource()
   let l:base = fnamemodify(expand('%'), ':h:.:S')
-  let l:proximity_sort_path = $HOME.'/stripe/.cargo/bin/proximity-sort'
-  let l:finder = ''
+  let l:finder = 'find'
 
   if executable('fd')
     let l:finder = 'fd -t f'
+  elseif executable('fdfind')
+    let l:finder = 'fdfind -t f'
   elseif executable('rg')
     let l:finder = 'rg --files'
   elseif s:git_project
     let l:finder = 'git ls-files'
-  else
-    let l:finder = 'find'
   endif
 
-  if ! executable(l:proximity_sort_path) || base == '.'
+  if base == '.'
+    return l:finder
+  elseif executable('proximity-sort')
+    let l:finder = printf('%s | proximity-sort %s', l:finder, expand('%'))
     return l:finder
   else
-    return printf('%s | %s %s', l:finder, l:proximity_sort_path, expand('%'))
+    return l:finder
   endif
 endfunction
 
