@@ -74,6 +74,7 @@ fi
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
 [ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"
 [ -e "$HOME/.secrets" ] && source "$HOME/.secrets"
+have k3d && source <(k3d completion zsh)
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 
