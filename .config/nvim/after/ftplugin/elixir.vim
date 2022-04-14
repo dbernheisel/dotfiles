@@ -13,6 +13,38 @@ setlocal colorcolumn=+1
 "
 " let g:test#custom_transformations = {'elixir_umbrella': function('ElixirUmbrellaTransform')}
 " let g:test#transformation = 'elixir_umbrella'
+"
+function! g:MixRun(selection) abort
+  if !empty(a:selection)
+    execute "!mix ".a:selection
+  endif
+endfunction
+
+function! g:MixFzf(selection = '') abort
+  if empty(a:selection)
+    call fzf#run(fzf#wrap({
+      \ 'source': 'mix help --names',
+      \ 'sink': function('g:MixRun'),
+      \ 'layout' : {
+        \ 'window': {
+          \ 'width': 0.95,
+          \ 'height': 0.9,
+          \ 'relative': v:true,
+          \ 'yoffset': 1.0 } },
+      \ 'options': "--preview 'mix help {}'"}))
+  else
+    call MixRun(a:selection)
+  endif
+endfunction
+
+command! -nargs=* Mix call MixFzf(<q-args>)
+
+augroup _elixir
+  autocmd!
+  autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.heex set filetype=heex
+  autocmd FileType elixir setlocal indentkeys+=end
+  autocmd FileType eelixir setlocal indentkeys+=end
+augroup end
 
 let g:projectionist_heuristics['mix.exs'] = {
   \ 'apps/*/mix.exs': { 'type': 'app' },

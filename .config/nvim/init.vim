@@ -38,6 +38,12 @@ nnoremap <silent> <c-right> :tabnext<CR>
 command! Intellij execute ":!idea %:p --line " . line('.')
 command! VSCode execute ":!code -g %:p\:" . line('.') . ":" . col('.')
 
+if has('macunix')
+  let g:python_host_prog = '/usr/bin/python'
+  let g:python3_host_prog = '/usr/local/bin/python3'
+  let g:python2_host_prog = '/usr/bin/python2'
+endif
+
 if !exists("g:os")
   if has("win64") || has("win32") || has("win16")
     let g:os = "Windows"
@@ -110,132 +116,141 @@ augroup END
 
 filetype on
 
-" install vim-plug if needed.
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if has('ide')
+  " Don't load plugins
+else
+  " install vim-plug if needed.
+  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+
+  call plug#begin('~/.config/nvim/plugged')
+    if !exists('g:vscode')
+      Plug 'neovim/nvim-lspconfig'
+      Plug 'jose-elias-alvarez/null-ls.nvim'
+      Plug 'folke/trouble.nvim'
+      Plug 'mfussenegger/nvim-jdtls'
+
+      Plug 'hrsh7th/nvim-cmp'
+      Plug 'hrsh7th/cmp-nvim-lsp'
+      Plug 'hrsh7th/cmp-buffer'
+      Plug 'hrsh7th/cmp-calc'
+      Plug 'hrsh7th/cmp-path'
+      Plug 'David-Kunz/cmp-npm'
+      Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+
+      Plug 'nvim-lua/popup.nvim'
+      Plug 'nvim-lua/plenary.nvim'
+      Plug 'kyazdani42/nvim-web-devicons'
+      Plug 'nvim-telescope/telescope.nvim'
+      Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
+      if has('nvim-0.6')
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'nvim-telescope/telescope-file-browser.nvim'
+      else
+        Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
+      endif
+      Plug 'nvim-treesitter/playground'
+
+      Plug 'L3MON4D3/LuaSnip'
+      Plug 'saadparwaiz1/cmp_luasnip'
+      " Plug 'norcalli/snippets.nvim'
+      " Plug 'hrsh7th/cmp-vsnip'
+      " Plug 'hrsh7th/vim-vsnip'
+
+      if has('macunix')
+        Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
+      endif
+
+      Plug 'norcalli/nvim-colorizer.lua'
+
+      Plug 'windwp/nvim-spectre' " Search and Reaplce
+
+      " Wiki
+      Plug 'vimwiki/vimwiki'
+      Plug 'itchyny/calendar.vim'
+      let g:vimwiki_ext2syntax = {}
+      let g:vimwiki_list = [{'path': '~/vimwiki/'}]
+      let g:vimwiki_use_calendar = 1
+
+      " <C-n> to select next word with new cursor
+      Plug 'mg979/vim-visual-multi'
+
+      " Easier block commenting.
+      Plug 'scrooloose/nerdcommenter'
+      let g:NERDDefaultAlign = 'left'
+      let g:NERDSpaceDelims = 1
+      let g:NERDCommentEmptyLines = 1
+
+      Plug 'mhinz/vim-signify'            " Git gutter
+      Plug 'tpope/vim-fugitive'           " Git
+
+      Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
+
+      " Cosmetic
+      Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
+      Plug 'sainnhe/sonokai'                " Theme - Dark
+      Plug 'hoob3rt/lualine.nvim'           " Statusline
+    endif
+
+    Plug 'numToStr/FTerm.nvim'
+
+    " Add test commands
+    Plug 'janko-m/vim-test'
+    Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+    Plug 'mfussenegger/nvim-dap'
+
+    Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
+    Plug 'tpope/vim-surround'           " Add 's' command to give motions context
+                                        " eg: `cs"'` will change the surrounding
+                                        " double-quotes to single-quotes.
+
+    Plug 'tpope/vim-eunuch'             " Add Bash commands Remove,Move,Find,etc
+    Plug 'pbrisbin/vim-mkdir'           " create directories if they don't exist
+
+    if executable('fzf')
+      if executable('/usr/local/opt/fzf/bin/fzf')
+        Plug '/usr/local/opt/fzf'
+        set rtp+=/usr/local/opt/fzf     " Use brew-installed fzf
+      endif
+
+      if executable('/usr/bin/fzf')
+        set rtp+=/usr/bin/fzf           " Use arch-installed fzf
+      endif
+
+      if isdirectory('/usr/share/doc/fzf/examples')
+        " Don't use the apt-installed fzf. It's too old
+        Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+      endif
+    endif
+
+    Plug 'junegunn/fzf.vim'           " Fuzzy-finder
+    Plug 'ojroques/nvim-lspfuzzy'
+
+    Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
+
+    " Theme for markdown editing
+    Plug 'reedes/vim-colors-pencil', {'for': 'markdown' }
+
+    " Soft breaks
+    Plug 'reedes/vim-pencil', { 'for': 'markdown' }
+
+    " Focus mode
+    Plug 'junegunn/limelight.vim', { 'for': 'markdown' }
+
+    " ProseMode for writing Markdown
+    Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+
+    " Weak language checker
+    Plug 'reedes/vim-wordy', { 'for': 'markdown' }
+
+    " Jump to related files, :A, :AS, :AV, and :AT
+    Plug 'tpope/vim-projectionist'
+  call plug#end()
 endif
-
-call plug#begin('~/.config/nvim/plugged')
-  if !exists('g:vscode')
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'jose-elias-alvarez/null-ls.nvim'
-    Plug 'folke/trouble.nvim'
-
-    Plug 'hrsh7th/nvim-cmp'
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/cmp-calc'
-    Plug 'hrsh7th/cmp-path'
-    Plug 'David-Kunz/cmp-npm'
-
-    Plug 'nvim-lua/popup.nvim'
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
-    if has('nvim-0.6')
-      Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-      Plug 'nvim-telescope/telescope-file-browser.nvim'
-    else
-      Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}
-    endif
-    Plug 'nvim-treesitter/playground'
-
-    Plug 'norcalli/snippets.nvim'
-    Plug 'hrsh7th/cmp-vsnip'
-    Plug 'hrsh7th/vim-vsnip'
-    if has('macunix')
-      Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
-    endif
-
-    Plug 'norcalli/nvim-colorizer.lua'
-
-    Plug 'windwp/nvim-spectre' " Search and Reaplce
-
-    " Wiki
-    Plug 'vimwiki/vimwiki'
-    Plug 'itchyny/calendar.vim'
-    let g:vimwiki_ext2syntax = {}
-    let g:vimwiki_list = [{'path': '~/vimwiki/'}]
-    let g:vimwiki_use_calendar = 1
-
-    " <C-n> to select next word with new cursor
-    Plug 'mg979/vim-visual-multi'
-
-    " Easier block commenting.
-    Plug 'scrooloose/nerdcommenter'
-    let g:NERDDefaultAlign = 'left'
-    let g:NERDSpaceDelims = 1
-    let g:NERDCommentEmptyLines = 1
-
-    Plug 'mhinz/vim-signify'            " Git gutter
-    Plug 'tpope/vim-fugitive'           " Git
-
-    Plug 'simeji/winresizer'            " Resize panes with C-e and hjkl
-
-    " Cosmetic
-    Plug 'sonph/onehalf', {'rtp': 'vim/'} " Theme - Light
-    Plug 'sainnhe/sonokai'                " Theme - Dark
-    Plug 'hoob3rt/lualine.nvim'           " Statusline
-  endif
-
-  Plug 'numToStr/FTerm.nvim'
-
-  " Add test commands
-  Plug 'janko-m/vim-test'
-  Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
-  Plug 'mfussenegger/nvim-dap'
-
-  Plug 'tpope/vim-repeat'             " let . repeat plugin actions too
-  Plug 'tpope/vim-surround'           " Add 's' command to give motions context
-                                      " eg: `cs"'` will change the surrounding
-                                      " double-quotes to single-quotes.
-
-  Plug 'tpope/vim-eunuch'             " Add Bash commands Remove,Move,Find,etc
-  Plug 'pbrisbin/vim-mkdir'           " create directories if they don't exist
-
-  if executable('fzf')
-    if executable('/usr/local/opt/fzf/bin/fzf')
-      Plug '/usr/local/opt/fzf'
-      set rtp+=/usr/local/opt/fzf     " Use brew-installed fzf
-    endif
-
-    if executable('/usr/bin/fzf')
-      set rtp+=/usr/bin/fzf           " Use arch-installed fzf
-    endif
-
-    if isdirectory('/usr/share/doc/fzf/examples')
-      " Don't use the apt-installed fzf. It's too old
-      Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    endif
-  endif
-
-  Plug 'junegunn/fzf.vim'           " Fuzzy-finder
-  Plug 'ojroques/nvim-lspfuzzy'
-
-  Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']}
-
-  " Theme for markdown editing
-  Plug 'reedes/vim-colors-pencil', {'for': 'markdown' }
-
-  " Soft breaks
-  Plug 'reedes/vim-pencil', { 'for': 'markdown' }
-
-  " Focus mode
-  Plug 'junegunn/limelight.vim', { 'for': 'markdown' }
-
-  " ProseMode for writing Markdown
-  Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-
-  " Weak language checker
-  Plug 'reedes/vim-wordy', { 'for': 'markdown' }
-
-  " Jump to related files, :A, :AS, :AV, and :AT
-  Plug 'tpope/vim-projectionist'
-call plug#end()
 
 " Theme
 syntax on

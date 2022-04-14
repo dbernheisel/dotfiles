@@ -1,7 +1,8 @@
 local M = {}
 
 local dap = require('dap')
-dap.adapters.mix_task = {
+
+dap.adapters.elixir = {
   type = 'executable',
   command = vim.loop.os_homedir().."/.cache/elixir-ls/release/debugger.sh",
   args = {}
@@ -9,7 +10,7 @@ dap.adapters.mix_task = {
 
 dap.configurations.elixir = {
   {
-    type = "mix_task",
+    type = "elixir",
     name = "mix test",
     task = 'test',
     taskArgs = {"--trace"},

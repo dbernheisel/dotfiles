@@ -42,11 +42,16 @@ function! DarkMode()
   " Transparent Backgrounds
   if ModernTerminal()
     " Comments should be italics
-    hi Comment gui=italic
+    " hi Comment gui=italic
   endif
 endfunction
 
 let g:sonokai_transparent_background = 1
+let g:sonokai_enable_italic = 0
+let g:sonokai_disable_italic_comment = 1
+" Uncomment when italics are enabled
+" let &t_ZH="\e[3m"
+" let &t_ZR="\e[23m"
 
 nmap <leader>dm :call DarkMode()<cr>
 nmap <leader>lm :call LightMode()<cr>

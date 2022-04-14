@@ -12,7 +12,7 @@ end
 local trouble = require("trouble")
 trouble.setup({
   auto_preview = false,
-  use_lsp_diagnostic_signs = true,
+  use_diagnostic_signs = true,
   action_keys = {
     jump = {},
     jump_close = {"o", "<cr>", "<tab>"}
@@ -20,7 +20,7 @@ trouble.setup({
 })
 
 local nullls  = require('null-ls')
-nullls.config({
+nullls.setup({
   sources = {
     nullls.builtins.diagnostics.credo,
     nullls.builtins.formatting.zigfmt,
@@ -29,13 +29,19 @@ nullls.config({
     nullls.builtins.diagnostics.yamllint,
     nullls.builtins.formatting.prettierd,
     nullls.builtins.diagnostics.rubocop.with({
-      command = function(params)
+      command = function(_params)
         if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
           return "scripts/bin/rubocop-daemon/rubocop"
         else
-          return "bundle exec rubocop"
+          return "bundle"
         end
-
+      end,
+      args = function(params)
+        if params.cmd == "bundle" then
+          return vim.list_extend({ "exec", "rubocop" }, require("null-ls").builtins.diagnostics.rubocop._opts.args)
+        else
+          return {}
+        end
       end
     }),
     nullls.builtins.formatting.eslint_d.with({
@@ -68,11 +74,7 @@ local lsp_servers = {
       elixirLS = {
         dialyzerFormat = "dialyxir_short";
       }
-    },
-    on_init = function(client)
-      client.notify("workspace/didChangeConfiguration")
-      return true
-    end,
+    }
   },
   html = {
     cmd = { "html-languageserver", "--stdio" },
@@ -110,15 +112,14 @@ local lsp_servers = {
       },
     },
   },
-  tailwindcss = {
-    cmd = { vim.loop.os_homedir().."/.cache/tailwindcss-intellisense/tailwindcss-language-server", "--stdio" },
-  },
+  -- tailwindcss = {
+  --   cmd = { vim.loop.os_homedir().."/.cache/tailwindcss-intellisense/tailwindcss-language-server", "--stdio" },
+  -- },
   tsserver = {},
   vimls = {},
   vuels = {},
   yamlls = {},
 }
-lsp_servers["null-ls"] = {}
 
 local function make_on_attach(config)
   return function(client)
@@ -150,15 +151,7 @@ local function make_on_attach(config)
 end
 
 -- Add snippet support
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
-}
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)
@@ -177,7 +170,7 @@ for lsp_server, config in pairs(lsp_servers) do
   elseif lsp_server == 'solargraph' and vim.fn.glob("scripts/bin/typecheck") ~= "" then
     config.filetypes = {}
   elseif lsp_server == 'solargraph' and vim.fn.glob("sorbet") ~= "" then
-    config.filestypes = {}
+    config.filetypes = {}
   elseif lsp_server == 'sorbet' then
     local local_sorbet_build = vim.fn.glob(vim.fn.environ().HOME.."/stripe/sorbet/bazel-bin/main/sorbet")
     if local_sorbet_build ~= "" then

@@ -9,7 +9,7 @@ function! RestartLsp()
   edit
 endfunction
 
-nnoremap <silent> <leader>tr :TroubleToggle lsp_document_diagnostics<CR>
+nnoremap <silent> <leader>tr :TroubleToggle document_diagnostics<CR>
 nnoremap <silent> <leader>TR :TroubleToggle lsp_workspace_diagnostics<CR>
 
 command! -nargs=? LspRestart :call RestartLsp()

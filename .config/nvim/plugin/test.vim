@@ -7,6 +7,7 @@ nmap <silent> <leader>t :UltestNearest<CR>
 nmap <silent> <leader>T :Ultest<CR>
 nmap <silent> <leader>l :UltestLast<CR>
 nmap <silent> <leader>a :call RunTestSuite()<CR>
+nmap <silent> <leader>ta :UltestAttach<CR>
 nmap <silent> <leader>to <Plug>(ultest-output-jump)<CR>
 nmap <silent> <leader>ts :UltestSummary!<CR>
 
@@ -30,7 +31,7 @@ if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/pay-server/'
   let test#enabled_runners = ["ruby#payserver", "javascript#payserver"]
 end
 
-if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/uppsala/'
+if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/zoolander/'
   let test#enabled_runners = ["java#uppsala"]
 end
 
