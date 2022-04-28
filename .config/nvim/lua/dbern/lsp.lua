@@ -9,16 +9,6 @@ elseif a.nvim_get_var("os") == "Linux" then
   lua_lsp_bin = lua_lsp_root.."/bin/Linux/lua-language-server"
 end
 
-local trouble = require("trouble")
-trouble.setup({
-  auto_preview = false,
-  use_diagnostic_signs = true,
-  action_keys = {
-    jump = {},
-    jump_close = {"o", "<cr>", "<tab>"}
-  }
-})
-
 local nullls  = require('null-ls')
 nullls.setup({
   sources = {
@@ -188,8 +178,6 @@ for lsp_server, config in pairs(lsp_servers) do
   lspconfig[lsp_server].setup(config)
 end
 
-require('lspfuzzy').setup({})
-
 require('colorizer').setup({
   'css',
   'scss',
@@ -202,6 +190,3 @@ require('colorizer').setup({
   'eelixir',
   'erb'
 })
-
-local M = {}
-return M

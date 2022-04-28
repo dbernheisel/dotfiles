@@ -1,32 +1,3 @@
-lua require('dbern.test')
-
-" nmap <silent> <leader>t :TestNearest<CR>
-" nmap <silent> <leader>T :TestFile<CR>
-" nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>t :UltestNearest<CR>
-nmap <silent> <leader>T :Ultest<CR>
-nmap <silent> <leader>l :UltestLast<CR>
-nmap <silent> <leader>a :call RunTestSuite()<CR>
-nmap <silent> <leader>ta :UltestAttach<CR>
-nmap <silent> <leader>to <Plug>(ultest-output-jump)<CR>
-nmap <silent> <leader>ts :UltestSummary!<CR>
-
-let g:ultest_running_sign = "ﰌ"
-let g:ultest_summary_width = 75
-
-function! FTermStrategy(cmd)
-  call luaeval("require('dbern.terminal').run_in_test({run = _A})", a:cmd)
-endfunction
-
-let g:test#custom_strategies = {'FTerm': function('FTermStrategy')}
-let g:test#strategy = 'FTerm'
-
-let test#custom_runners = {
-      \ 'ruby': ['payserver'],
-      \ 'javascript': ['payserver'],
-      \ 'java': ['uppsala']
-      \ }
-
 if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/pay-server/'
   let test#enabled_runners = ["ruby#payserver", "javascript#payserver"]
 end
@@ -35,18 +6,10 @@ if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/zoolander/'
   let test#enabled_runners = ["java#uppsala"]
 end
 
-function! RunTestSuite()
-  if filereadable('bin/test_suite')
-    lua require('dbern.terminal').run_in_test({run = "bin/test_suite"})
-  elseif filereadable("bin/test")
-    lua require('dbern.terminal').run_in_test({run = "bin/test"})
-  else
-    TestSuite
-  endif
-endfunction
-
-let test#shell#bats#options = {
-      \ 'nearest': '-t'
+let test#custom_runners = {
+      \ 'ruby': ['payserver'],
+      \ 'javascript': ['payserver'],
+      \ 'java': ['uppsala']
       \ }
 
 augroup stripe_projectionist

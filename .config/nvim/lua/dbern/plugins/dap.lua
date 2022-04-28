@@ -1,5 +1,3 @@
-local M = {}
-
 local dap = require('dap')
 
 dap.adapters.elixir = {
@@ -23,5 +21,3 @@ dap.configurations.elixir = {
     }
   },
 }
-
-return M

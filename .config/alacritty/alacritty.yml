@@ -1,0 +1,92 @@
+env:
+  TERM: xterm-256color
+
+font:
+  normal:
+    family: "FiraCode Nerd Font Mono"
+    style: "Regular"
+  italic:
+    family: "Hack Nerd Font Mono"
+    style: "Italic"
+  bold_italic:
+    family: "Hack Nerd Font Mono"
+    style: "Bold Italic"
+  size: 16.0
+
+window:
+  opacity: 0.96
+  padding:
+    x: 4
+    y: 0
+
+key_bindings:
+  - { mods: Command, key: Comma, command: { program: "zsh", args: ["-c", "nvim ~/.config/alacritty/alacritty.yml"] } }
+  - { mods: Command, key: N,     action: SpawnNewInstance }
+  - { mods: Alt,     key: Space, chars: " " }
+  - { mods: Super,   key: Back,  chars: "\x15" } # delete word/line
+  - { mods: Alt,     key: Left,  chars: "\x1bb" } # one word left
+  - { mods: Alt,     key: Right, chars: "\x1bf" } # one word right
+  - { mods: Command, key: Left,  chars: "\x1bOH", mode: AppCursor } # Home
+  - { mods: Command, key: Right, chars: "\x1bOF", mode: AppCursor } # End
+  - { mods: Command, key: W,     chars: "\x01\x78" } # override closing windows
+  - { mods: Alt,     key: J,     chars: "\x1bj" }
+  - { mods: Alt,     key: K,     chars: "\x1bk" }
+  - { mods: Alt,     key: H,     chars: "\x1bh" }
+  - { mods: Alt,     key: L,     chars: "\x1bl" }
+
+cursor:
+  style:
+    shape: Underline
+    blinking:  On
+  vi_mode_style: Block
+
+# Afterglow
+colors:
+  # Default colors
+  primary:
+    background: '#2c2c2c'
+    foreground: '#d6d6d6'
+
+    dim_foreground:    '#dbdbdb'
+    bright_foreground: '#d9d9d9'
+    dim_background:    '#202020' # not sure
+    bright_background: '#3a3a3a' # not sure
+
+  # Cursor colors
+  cursor:
+    text:   '#2c2c2c'
+    cursor: '#d9d9d9'
+
+  # Normal colors
+  normal:
+    black:   '#1c1c1c'
+    red:     '#bc5653'
+    green:   '#909d63'
+    yellow:  '#ebc17a'
+    blue:    '#7eaac7'
+    magenta: '#aa6292'
+    cyan:    '#86d3ce'
+    white:   '#cacaca'
+
+  # Bright colors
+  bright:
+    black:   '#636363'
+    red:     '#bc5653'
+    green:   '#909d63'
+    yellow:  '#ebc17a'
+    blue:    '#7eaac7'
+    magenta: '#aa6292'
+    cyan:    '#86d3ce'
+    white:   '#f7f7f7'
+
+  # Dim colors
+  dim:
+    black:   '#232323'
+    red:     '#74423f'
+    green:   '#5e6547'
+    yellow:  '#8b7653'
+    blue:    '#556b79'
+    magenta: '#6e4962'
+    cyan:    '#5c8482'
+    white:   '#828282'
+
