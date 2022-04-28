@@ -2,10 +2,10 @@ local a = vim.api
 local lspconfig = require('lspconfig')
 local lua_lsp_root = vim.loop.os_homedir().."/.cache/lua-language-server"
 local lua_lsp_bin
-
-if vim.loop.os_uname().sysname == "Darwin" then
+local os = vim.loop.os_uname().sysname
+if os == "Darwin" then
   lua_lsp_bin = lua_lsp_root.."/bin/macOS/lua-language-server"
-elseif a.nvim_get_var("os") == "Linux" then
+elseif os == "Linux" then
   lua_lsp_bin = lua_lsp_root.."/bin/Linux/lua-language-server"
 end
 
