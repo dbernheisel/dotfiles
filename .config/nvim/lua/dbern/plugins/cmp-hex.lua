@@ -211,6 +211,8 @@ function source:execute(completion_item, callback)
   callback(completion_item)
 end
 
-cmp.register_source("hex", source.new())
+if vim.fn.executable("hex_complete") then
+  cmp.register_source("hex", source.new())
+end
 
 return source

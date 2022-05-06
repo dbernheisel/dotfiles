@@ -40,22 +40,56 @@ M.files = function()
   return fzf.files(M.dynamic_fzf_args)
 end
 
+M.vimrc = function()
+  return fzf.files({
+    prompt = "nvimrc❯ ",
+    fd_opts = "--color=never --type f --exclude .netrwhist --exclude undo --exclude plugged",
+    rg_opts = "--color=never --files -g '!.netrwhist' -g '!undo' -g '!plugged'",
+    cwd = "~/.config/nvim"
+  })
+end
+
+M.dotfiles = function()
+  return fzf.files({
+    prompt = "dotfiles❯ ",
+    fd_opts = "--color=never --type f --exclude calibre/ --exclude tmux/plugins/tpm/ --exclude coc/ --exclude chromium/ --exclude yarn/ --exclude nvim/ --exclude pulse/ --exclude kak/plugins/",
+    rg_opts = "--color=never --files -g '!calibre/' -g '!tmux/plugins/tmp/' -g '!coc/' -g '!chromium/' -g '!yarn/' -g '!nvim/' -g '!pulse/' -g '!kak/plugins/'",
+    cwd = "~/.config"
+  })
+end
+
+M.locals = function()
+  return fzf.files({
+    prompt = "local❯ ",
+    fd_opts = "--color=never --type f --exclude include/ --exclude kitty.app/ --exclude lib/ --exclude share/ --exclude discord/",
+    rg_opts = "--color=never --files -g '!include/' -g '!kitty.app/' -g '!lib/' -g '!share/' -g '!discord/'",
+    cwd = "~/.local"
+  })
+end
+
+M.git_branches = function()
+  return fzf.git_branches()
+end
+
 _G.fzf_grep = M.grep
 _G.fzf_files = M.files
+_G.fzf_vimrc = M.vimrc
+_G.fzf_dotfiles = M.dotfiles
+_G.fzf_local = M.locals
+_G.fzf_git_branches = M.git_branches
 
 M.setup = function()
-  -- silent! !git rev-parse --is-inside-work-tree
-  -- let s:git_project = v:shell_error == 0
-
   fzf.setup({
     winopts = {
       border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
+      hl = { border = 'FloatBorder' },
       preview = {
         border = 'noborder',
         default = previewer,
         hidden = 'hidden'
       },
     },
+    lsp = { async_or_timeout = 3000 },
     fzf_opts = fzf_opts,
     files = {
       fd_opts = fd_opts,
@@ -94,7 +128,11 @@ M.setup = function()
 
   vim.api.nvim_set_keymap('n', '<leader>f', ':call v:lua.fzf_grep()<cr>', { silent = true, noremap = true })
   vim.api.nvim_set_keymap('n', '<c-p>', ':call v:lua.fzf_files()<cr>', { silent = true, noremap = true })
-  fzf.register_ui_select()
+  vim.api.nvim_set_keymap('n', '<leader>ev', ':call v:lua.fzf_vimrc()<cr>', { silent = true, noremap = true })
+  vim.api.nvim_set_keymap('n', '<leader>ed', ':call v:lua.fzf_dotfiles()<cr>', { silent = true, noremap = true })
+  vim.api.nvim_set_keymap('n', '<leader>el', ':call v:lua.fzf_local()<cr>', { silent = true, noremap = true })
+  vim.api.nvim_set_keymap('n', '<leader>gb', ':call v:lua.fzf_git_branches()<cr>', { silent = true, noremap = true })
+  fzf.register_ui_select({}, true)
 end
 
 return M

@@ -44,8 +44,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/dbern/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?.lua;/Users/dbern/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?/init.lua;/Users/dbern/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?.lua;/Users/dbern/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/dbern/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/lua/5.1/?.so"
+local package_path_str = "/home/dbern/.cache/nvim/packer_hererocks/2.0.5/share/lua/5.1/?.lua;/home/dbern/.cache/nvim/packer_hererocks/2.0.5/share/lua/5.1/?/init.lua;/home/dbern/.cache/nvim/packer_hererocks/2.0.5/lib/luarocks/rocks-5.1/?.lua;/home/dbern/.cache/nvim/packer_hererocks/2.0.5/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/dbern/.cache/nvim/packer_hererocks/2.0.5/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -72,298 +72,281 @@ _G.packer_plugins = {
   ["FTerm.nvim"] = {
     config = { "require('dbern.plugins.fterm')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/FTerm.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/FTerm.nvim",
     url = "https://github.com/numToStr/FTerm.nvim"
   },
   LuaSnip = {
     config = { "require('dbern.plugins.snippets')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/LuaSnip",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
   ["calendar.vim"] = {
     config = { "require('dbern.plugins.calendar')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/calendar.vim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/calendar.vim",
     url = "https://github.com/itchyny/calendar.vim"
   },
   ["cmp-buffer"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
   },
   ["cmp-calc"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-calc",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-calc",
     url = "https://github.com/hrsh7th/cmp-calc"
   },
   ["cmp-cmdline"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
     url = "https://github.com/hrsh7th/cmp-cmdline"
   },
   ["cmp-nvim-lsp"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
   ["cmp-nvim-lsp-document-symbol"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp-document-symbol",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp-document-symbol",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol"
   },
   ["cmp-nvim-lsp-signature-help"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp-signature-help",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp-signature-help",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp-signature-help"
   },
   ["cmp-path"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp-path",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
   },
   cmp_luasnip = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
-  },
-  fzf = {
-    loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/fzf",
-    url = "/usr/local/opt/fzf"
   },
   ["fzf-lua"] = {
     config = { "require('dbern.plugins.fzf').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/fzf-lua",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/fzf-lua",
     url = "https://github.com/ibhagwan/fzf-lua"
   },
   ["fzf.vim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/fzf.vim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
   ["goyo.vim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/goyo.vim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/goyo.vim",
     url = "https://github.com/junegunn/goyo.vim"
   },
   ["limelight.vim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/limelight.vim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/limelight.vim",
     url = "https://github.com/junegunn/limelight.vim"
   },
   ["lualine.nvim"] = {
     config = { "require('dbern.plugins.lualine')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/lualine.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/hoob3rt/lualine.nvim"
   },
   ["neo-tree.nvim"] = {
     config = { "require('dbern.plugins.neotree').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/neo-tree.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/neo-tree.nvim",
     url = "https://github.com/nvim-neo-tree/neo-tree.nvim"
   },
   neogit = {
     config = { "require('dbern.plugins.neogit')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/neogit",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/neogit",
     url = "https://github.com/TimUntersberger/neogit"
   },
   nerdcommenter = {
     config = { "require('dbern.plugins.nerdcomment')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nerdcommenter",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nerdcommenter",
     url = "https://github.com/scrooloose/nerdcommenter"
   },
   ["nui.nvim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nui.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nui.nvim",
     url = "https://github.com/MunifTanjim/nui.nvim"
   },
   ["null-ls.nvim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
   },
   ["nvim-cmp"] = {
     config = { "require('dbern.plugins.completion')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-colorizer.lua"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
     url = "https://github.com/norcalli/nvim-colorizer.lua"
   },
   ["nvim-dap"] = {
     config = { "require('dbern.plugins.dap')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-dap",
     url = "https://github.com/mfussenegger/nvim-dap"
   },
   ["nvim-jdtls"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-jdtls",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-jdtls",
     url = "https://github.com/mfussenegger/nvim-jdtls"
+  },
+  ["nvim-lsp-installer"] = {
+    loaded = true,
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
+    url = "https://github.com/williamboman/nvim-lsp-installer"
   },
   ["nvim-lspconfig"] = {
     config = { "require('dbern.lsp')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
-  },
-  ["nvim-lspfuzzy"] = {
-    config = { "require('lspfuzzy').setup()" },
-    loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-lspfuzzy",
-    url = "https://github.com/ojroques/nvim-lspfuzzy"
   },
   ["nvim-spectre"] = {
     config = { "require('dbern.plugins.spectre').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-spectre",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-spectre",
     url = "https://github.com/windwp/nvim-spectre"
   },
   ["nvim-treesitter"] = {
     config = { "require('dbern.plugins.treesitter').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
   ["nvim-web-devicons"] = {
     config = { "require('dbern.plugins.nvim-web-devicons')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
   onehalf = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/onehalf/vim/",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/onehalf/vim/",
     url = "https://github.com/sonph/onehalf"
   },
   ["packer.nvim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
   playground = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/playground",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/playground",
     url = "https://github.com/nvim-treesitter/playground"
   },
   ["plenary.nvim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/plenary.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["popup.nvim"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/popup.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
   sonokai = {
     config = { "require('dbern.theme').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/sonokai",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/sonokai",
     url = "https://github.com/sainnhe/sonokai"
   },
   tabular = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/tabular",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/tabular",
     url = "https://github.com/godlygeek/tabular"
-  },
-  ["telescope-fzf-native.nvim"] = {
-    loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
-    url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
-  },
-  ["telescope.nvim"] = {
-    config = { "require('dbern.plugins.telescope').setup()" },
-    loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/telescope.nvim",
-    url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["trouble.nvim"] = {
     config = { "require('dbern.plugins.trouble')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/trouble.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
   },
   ["vim-colors-pencil"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-colors-pencil",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-colors-pencil",
     url = "https://github.com/reedes/vim-colors-pencil"
   },
   ["vim-eunuch"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-eunuch",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-eunuch",
     url = "https://github.com/tpope/vim-eunuch"
   },
   ["vim-fugitive"] = {
     config = { "require('dbern.plugins.fugitive')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
   },
   ["vim-mkdir"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-mkdir",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-mkdir",
     url = "https://github.com/pbrisbin/vim-mkdir"
   },
   ["vim-pencil"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-pencil",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-pencil",
     url = "https://github.com/reedes/vim-pencil"
   },
   ["vim-projectionist"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-projectionist",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-projectionist",
     url = "https://github.com/tpope/vim-projectionist"
   },
   ["vim-repeat"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-repeat",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-repeat",
     url = "https://github.com/tpope/vim-repeat"
   },
   ["vim-signify"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-signify",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-signify",
     url = "https://github.com/mhinz/vim-signify"
   },
   ["vim-surround"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-surround",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
   ["vim-test"] = {
     config = { "require('dbern.plugins.test')" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-test",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-test",
     url = "https://github.com/vim-test/vim-test"
   },
   ["vim-visual-multi"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-visual-multi",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-visual-multi",
     url = "https://github.com/mg979/vim-visual-multi"
   },
   ["vim-wordy"] = {
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/vim-wordy",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/vim-wordy",
     url = "https://github.com/reedes/vim-wordy"
   },
   ["virt-column.nvim"] = {
     config = { "require('virt-column').setup()" },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/virt-column.nvim",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/virt-column.nvim",
     url = "https://github.com/lukas-reineke/virt-column.nvim"
   },
   winresizer = {
     config = { "      vim.api.nvim_set_keymap('t', '<c-e>', '<c-\\\\><c-n>:WinResizerStartResize<cr>', { noremap = true })\n    " },
     loaded = true,
-    path = "/Users/dbern/.local/share/nvim/site/pack/packer/start/winresizer",
+    path = "/home/dbern/.local/share/nvim/site/pack/packer/start/winresizer",
     url = "https://github.com/simeji/winresizer"
   }
 }
@@ -371,97 +354,89 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Runtimepath customization
 time([[Runtimepath customization]], true)
-vim.o.runtimepath = vim.o.runtimepath .. ",/Users/dbern/.local/share/nvim/site/pack/packer/start/onehalf/vim/"
+vim.o.runtimepath = vim.o.runtimepath .. ",/home/dbern/.local/share/nvim/site/pack/packer/start/onehalf/vim/"
 time([[Runtimepath customization]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-require('dbern.lsp')
-time([[Config for nvim-lspconfig]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-require('dbern.plugins.lualine')
-time([[Config for lualine.nvim]], false)
--- Config for: nvim-lspfuzzy
-time([[Config for nvim-lspfuzzy]], true)
-require('lspfuzzy').setup()
-time([[Config for nvim-lspfuzzy]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-require('dbern.plugins.telescope').setup()
-time([[Config for telescope.nvim]], false)
--- Config for: neo-tree.nvim
-time([[Config for neo-tree.nvim]], true)
-require('dbern.plugins.neotree').setup()
-time([[Config for neo-tree.nvim]], false)
--- Config for: nvim-spectre
-time([[Config for nvim-spectre]], true)
-require('dbern.plugins.spectre').setup()
-time([[Config for nvim-spectre]], false)
--- Config for: trouble.nvim
-time([[Config for trouble.nvim]], true)
-require('dbern.plugins.trouble')
-time([[Config for trouble.nvim]], false)
--- Config for: neogit
-time([[Config for neogit]], true)
-require('dbern.plugins.neogit')
-time([[Config for neogit]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 require('dbern.plugins.treesitter').setup()
 time([[Config for nvim-treesitter]], false)
--- Config for: nerdcommenter
-time([[Config for nerdcommenter]], true)
-require('dbern.plugins.nerdcomment')
-time([[Config for nerdcommenter]], false)
+-- Config for: neogit
+time([[Config for neogit]], true)
+require('dbern.plugins.neogit')
+time([[Config for neogit]], false)
+-- Config for: sonokai
+time([[Config for sonokai]], true)
+require('dbern.theme').setup()
+time([[Config for sonokai]], false)
+-- Config for: neo-tree.nvim
+time([[Config for neo-tree.nvim]], true)
+require('dbern.plugins.neotree').setup()
+time([[Config for neo-tree.nvim]], false)
+-- Config for: trouble.nvim
+time([[Config for trouble.nvim]], true)
+require('dbern.plugins.trouble')
+time([[Config for trouble.nvim]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+require('dbern.plugins.lualine')
+time([[Config for lualine.nvim]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+require('dbern.plugins.snippets')
+time([[Config for LuaSnip]], false)
 -- Config for: nvim-web-devicons
 time([[Config for nvim-web-devicons]], true)
 require('dbern.plugins.nvim-web-devicons')
 time([[Config for nvim-web-devicons]], false)
--- Config for: virt-column.nvim
-time([[Config for virt-column.nvim]], true)
-require('virt-column').setup()
-time([[Config for virt-column.nvim]], false)
--- Config for: vim-fugitive
-time([[Config for vim-fugitive]], true)
-require('dbern.plugins.fugitive')
-time([[Config for vim-fugitive]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+require('dbern.plugins.completion')
+time([[Config for nvim-cmp]], false)
+-- Config for: nerdcommenter
+time([[Config for nerdcommenter]], true)
+require('dbern.plugins.nerdcomment')
+time([[Config for nerdcommenter]], false)
+-- Config for: vim-test
+time([[Config for vim-test]], true)
+require('dbern.plugins.test')
+time([[Config for vim-test]], false)
 -- Config for: winresizer
 time([[Config for winresizer]], true)
       vim.api.nvim_set_keymap('t', '<c-e>', '<c-\\><c-n>:WinResizerStartResize<cr>', { noremap = true })
     
 time([[Config for winresizer]], false)
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-require('dbern.plugins.completion')
-time([[Config for nvim-cmp]], false)
--- Config for: fzf-lua
-time([[Config for fzf-lua]], true)
-require('dbern.plugins.fzf').setup()
-time([[Config for fzf-lua]], false)
--- Config for: calendar.vim
-time([[Config for calendar.vim]], true)
-require('dbern.plugins.calendar')
-time([[Config for calendar.vim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+require('dbern.lsp')
+time([[Config for nvim-lspconfig]], false)
+-- Config for: vim-fugitive
+time([[Config for vim-fugitive]], true)
+require('dbern.plugins.fugitive')
+time([[Config for vim-fugitive]], false)
 -- Config for: nvim-dap
 time([[Config for nvim-dap]], true)
 require('dbern.plugins.dap')
 time([[Config for nvim-dap]], false)
--- Config for: sonokai
-time([[Config for sonokai]], true)
-require('dbern.theme').setup()
-time([[Config for sonokai]], false)
--- Config for: vim-test
-time([[Config for vim-test]], true)
-require('dbern.plugins.test')
-time([[Config for vim-test]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-require('dbern.plugins.snippets')
-time([[Config for LuaSnip]], false)
+-- Config for: virt-column.nvim
+time([[Config for virt-column.nvim]], true)
+require('virt-column').setup()
+time([[Config for virt-column.nvim]], false)
+-- Config for: nvim-spectre
+time([[Config for nvim-spectre]], true)
+require('dbern.plugins.spectre').setup()
+time([[Config for nvim-spectre]], false)
+-- Config for: calendar.vim
+time([[Config for calendar.vim]], true)
+require('dbern.plugins.calendar')
+time([[Config for calendar.vim]], false)
 -- Config for: FTerm.nvim
 time([[Config for FTerm.nvim]], true)
 require('dbern.plugins.fterm')
 time([[Config for FTerm.nvim]], false)
+-- Config for: fzf-lua
+time([[Config for fzf-lua]], true)
+require('dbern.plugins.fzf').setup()
+time([[Config for fzf-lua]], false)
 if should_profile then save_profiles() end
 
 end)

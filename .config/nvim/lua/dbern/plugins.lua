@@ -27,6 +27,7 @@ return require('packer').startup({function(use)
       config = "require('dbern.plugins.nvim-web-devicons')" }
 
     -- LSP
+    use 'williamboman/nvim-lsp-installer'
     use { 'neovim/nvim-lspconfig', config = "require('dbern.lsp')" }
     use 'jose-elias-alvarez/null-ls.nvim'
     use { 'folke/trouble.nvim',
@@ -45,10 +46,10 @@ return require('packer').startup({function(use)
 
     -- Finders
     use 'nvim-lua/popup.nvim'
-    use { 'nvim-telescope/telescope.nvim',
-      requires = { {'nvim-lua/plenary.nvim'} },
-      config = "require('dbern.plugins.telescope').setup()" }
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    -- use { 'nvim-telescope/telescope.nvim',
+    --   requires = { {'nvim-lua/plenary.nvim'} },
+    --   config = "require('dbern.plugins.telescope').setup()" }
+    -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     if U.executable('/usr/local/opt/fzf/bin/fzf') then
       -- Use brew-installed fzf
       use '/usr/local/opt/fzf'
@@ -64,7 +65,6 @@ return require('packer').startup({function(use)
       config = { "require('dbern.plugins.fzf').setup()" }
     }
     use 'junegunn/fzf.vim'
-    use { 'ojroques/nvim-lspfuzzy', config = "require('lspfuzzy').setup()" }
     use { "nvim-neo-tree/neo-tree.nvim",
       config = { "require('dbern.plugins.neotree').setup()" },
       requires = {

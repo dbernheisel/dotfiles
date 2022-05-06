@@ -1,4 +1,3 @@
-command! -nargs=0 Format :lua vim.lsp.buf.formatting()
 command! -nargs=? LspActiveClients lua print(vim.inspect(vim.lsp.get_active_clients()))
 command! -nargs=? LspLog lua vim.api.nvim_command("split "..vim.lsp.get_log_path())
 

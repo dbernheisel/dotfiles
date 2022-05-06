@@ -56,17 +56,12 @@ M.setup = function()
   -- nnoremap <silent> <c-f> :lua require('dbern.plugins.telescope').find_files()<CR>
   -- nnoremap <silent> <leader>f :lua require('telescope.builtin').grep_string({ search = vim.fn.input("> ")})<CR>
   -- nnoremap <silent> <leader>cw :lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
+  -- nnoremap <silent> <leader>ev :lua require('dbern.plugins.telescope').search_vimrc()<CR>
+  -- nnoremap <silent> <leader>ed :lua require('dbern.plugins.telescope').search_dotfiles()<CR>
+  -- nnoremap <silent> <leader>el :lua require('dbern.plugins.telescope').search_local()<CR>
+  -- nnoremap <silent> <leader>ca :lua require('dbern.plugins.telescope').code_actions()<CR>
+  -- nnoremap <silent> <leader>gb :lua require('dbern.plugins.telescope').git_branches()<CR>
   vim.api.nvim_set_keymap('n', '<leader>F', ':Telescope lsp_workspace_symbols query=', { noremap = true })
-
-  vim.cmd [[
-
-    nnoremap <silent> <leader>ev :lua require('dbern.plugins.telescope').search_vimrc()<CR>
-    nnoremap <silent> <leader>ed :lua require('dbern.plugins.telescope').search_dotfiles()<CR>
-    nnoremap <silent> <leader>el :lua require('dbern.plugins.telescope').search_local()<CR>
-    nnoremap <silent> <leader>ca :lua require('dbern.plugins.telescope').code_actions()<CR>
-
-    nnoremap <silent> <leader>gb :lua require('dbern.plugins.telescope').git_branches()<CR>
-  ]]
 end
 
 M.find_files = function()
