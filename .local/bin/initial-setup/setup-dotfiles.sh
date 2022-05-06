@@ -174,35 +174,6 @@ fi
 column
 fancy_echo "Installing neovim plugins for languages" "$yellow"
 pip_install_or_update neovim
-pip_install_or_update neovim-remote
-
-fancy_echo "Installing tools" "$yellow"
-yarn_install_or_update diff-so-fancy
-
-fancy_echo "Installing language servers" "$yellow"
-yarn_install_or_update vscode-json-languageserver-bin
-yarn_install_or_update vscode-html-languageserver-bin
-yarn_install_or_update vscode-css-languageserver-bin
-yarn_install_or_update ocaml-language-server
-yarn_install_or_update typescript-language-server
-yarn_install_or_update bash-language-server
-yarn_install_or_update tailwindcss-language-server
-yarn_install_or_update markdownlint-cli
-yarn_install_or_update write-good
-
-(
-  cd ~/.elixir_ls || exit 1
-  if type mix &> /dev/null; then
-    mix deps.get && mix.compile
-    mix elixir_ls.release - .
-  fi
-)
-(
-  cd ~/.kotlin_ls || exit 1
-  if type java &> /dev/null; then
-    ./gradlew installDist
-  fi
-)
 
 fancy_echo "Registering tmux terminfo for italics" "$yellow"
 tic "$HOME/.tmux-italics.terminfo"

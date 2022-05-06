@@ -10,7 +10,7 @@
 --glob=!_build
 --glob=!tags
 --glob=!bower_components
---glob=!storage
+--glob=!./storage
 --glob=!tmp
 --glob=!coverage
 --glob=!deps
