@@ -86,77 +86,79 @@ servers.register(server.Server:new({
   end,
 }))
 
-null_ls.setup({
-  on_attach = make_on_attach('null-ls'),
-  sources = {
-    null_ls.builtins.diagnostics.credo,
-    null_ls.builtins.diagnostics.sqlfluff.with({
-      command = null_dir .. '/venv/bin/sqlfluff',
-      extra_args = {"--dialect", "postgres"}
-    }),
-    null_ls.builtins.diagnostics.markdownlint.with({
-      command = null_dir .. '/node_modules/.bin/markdownlint'
-    }),
-    null_ls.builtins.formatting.sqlfluff.with({
-      extra_args = {"--dialect", "postgres"},
-      command = null_dir .. '/venv/bin/sqlfluff'
-    }),
-    null_ls.builtins.diagnostics.erb_lint.with({
-      command = null_dir .. "/bin/erblint"
-    }),
-    null_ls.builtins.formatting.erb_lint.with({
-      command = null_dir .. "/bin/erblint"
-    }),
-    null_ls.builtins.diagnostics.write_good.with({
-      command = null_dir .. "/node_modules/.bin/write-good"
-    }),
-    null_ls.builtins.formatting.surface,
-    null_ls.builtins.formatting.zigfmt,
-    null_ls.builtins.diagnostics.shellcheck,
-    null_ls.builtins.diagnostics.yamllint.with({
-      command = null_dir .. '/venv/bin/yamllint'
-    }),
-    null_ls.builtins.formatting.prettierd.with({
-      command = null_dir .. '/node_modules/.bin/prettierd'
-    }),
-    null_ls.builtins.diagnostics.rubocop.with({
-      command = function(_params)
-        if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
-          return "scripts/bin/rubocop-daemon/rubocop"
-        elseif os.execute("grep 'gem .rubocop.' Gemfile") / 256 == 0 then
-          return "bundle"
-        else
-          return null_dir..'/bin/rubocop'
+if not vim.g.disable_null_ls then
+  null_ls.setup({
+    on_attach = make_on_attach('null-ls'),
+    sources = {
+      null_ls.builtins.diagnostics.credo,
+      null_ls.builtins.diagnostics.sqlfluff.with({
+        command = null_dir .. '/venv/bin/sqlfluff',
+        extra_args = {"--dialect", "postgres"}
+      }),
+      null_ls.builtins.diagnostics.markdownlint.with({
+        command = null_dir .. '/node_modules/.bin/markdownlint'
+      }),
+      null_ls.builtins.formatting.sqlfluff.with({
+        extra_args = {"--dialect", "postgres"},
+        command = null_dir .. '/venv/bin/sqlfluff'
+      }),
+      null_ls.builtins.diagnostics.erb_lint.with({
+        command = null_dir .. "/bin/erblint"
+      }),
+      null_ls.builtins.formatting.erb_lint.with({
+        command = null_dir .. "/bin/erblint"
+      }),
+      null_ls.builtins.diagnostics.write_good.with({
+        command = null_dir .. "/node_modules/.bin/write-good"
+      }),
+      null_ls.builtins.formatting.surface,
+      null_ls.builtins.formatting.zigfmt,
+      null_ls.builtins.diagnostics.shellcheck,
+      null_ls.builtins.diagnostics.yamllint.with({
+        command = null_dir .. '/venv/bin/yamllint'
+      }),
+      null_ls.builtins.formatting.prettierd.with({
+        command = null_dir .. '/node_modules/.bin/prettierd'
+      }),
+      null_ls.builtins.diagnostics.rubocop.with({
+        command = function(_params)
+          if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
+            return "scripts/bin/rubocop-daemon/rubocop"
+          elseif os.execute("grep 'gem .rubocop.' Gemfile") / 256 == 0 then
+            return "bundle"
+          else
+            return null_dir..'/bin/rubocop'
+          end
+        end,
+        args = function(params)
+          if params.cmd == "bundle" then
+            return vim.list_extend({ "exec", "rubocop" }, null_ls.builtins.diagnostics.rubocop._opts.args)
+          else
+            return null_ls.builtins.diagnostics.rubocop._opts.args
+          end
         end
-      end,
-      args = function(params)
-        if params.cmd == "bundle" then
-          return vim.list_extend({ "exec", "rubocop" }, null_ls.builtins.diagnostics.rubocop._opts.args)
-        else
-          return null_ls.builtins.diagnostics.rubocop._opts.args
+      }),
+      null_ls.builtins.formatting.eslint_d.with({
+        command = null_dir .. '/node_modules/.bin/eslint_d',
+        cwd = function(params)
+          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
         end
-      end
-    }),
-    null_ls.builtins.formatting.eslint_d.with({
-      command = null_dir .. '/node_modules/.bin/eslint_d',
-      cwd = function(params)
-        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-      end
-    }),
-    null_ls.builtins.diagnostics.eslint_d.with({
-      command = null_dir .. '/node_modules/.bin/eslint_d',
-      cwd = function(params)
-        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-      end
-    }),
-    null_ls.builtins.code_actions.eslint_d.with({
-      command = null_dir .. '/node_modules/.bin/eslint_d',
-      cwd = function(params)
-        return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-      end
-    })
-  }
-})
+      }),
+      null_ls.builtins.diagnostics.eslint_d.with({
+        command = null_dir .. '/node_modules/.bin/eslint_d',
+        cwd = function(params)
+          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
+        end
+      }),
+      null_ls.builtins.code_actions.eslint_d.with({
+        command = null_dir .. '/node_modules/.bin/eslint_d',
+        cwd = function(params)
+          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
+        end
+      })
+    }
+  })
+end
 
 lspinstall.setup({
   ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
