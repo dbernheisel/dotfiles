@@ -48,7 +48,7 @@
   compression = -1
   autocrlf = input
   excludesfile = ~/.gitignore
-  pager = delta --theme='Monokai Extended Bright'
+  pager = delta --syntax-theme='Monokai Extended Bright'
 [fetch]
   prune = true
 [diff]
