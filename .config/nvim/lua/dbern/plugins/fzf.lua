@@ -5,20 +5,15 @@ local fzf = require('fzf-lua')
 local U = require('dbern.utils')
 local M = {}
 
-local fd_opts = "-t f"
+local fd_opts = "--hidden -t f"
 local rg_opts = "--files"
 local has_prox = U.executable("proximity-sort")
-local previewer = "builtin"
 
 local fzf_opts = {
   ['--layout'] = false
 }
 if has_prox then
   fzf_opts['--tiebreak'] = 'index'
-end
-
-if U.executable("bat") then
-  previewer = "bat"
 end
 
 M.dynamic_fzf_args = function()
@@ -85,7 +80,6 @@ M.setup = function()
       hl = { border = 'FloatBorder' },
       preview = {
         border = 'noborder',
-        default = previewer,
         hidden = 'hidden'
       },
     },
@@ -132,7 +126,7 @@ M.setup = function()
   vim.api.nvim_set_keymap('n', '<leader>ed', ':call v:lua.fzf_dotfiles()<cr>', { silent = true, noremap = true })
   vim.api.nvim_set_keymap('n', '<leader>el', ':call v:lua.fzf_local()<cr>', { silent = true, noremap = true })
   vim.api.nvim_set_keymap('n', '<leader>gb', ':call v:lua.fzf_git_branches()<cr>', { silent = true, noremap = true })
-  fzf.register_ui_select({}, true)
+  fzf.register_ui_select({winopts = {preview = {winopts = {number = false}}}}, true)
 end
 
 return M
