@@ -25,12 +25,14 @@ endif
 function! s:goyo_enter()
   " turn off cursor-line-highlight auto-indent, whitespace, and in-progress
   " commands
-  setlocal noai nolist noshowcmd nocursorline nospell
+  setlocal noai noruler nolist noshowcmd nocursorline nospell
+  setlocal fillchars=eob:\ "don't trim
 
   Limelight  " Focus on the current paragraph, dim the others
   SoftPencil " Turn on soft breaks
-  Wordy weak " Highlight weak words
+  silent Wordy weak " Highlight weak words
   call NullStopLsp()
+  echo ' '
 endfunction
 
 function! s:goyo_leave()
@@ -38,9 +40,11 @@ function! s:goyo_leave()
 
   Limelight!
   NoPencil
-  NoWordy
+  silent NoWordy
+  echo ' '
 endfunction
 
+command! Present Goyo | Limelight!
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 nmap <leader>df :Goyo<CR>
