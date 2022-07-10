@@ -83,16 +83,16 @@
   insteadOf = https://github.com/
 [url "ssh://git@bitbucket.org/"]
   insteadOf = https://bitbucket.org/
-[url "ssh://git@bitbucket.org/taxjar/"]
-  insteadOf = tj:
+[url "ssh://git@bitbucket.org/"]
+  insteadOf = bb:
 [url "ssh://git@github.com/"]
   insteadOf = gh:
 [url "ssh://git@gitlab.com/"]
   insteadOf = gl:
 [url "ssh://git@github.com/dbernheisel/"]
   insteadOf = db:
-[url "ssh://git@heroku.com/"]
-  insteadOf = https://git.heroku.com/
+[url "ssh://git@github.com/zestcreative/"]
+  insteadOf = zest:
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
@@ -110,6 +110,6 @@
   newMoved = green italic
   newMovedDimmed = green dim italic
 [pull]
-	ff = only
+  ff = only
 [init]
-	defaultBranch = main
+  defaultBranch = main
