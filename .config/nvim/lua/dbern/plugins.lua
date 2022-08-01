@@ -27,7 +27,8 @@ return require('packer').startup({function(use)
       config = "require('dbern.plugins.nvim-web-devicons')" }
 
     -- LSP
-    use 'williamboman/nvim-lsp-installer'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
     use { 'neovim/nvim-lspconfig', config = "require('dbern.lsp')" }
     use 'jose-elias-alvarez/null-ls.nvim'
     use { 'folke/trouble.nvim',

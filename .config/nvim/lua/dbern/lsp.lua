@@ -1,14 +1,9 @@
 local a = vim.api
 local lspconfig = require('lspconfig')
-local lspinstall = require('nvim-lsp-installer')
-local servers = require('nvim-lsp-installer.servers')
-local server = require('nvim-lsp-installer.server')
-local npm = require('nvim-lsp-installer.core.managers.npm')
-local gem = require('nvim-lsp-installer.core.managers.gem')
-local pip = require('nvim-lsp-installer.core.managers.pip3')
+local mason = require('mason')
+local mason_install = require('mason-lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
 local null_ls  = require('null-ls')
-local null_dir = server.get_server_root_path("null-ls")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 
 local lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
@@ -74,60 +69,34 @@ local function make_on_attach(_config)
   end
 end
 
-servers.register(server.Server:new({
-  name = "null-ls",
-  root_dir = null_dir,
-  homepage = "https://github.com/jose-elias-alvarez/null-ls.nvim",
-  async = true,
-  installer = function()
-    gem.install({'rubocop', 'erb_lint'})
-    npm.install({'@fsouza/prettierd', 'eslint_d', 'write-good', 'markdownlint-cli'})
-    pip.install({'yamllint', 'sqlfluff'})
-  end,
-}))
-
 if not vim.g.disable_null_ls then
   null_ls.setup({
     on_attach = make_on_attach('null-ls'),
     sources = {
       null_ls.builtins.diagnostics.credo,
-      null_ls.builtins.diagnostics.sqlfluff.with({
-        command = null_dir .. '/venv/bin/sqlfluff',
-        extra_args = {"--dialect", "postgres"}
-      }),
-      null_ls.builtins.diagnostics.markdownlint.with({
-        command = null_dir .. '/node_modules/.bin/markdownlint'
-      }),
+      null_ls.builtins.diagnostics.markdownlint,
       null_ls.builtins.formatting.sqlfluff.with({
         extra_args = {"--dialect", "postgres"},
-        command = null_dir .. '/venv/bin/sqlfluff'
       }),
-      null_ls.builtins.diagnostics.erb_lint.with({
-        command = null_dir .. "/bin/erblint"
+      null_ls.builtins.diagnostics.sqlfluff.with({
+        extra_args = {"--dialect", "postgres"},
       }),
-      null_ls.builtins.formatting.erb_lint.with({
-        command = null_dir .. "/bin/erblint"
-      }),
-      null_ls.builtins.diagnostics.write_good.with({
-        command = null_dir .. "/node_modules/.bin/write-good"
-      }),
+      null_ls.builtins.diagnostics.erb_lint,
+      null_ls.builtins.formatting.erb_lint,
+      null_ls.builtins.diagnostics.write_good,
       null_ls.builtins.formatting.surface,
       null_ls.builtins.formatting.zigfmt,
       null_ls.builtins.diagnostics.shellcheck,
-      null_ls.builtins.diagnostics.yamllint.with({
-        command = null_dir .. '/venv/bin/yamllint'
-      }),
-      null_ls.builtins.formatting.prettierd.with({
-        command = null_dir .. '/node_modules/.bin/prettierd'
-      }),
+      null_ls.builtins.diagnostics.yamllint,
+      null_ls.builtins.formatting.prettierd,
       null_ls.builtins.diagnostics.rubocop.with({
         command = function(_params)
           if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
             return "scripts/bin/rubocop-daemon/rubocop"
-          elseif os.execute("grep 'gem .rubocop.' Gemfile") / 256 == 0 then
+          elseif os.execute("test -f Gemfile && grep 'gem .rubocop.' Gemfile") / 256 == 0 then
             return "bundle"
           else
-            return null_dir..'/bin/rubocop'
+            return "rubocop"
           end
         end,
         args = function(params)
@@ -139,19 +108,16 @@ if not vim.g.disable_null_ls then
         end
       }),
       null_ls.builtins.formatting.eslint_d.with({
-        command = null_dir .. '/node_modules/.bin/eslint_d',
         cwd = function(params)
           return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
         end
       }),
       null_ls.builtins.diagnostics.eslint_d.with({
-        command = null_dir .. '/node_modules/.bin/eslint_d',
         cwd = function(params)
           return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
         end
       }),
       null_ls.builtins.code_actions.eslint_d.with({
-        command = null_dir .. '/node_modules/.bin/eslint_d',
         cwd = function(params)
           return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
         end
@@ -160,10 +126,15 @@ if not vim.g.disable_null_ls then
   })
 end
 
-lspinstall.setup({
-  ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
-    "jsonls", "null-ls", "solargraph", "sumneko_lua", "tailwindcss",
-    "tsserver", "vimls", "vuels", "yamlls", "zls" }
+mason.setup()
+mason_install.setup({
+  ensure_installed = { "bash-language-server", "css-lsp",
+    "dockerfile-language-server", "elixir-ls", "html-lsp", "json-lsp",
+    "shellcheck", "solargraph", "erb_lint", "sorbet", "rubocop",
+    "lua-language-server", "tailwind-language-server",
+    "typescript-language-server", "vim-language-server", "vue-language-server",
+    "yaml-language-server", "yamllint", "eslint_d", "prettierd", "write-good",
+    "zls" }
 })
 
 local lsp_servers = {
@@ -172,13 +143,7 @@ local lsp_servers = {
     root_dir = lspconfig.util.root_pattern("package.json", ".git")
   },
   dockerls = {},
-  elixirls = {
-    settings = {
-      elixirLS = {
-        dialyzerFormat = "dialyxir_short";
-      }
-    }
-  },
+  elixirls = {},
   html = {
     filetypes = {"heex", "html", "eelixir", "eruby"}
   },

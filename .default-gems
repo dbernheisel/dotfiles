@@ -5,3 +5,4 @@ rubocop
 reek
 solargraph
 sorbet
+erb_lint
