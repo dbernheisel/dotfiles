@@ -1,5 +1,6 @@
 local cmp = require('cmp')
 local luasnip = require('luasnip')
+local context = require("cmp.config.context")
 require('dbern.gh_issues')
 require('dbern.plugins.cmp-hex')
 
@@ -14,6 +15,11 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
+  enable = function()
+    return not (
+      context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
+    )
+  end ,
   mapping = cmp.mapping.preset.insert({
     ['<c-d>'] = cmp.mapping.scroll_docs(-4),
     ['<c-f>'] = cmp.mapping.scroll_docs(4),

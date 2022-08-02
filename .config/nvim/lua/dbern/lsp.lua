@@ -139,9 +139,7 @@ mason_install.setup({
 
 local lsp_servers = {
   bashls = {},
-  cssls = {
-    root_dir = lspconfig.util.root_pattern("package.json", ".git")
-  },
+  cssls = {},
   dockerls = {},
   elixirls = {},
   html = {
