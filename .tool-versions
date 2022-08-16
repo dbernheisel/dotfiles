@@ -1,4 +1,5 @@
 ruby 2.7.6
 nodejs 16.15.0
 elixir 1.13.3-otp-24
+rebar 3.19.0
 erlang 24.3.3
