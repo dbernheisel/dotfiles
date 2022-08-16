@@ -4,6 +4,7 @@ local mason = require('mason')
 local mason_install = require('mason-lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
 local null_ls  = require('null-ls')
+local document_color  = require('document-color')
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 
 local lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
@@ -35,6 +36,10 @@ local function make_on_attach(_config)
       a.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
     end
     a.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+
+    if client.supports_method("textDocument/documentColor") then
+      document_color.buf_attach(bufnr)
+    end
 
     if client.supports_method("textDocument/formatting") then
       -- Add :Format command
@@ -128,13 +133,10 @@ end
 
 mason.setup()
 mason_install.setup({
-  ensure_installed = { "bash-language-server", "css-lsp",
-    "dockerfile-language-server", "elixir-ls", "html-lsp", "json-lsp",
-    "shellcheck", "solargraph", "erb_lint", "sorbet", "rubocop",
-    "lua-language-server", "tailwind-language-server",
-    "typescript-language-server", "vim-language-server", "vue-language-server",
-    "yaml-language-server", "yamllint", "eslint_d", "prettierd", "write-good",
-    "zls" }
+  ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
+    "jsonls", "shellcheck", "solargraph", "erb_lint", "sorbet", "rubocop",
+    "sumneko_lua", "tailwindcss", "tsserver", "vimls", "vuels", "yamlls",
+    "yamllint", "eslint_d", "prettierd", "write-good", "zls" }
 })
 
 local lsp_servers = {

@@ -29,6 +29,7 @@ return require('packer').startup({function(use)
     -- LSP
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
+    use 'mrshmllow/document-color.nvim'
     use { 'neovim/nvim-lspconfig', config = "require('dbern.lsp')" }
     use 'jose-elias-alvarez/null-ls.nvim'
     use { 'folke/trouble.nvim',
