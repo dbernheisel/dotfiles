@@ -31,6 +31,7 @@ fi
 [[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ -d $HOME/go/bin ]] && export PATH="$HOME/go/bin:$PATH"
 [[ -d $HOME/.config/composer/vendor/bin ]] && export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+[[ -f /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
 [[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
 [[ $TERMINFO =~ "iterm" ]] && export COLORTERM="truecolor"
 

@@ -123,12 +123,6 @@ if is_fedora; then source "$INITIALSCRIPTS/install-fedora.sh"; fi
 if is_arch; then source "$INITIALSCRIPTS/install-arch.sh"; fi
 if is_mac; then source "$INITIALSCRIPTS/install-mac.sh"; fi
 
-#### Install zsh
-column
-fancy_echo "Changing your shell to zsh ..." "$yellow"
-chsh -l
-chsh
-
 #### Setup dotfiles
 column
 
@@ -175,9 +169,6 @@ column
 fancy_echo "Installing neovim plugins for languages" "$yellow"
 pip_install_or_update neovim
 
-fancy_echo "Registering tmux terminfo for italics" "$yellow"
-tic "$HOME/.tmux-italics.terminfo"
-
 if is_linux && ! type kitty &> /dev/null && prompt_install "Kitty terminal"; then
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 fi
@@ -185,9 +176,6 @@ fi
 column
 fancy_echo "Installing user fonts" "$yellow"
 
-if is_mac; then
-  ln -sf "$HOME/.local/share/fonts" "$HOME/Library/Fonts"
-fi
 if is_linux && type fc-cache &>/dev/null; then
   fc-cache -vf "$HOME/.local/share/fonts"
 fi
