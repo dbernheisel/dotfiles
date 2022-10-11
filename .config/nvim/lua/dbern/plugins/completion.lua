@@ -1,8 +1,8 @@
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 local context = require("cmp.config.context")
-require('dbern.gh_issues')
-require('dbern.plugins.cmp-hex')
+-- require('dbern.gh_issues')
+-- require('dbern.plugins.cmp-hex')
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -60,7 +60,7 @@ cmp.setup({
   }, {
     { name = 'calc' },
     { name = 'luasnip' },
-    { name = 'hex', keyword_length = 3 },
+    -- { name = 'hex', keyword_length = 3 },
     { name = 'npm', keyword_length = 4 },
     { name = 'treesitter' },
   }, {
@@ -97,6 +97,6 @@ cmp.setup.filetype({ 'markdown', 'help' }, {
 
 cmp.setup.filetype({ 'gitcommit' }, {
   sources = cmp.config.sources({
-    { name = 'gh_issues' },
+    -- { name = 'gh_issues' },
   }),
 })

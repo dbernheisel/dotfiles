@@ -35,10 +35,6 @@ vim.g.writebackup = false
 vim.g.swapfile = false
 
 if U.has('nvim-0.7') then
-  -- Use Neovim way of detecting filetypes
-  -- vim.g.did_load_filetypes = false
-  -- vim.g.do_filetype_lua = true
-
   -- Global status line
   vim.opt.laststatus = 3
 else
@@ -48,7 +44,7 @@ end
 if U.is_mac then
   vim.o.clipboard = 'unnamed'
   vim.go.python_host_prog = '/usr/bin/python'
-  vim.go.python3_host_prog = '/usr/local/bin/python3'
+  vim.go.python3_host_prog = '/usr/bin/python3'
   vim.go.python2_host_prog = '/usr/bin/python2'
 end
 
@@ -56,7 +52,7 @@ if U.is_linux then
   vim.o.clipboard = 'unnamedplus'
 end
 
-if U.has('python') then
+if U.has('python') or U.has('python3') then
   vim.opt.pyx=3
 end
 
