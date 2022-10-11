@@ -376,22 +376,10 @@ time([[Defining packer_plugins]], false)
 time([[Runtimepath customization]], true)
 vim.o.runtimepath = vim.o.runtimepath .. ",/Users/dbern/.local/share/nvim/site/pack/packer/start/onehalf/vim/"
 time([[Runtimepath customization]], false)
--- Config for: nvim-web-devicons
-time([[Config for nvim-web-devicons]], true)
-require('dbern.plugins.nvim-web-devicons')
-time([[Config for nvim-web-devicons]], false)
--- Config for: nerdcommenter
-time([[Config for nerdcommenter]], true)
-require('dbern.plugins.nerdcomment')
-time([[Config for nerdcommenter]], false)
 -- Config for: FTerm.nvim
 time([[Config for FTerm.nvim]], true)
 require('dbern.plugins.fterm')
 time([[Config for FTerm.nvim]], false)
--- Config for: LuaSnip
-time([[Config for LuaSnip]], true)
-require('dbern.plugins.snippets')
-time([[Config for LuaSnip]], false)
 -- Config for: fzf-lua
 time([[Config for fzf-lua]], true)
 require('dbern.plugins.fzf').setup()
@@ -428,19 +416,14 @@ time([[Config for trouble.nvim]], false)
 time([[Config for nvim-lspconfig]], true)
 require('dbern.lsp')
 time([[Config for nvim-lspconfig]], false)
--- Config for: virt-column.nvim
-time([[Config for virt-column.nvim]], true)
-require('virt-column').setup()
-time([[Config for virt-column.nvim]], false)
 -- Config for: nvim-spectre
 time([[Config for nvim-spectre]], true)
 require('dbern.plugins.spectre').setup()
 time([[Config for nvim-spectre]], false)
--- Config for: winresizer
-time([[Config for winresizer]], true)
-      vim.api.nvim_set_keymap('t', '<c-e>', '<c-\\><c-n>:WinResizerStartResize<cr>', { noremap = true })
-    
-time([[Config for winresizer]], false)
+-- Config for: virt-column.nvim
+time([[Config for virt-column.nvim]], true)
+require('virt-column').setup()
+time([[Config for virt-column.nvim]], false)
 -- Config for: neo-tree.nvim
 time([[Config for neo-tree.nvim]], true)
 require('dbern.plugins.neotree').setup()
@@ -449,14 +432,31 @@ time([[Config for neo-tree.nvim]], false)
 time([[Config for nvim-treesitter]], true)
 require('dbern.plugins.treesitter').setup()
 time([[Config for nvim-treesitter]], false)
+-- Config for: winresizer
+time([[Config for winresizer]], true)
+      vim.api.nvim_set_keymap('t', '<c-e>', '<c-\\><c-n>:WinResizerStartResize<cr>', { noremap = true })
+    
+time([[Config for winresizer]], false)
 -- Config for: neogit
 time([[Config for neogit]], true)
 require('dbern.plugins.neogit')
 time([[Config for neogit]], false)
+-- Config for: nvim-web-devicons
+time([[Config for nvim-web-devicons]], true)
+require('dbern.plugins.nvim-web-devicons')
+time([[Config for nvim-web-devicons]], false)
 -- Config for: vim-fugitive
 time([[Config for vim-fugitive]], true)
 require('dbern.plugins.fugitive')
 time([[Config for vim-fugitive]], false)
+-- Config for: nerdcommenter
+time([[Config for nerdcommenter]], true)
+require('dbern.plugins.nerdcomment')
+time([[Config for nerdcommenter]], false)
+-- Config for: LuaSnip
+time([[Config for LuaSnip]], true)
+require('dbern.plugins.snippets')
+time([[Config for LuaSnip]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

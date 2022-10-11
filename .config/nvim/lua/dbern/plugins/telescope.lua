@@ -96,7 +96,7 @@ M.search_workspace_lsp = function()
   builtin.lsp_workspace_symbols({
     prompt_title = "Rubies",
     opts = {
-      file_ignore_patterns = { "^generated/", "^.vscode/", "^sorbet/", "^build/" }
+      file_ignore_patterns = { "^generated/", "^.vscode/", "^build/" }
     }
   })
 end

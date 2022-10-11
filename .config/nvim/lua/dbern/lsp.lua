@@ -134,7 +134,7 @@ end
 mason.setup()
 mason_install.setup({
   ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
-    "jsonls", "shellcheck", "solargraph", "erb_lint", "sorbet", "rubocop",
+    "jsonls", "shellcheck", "solargraph", "erb_lint", "rubocop",
     "sumneko_lua", "tailwindcss", "tsserver", "vimls", "vuels", "yamlls",
     "yamllint", "eslint_d", "prettierd", "write-good", "zls" }
 })
@@ -150,11 +150,6 @@ local lsp_servers = {
   jsonls = {},
   solargraph = {
     filetypes = {"ruby"}
-  },
-  sorbet = {
-    cmd = { "srb", "tc", "--lsp" },
-    filetypes = { "ruby" },
-    root_dir = lspconfig.util.root_pattern('sorbet'),
   },
   sqlls = {},
   sumneko_lua = {
@@ -190,23 +185,6 @@ local capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_clie
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)
   config.capabilities = capabilities
-
-  if lsp_server == 'sorbet' and vim.fn.glob("scripts/bin/typecheck") ~= "" then
-    config.cmd = {
-      "scripts/dev_productivity/while_pay_up_connected.sh",
-      "pay",
-      "exec",
-      "scripts/bin/typecheck",
-      "--lsp",
-      "--enable-all-experimental-lsp-features",
-      "--enable-experimental-lsp-document-formatting-rubyfmt"
-    }
-  elseif lsp_server == 'solargraph' and vim.fn.glob("scripts/bin/typecheck") ~= "" then
-    config.filetypes = {}
-  elseif lsp_server == 'solargraph' and vim.fn.glob("sorbet") ~= "" then
-    config.filetypes = {}
-  end
-
   lspconfig[lsp_server].setup(config)
 end
 

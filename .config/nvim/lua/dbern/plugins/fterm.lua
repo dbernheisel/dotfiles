@@ -3,14 +3,16 @@ local fterm = require('FTerm')
 local M = {}
 
 local test_terminal = fterm:new({
-  blend = 5,
+  blend = 2,
   border = 'rounded',
+  hl = 'FTerm',
   dimensions = { height = 0.9, width = 0.9 }
 })
 
 local gen_terminal = fterm:new({
-  blend = 5,
+  blend = 2,
   border = 'rounded',
+  hl = 'FTerm',
   dimensions = { height = 0.9, width = 0.9 }
 })
 

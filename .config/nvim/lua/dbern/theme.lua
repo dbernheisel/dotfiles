@@ -5,8 +5,8 @@ vim.g.sonokai_enable_italic = false
 vim.g.sonokai_disable_italic_comment = true
 vim.g.sonokai_better_performance = true
 -- Comment when italics are disabled
-vim.cmd [[let &t_ZH="\e[3m"]]
-vim.cmd [[let &t_ZR="\e[23m"]]
+-- vim.cmd [[let &t_ZH="\e[3m"]]
+-- vim.cmd [[let &t_ZR="\e[23m"]]
 
 M.setup = function()
   vim.api.nvim_set_keymap('n', '<leader>dm', ':call v:lua.dark_mode()<cr>', {})
