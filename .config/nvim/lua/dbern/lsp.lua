@@ -196,6 +196,7 @@ require('colorizer').setup({
   'html',
   'lua',
   'vim',
+  'svg',
   'conf',
   'eelixir',
   'heex',
