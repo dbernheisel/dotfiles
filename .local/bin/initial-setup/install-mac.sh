@@ -37,10 +37,6 @@ defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 
-fancy_echo "Turning on AptX and AAC codecs over Bluetooth for non-Apple devices" "$yellow"
-defaults write bluetoothaudiohd "Enable AptX codec" -bool true
-defaults write bluetoothaudiohd "Enable AAC codec" -bool true
-
 column
 fancy_echo "Installing programs" "$yellow"
 brew update
