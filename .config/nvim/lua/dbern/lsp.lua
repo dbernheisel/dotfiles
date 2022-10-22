@@ -199,6 +199,7 @@ require('colorizer').setup({
   'svg',
   'conf',
   'eelixir',
+  'elixir',
   'heex',
   'erb'
 })
