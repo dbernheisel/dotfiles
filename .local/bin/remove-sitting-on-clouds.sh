@@ -13,13 +13,20 @@ display_usage() {
 for f in "$1"/**/{.,}*.mp3(N); do
   if ! type kid3-cli &>/dev/null; then
     echo "This requires kid3-cli to be installed to clean MP3s"
+    case "$OSTYPE" in
+      darwin*)
+        echo "Install it with 'brew install kid3'";;
+      *)
+        ;;
+    esac
     exit 1
   fi
 
   echo "Fixing $f"
   kid3-cli \
     -c 'set "User-defined URL" ""' \
-    -c 'set "Comment" ""' \
+    -c 'set "Comment" "" 1' \
+    -c 'set "Comment" "" 2' \
     "$f"
 done
 
