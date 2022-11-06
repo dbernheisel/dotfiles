@@ -134,10 +134,11 @@ end
 mason.setup()
 mason_install.setup({
   ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
-    "jsonls", "shellcheck", "solargraph", "erb_lint", "rubocop",
-    "sumneko_lua", "tailwindcss", "tsserver", "vimls", "vuels", "yamlls",
-    "yamllint", "eslint_d", "prettierd", "write-good", "zls" }
+    "jsonls", "solargraph", "sumneko_lua", "tailwindcss", "tsserver", "vimls",
+    "vuels", "yamlls", "zls" }
 })
+
+-- write-good eslint_d prettierd yamllint rubocop erb_lint shellcheck
 
 local lsp_servers = {
   bashls = {},
@@ -180,7 +181,7 @@ local lsp_servers = {
 }
 
 -- Add snippet support
-local capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = cmp_nvim_lsp.default_capabilities()
 
 for lsp_server, config in pairs(lsp_servers) do
   config.on_attach = make_on_attach(config)
@@ -194,6 +195,7 @@ require('colorizer').setup({
   'sass',
   'javascript',
   'html',
+  'svg',
   'lua',
   'vim',
   'svg',
