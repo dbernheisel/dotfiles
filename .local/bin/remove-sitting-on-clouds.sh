@@ -10,17 +10,22 @@ display_usage() {
 [[ $1 == "" ]] && display_usage && exit 1
 [[ $1 == "--help" ]] && display_usage && exit 0
 
+if [ -d /Applications/kid3.app/Contents/MacOS ]; then
+  export PATH="/Applications/kid3.app/Contents/MacOS:${PATH}"
+fi
+
+if ! type kid3-cli &>/dev/null; then
+  echo "This requires kid3-cli to be installed to clean MP3s"
+  case "$OSTYPE" in
+    darwin*)
+      echo "Install it with 'brew install kid3'";;
+    *)
+      ;;
+  esac
+  exit 1
+fi
+
 for f in "$1"/**/{.,}*.mp3(N); do
-  if ! type kid3-cli &>/dev/null; then
-    echo "This requires kid3-cli to be installed to clean MP3s"
-    case "$OSTYPE" in
-      darwin*)
-        echo "Install it with 'brew install kid3'";;
-      *)
-        ;;
-    esac
-    exit 1
-  fi
 
   echo "Fixing $f"
   kid3-cli \
