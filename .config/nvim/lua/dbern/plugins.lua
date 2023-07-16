@@ -33,9 +33,11 @@ return require('packer').startup({function(use)
     -- LSP
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
+    use { 'elixir-tools/elixir-tools.nvim',
+      requires = { "nvim-lua/plenary.nvim" }
+    }
     use 'mrshmllow/document-color.nvim'
     use { 'neovim/nvim-lspconfig', config = "require('dbern.lsp')" }
-    use 'jose-elias-alvarez/null-ls.nvim'
     use { 'folke/trouble.nvim',
       config = "require('dbern.plugins.trouble')" }
     use 'mfussenegger/nvim-jdtls'
@@ -126,7 +128,7 @@ return require('packer').startup({function(use)
 
     -- Git
     use 'mhinz/vim-signify'
-    use { 'TimUntersberger/neogit', config = "require('dbern.plugins.neogit')" }
+    use { 'NeogitOrg/neogit', config = "require('dbern.plugins.neogit')" }
     use { 'tpope/vim-fugitive', config = "require('dbern.plugins.fugitive')" }
 
     -- Resize panes with C-e and hjkl

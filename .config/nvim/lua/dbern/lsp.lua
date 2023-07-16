@@ -1,17 +1,19 @@
 local a = vim.api
 local lspconfig = require('lspconfig')
+local lspconfig_configs = require('lspconfig.configs')
 local mason = require('mason')
-local mason_install = require('mason-lspconfig')
+local mason_lspconfig = require('mason-lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
-local null_ls  = require('null-ls')
 local document_color  = require('document-color')
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
+local elixir = require('elixir')
+local elixirls = require('elixir.elixirls')
 
 local lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
 
 local function make_on_attach(_config)
   return function(client, bufnr)
-    print("LSP "..client.name.." starting...")
+    -- print("LSP "..client.name.." starting...")
 
     local opts = { noremap = true, silent = true }
     a.nvim_buf_set_keymap(bufnr, 'n', 'K',  '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
@@ -22,11 +24,11 @@ local function make_on_attach(_config)
 
     if hasFzf then
       a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>FzfLua lsp_references<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gs', '<cmd>FzfLua lsp_document_symbols()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gw', '<cmd>FzfLua lsp_workspace_symbols()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>FzfLua lsp_incoming_calls()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>go', '<cmd>FzfLua lsp_outgoing_calls()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>FzfLua lsp_code_actions()<cr>', opts)
+      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gs', '<cmd>FzfLua lsp_document_symbols<cr>', opts)
+      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gw', '<cmd>FzfLua lsp_workspace_symbols<cr>', opts)
+      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>FzfLua lsp_incoming_calls<cr>', opts)
+      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>go', '<cmd>FzfLua lsp_outgoing_calls<cr>', opts)
+      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>FzfLua lsp_code_actions<cr>', opts)
     else
       a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
       a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gs', '<cmd>lua vim.lsp.buf.document_symbol()<cr>', opts)
@@ -43,7 +45,7 @@ local function make_on_attach(_config)
 
     if client.supports_method("textDocument/formatting") then
       -- Add :Format command
-      if vim.bo.filetype ~= "elixir" or (vim.bo.filetype == "elixir" and client.name ~= "null-ls") then
+      if vim.bo.filetype ~= "elixir" then
         a.nvim_buf_create_user_command(bufnr, 'Format', function()
           local params = require('vim.lsp.util').make_formatting_params({})
           client.request("textDocument/formatting", params, nil, bufnr)
@@ -74,86 +76,68 @@ local function make_on_attach(_config)
   end
 end
 
-if not vim.g.disable_null_ls then
-  null_ls.setup({
-    on_attach = make_on_attach('null-ls'),
-    sources = {
-      null_ls.builtins.diagnostics.credo,
-      null_ls.builtins.diagnostics.markdownlint,
-      null_ls.builtins.formatting.sqlfluff.with({
-        extra_args = {"--dialect", "postgres"},
-      }),
-      null_ls.builtins.diagnostics.sqlfluff.with({
-        extra_args = {"--dialect", "postgres"},
-      }),
-      null_ls.builtins.diagnostics.erb_lint,
-      null_ls.builtins.formatting.erb_lint,
-      null_ls.builtins.diagnostics.write_good,
-      null_ls.builtins.formatting.surface,
-      null_ls.builtins.formatting.zigfmt,
-      null_ls.builtins.diagnostics.shellcheck,
-      null_ls.builtins.diagnostics.yamllint,
-      null_ls.builtins.formatting.prettierd,
-      null_ls.builtins.diagnostics.rubocop.with({
-        command = function(_params)
-          if vim.fn.glob("scripts/bin/rubocop-daemon/rubocop") ~= "" then
-            return "scripts/bin/rubocop-daemon/rubocop"
-          elseif os.execute("test -f Gemfile && grep 'gem .rubocop.' Gemfile") / 256 == 0 then
-            return "bundle"
-          else
-            return "rubocop"
-          end
-        end,
-        args = function(params)
-          if params.cmd == "bundle" then
-            return vim.list_extend({ "exec", "rubocop" }, null_ls.builtins.diagnostics.rubocop._opts.args)
-          else
-            return null_ls.builtins.diagnostics.rubocop._opts.args
-          end
-        end
-      }),
-      null_ls.builtins.formatting.eslint_d.with({
-        cwd = function(params)
-          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-        end
-      }),
-      null_ls.builtins.diagnostics.eslint_d.with({
-        cwd = function(params)
-          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-        end
-      }),
-      null_ls.builtins.code_actions.eslint_d.with({
-        cwd = function(params)
-          return lspconfig.util.root_pattern(".eslintrc.js")(params.bufname)
-        end
-      })
-    }
-  })
-end
-
+-- :Mason
 mason.setup()
-mason_install.setup({
-  ensure_installed = { "bashls", "cssls", "dockerls", "elixirls", "html",
-    "jsonls", "solargraph", "sumneko_lua", "tailwindcss", "tsserver", "vimls",
-    "vuels", "yamlls", "zls" }
+
+    -- LSPs
+    -- ruby-lsp ruby_ls
+    -- bash-language-server bashls
+    -- css-lsp cssls
+    -- dockerfile-language-server dockerls
+    -- elixir-ls elixirls
+    -- erlang-ls erlangls
+    -- eslint-lsp eslint
+    -- html-lsp html
+    -- json-lsp jsonls
+    -- lua-language-server lua_ls
+    -- sqlls
+    -- tailwindcss-language-server tailwindcss
+    -- typescript-language-server tsserver
+    -- vetur-vls vuels
+    -- vim-language-server vimls
+    -- yaml-language-server yamlls
+    -- zls
+
+    -- Formatters
+    -- erb-lint
+    -- prettierd
+    -- rubocop
+    -- shellcheck
+    -- solargraph
+    -- sql-formatter
+    -- tree-sitter-cli
+mason_lspconfig.setup({
+  ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls",
+    "solargraph", "lua_ls", "tailwindcss", "tsserver", "vimls",
+    "vuels", "ruby_ls", "sqlls", "yamlls", "zls" }
 })
 
--- write-good eslint_d prettierd yamllint rubocop erb_lint shellcheck
+-- This doesn't work yet
+if not lspconfig_configs.lexical then
+  lspconfig_configs.lexical = {
+    default_config = {
+      filetypes = { "elixir", "eelixir" },
+      cmd = { "/Users/davidbernheisel/lexical/_build/dev/rel/lexical/start_lexical.sh" },
+      settings = {},
+      root_dir = function(fname)
+        return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
+      end,
+    },
+  }
+end
 
 local lsp_servers = {
   bashls = {},
   cssls = {},
   dockerls = {},
-  elixirls = {},
-  html = {
-    filetypes = {"heex", "html", "eelixir", "eruby"}
-  },
+  html = {},
+  -- lexical = {},
   jsonls = {},
   solargraph = {
     filetypes = {"ruby"}
   },
   sqlls = {},
-  sumneko_lua = {
+  lua_ls = {
     settings = {
       Lua = {
         runtime = {
@@ -188,6 +172,39 @@ for lsp_server, config in pairs(lsp_servers) do
   config.capabilities = capabilities
   lspconfig[lsp_server].setup(config)
 end
+
+elixir.setup({
+  credo = {
+    enable = true
+  },
+  nextls = {
+    enable = false,
+    version = "0.5.2",
+    on_attach = function(client, bufnr)
+      a.nvim_buf_create_user_command(bufnr, 'Format', function()
+        local params = require('vim.lsp.util').make_formatting_params({})
+        client.request("textDocument/formatting", params, nil, bufnr)
+      end, { nargs = 0 })
+    end
+  },
+  elixirls = {
+    tag = "v0.15.1",
+    enable = true,
+    settings = elixirls.settings({
+      enableTestLenses = true
+    }),
+    on_attach = function(client, bufnr)
+      vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+      vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+      vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+
+      a.nvim_buf_create_user_command(bufnr, 'Format', function()
+        local params = require('vim.lsp.util').make_formatting_params({})
+        client.request("textDocument/formatting", params, nil, bufnr)
+      end, { nargs = 0 })
+    end
+  }
+})
 
 require('colorizer').setup({
   'css',
