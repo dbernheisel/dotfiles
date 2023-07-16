@@ -76,3 +76,4 @@ private_ssh_key
 .sqllsrc
 .solargraph.yml
 .elixir_ls/
+.elixir-tools/
