@@ -1,8 +1,9 @@
 # Homebrew is bad at casks and updating. Just stop
 
 if RUBY_PLATFORM.downcase.include? 'darwin'
-  brew 'homebrew/cask-fonts/font-fira-code-nerd-font'
-  brew 'homebrew/cask-fonts/font-jetbrains-mono'
+  tap 'homebrew/cask-fonts'
+  brew 'font-fira-code-nerd-font'
+  brew 'font-jetbrains-mono'
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
