@@ -41,6 +41,9 @@ return require('packer').startup({function(use)
     use { 'folke/trouble.nvim',
       config = "require('dbern.plugins.trouble')" }
     use 'mfussenegger/nvim-jdtls'
+    use { 'mhanberg/output-panel.nvim',
+      config = "require('output_panel').setup()"
+    }
 
     -- Completion
     use { 'hrsh7th/nvim-cmp', config = "require('dbern.plugins.completion')" }
@@ -144,7 +147,7 @@ return require('packer').startup({function(use)
   end
 
   -- Add test commands
-  use { "vim-test/vim-test", config = "require('dbern.plugins.test')" }
+  use { "vim-test/vim-test", config = "require('dbern.plugins.test').setup()" }
   use { 'mfussenegger/nvim-dap', config = "require('dbern.plugins.dap')" }
 
   use 'tpope/vim-repeat'

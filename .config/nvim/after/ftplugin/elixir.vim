@@ -2,17 +2,12 @@
 setlocal textwidth=120
 setlocal colorcolumn=+1
 
-" Only needed for older Elixir Umbrella projects:
-" function! ElixirUmbrellaTransform(cmd) abort
-"   if match(a:cmd, 'apps/') != -1
-"     return substitute(a:cmd, 'mix test apps/\([^/]*\)/', 'mix cmd --app \1 mix test --color ', '')
-"   else
-"     return a:cmd
-"   end
-" endfunction
-"
-" let g:test#custom_transformations = {'elixir_umbrella': function('ElixirUmbrellaTransform')}
-" let g:test#transformation = 'elixir_umbrella'
+function! ElixirUmbrellaTransform(cmd) abort
+  return luaeval("require('dbern.plugins.test').test_elixir_app(_A)", a:cmd)
+endfunction
+
+let g:test#custom_transformations = {'elixir_umbrella': function('ElixirUmbrellaTransform')}
+let g:test#transformation = 'elixir_umbrella'
 "
 function! g:MixRun(selection) abort
   if !empty(a:selection)

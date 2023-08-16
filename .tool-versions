@@ -1,5 +1,5 @@
 ruby 3.2.2
 nodejs 16.15.0
-elixir 1.13.3-otp-24
+elixir 1.15.4-otp-25
 rebar 3.19.0
-erlang 25.3.2.1
+erlang 25.3.2.4

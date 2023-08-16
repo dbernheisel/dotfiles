@@ -45,12 +45,10 @@ local function make_on_attach(_config)
 
     if client.supports_method("textDocument/formatting") then
       -- Add :Format command
-      if vim.bo.filetype ~= "elixir" then
-        a.nvim_buf_create_user_command(bufnr, 'Format', function()
-          local params = require('vim.lsp.util').make_formatting_params({})
-          client.request("textDocument/formatting", params, nil, bufnr)
-        end, { nargs = 0 })
-      end
+      a.nvim_buf_create_user_command(bufnr, 'Format', function()
+        local params = require('vim.lsp.util').make_formatting_params({})
+        client.request("textDocument/formatting", params, nil, bufnr)
+      end, { nargs = 0 })
     end
 
     -- Highlight
@@ -131,7 +129,6 @@ local lsp_servers = {
   cssls = {},
   dockerls = {},
   html = {},
-  -- lexical = {},
   jsonls = {},
   solargraph = {
     filetypes = {"ruby"}
@@ -175,23 +172,18 @@ end
 
 elixir.setup({
   credo = {
-    enable = true
+    enable = false
   },
   nextls = {
     enable = false,
-    version = "0.5.2",
-    on_attach = function(client, bufnr)
-      a.nvim_buf_create_user_command(bufnr, 'Format', function()
-        local params = require('vim.lsp.util').make_formatting_params({})
-        client.request("textDocument/formatting", params, nil, bufnr)
-      end, { nargs = 0 })
-    end
+    version = "0.8.1",
+    on_attach = make_on_attach({})
   },
   elixirls = {
-    tag = "v0.15.1",
     enable = true,
+    tag = "v0.15.1",
     settings = elixirls.settings({
-      enableTestLenses = true
+      enableTestLenses = false
     }),
     on_attach = function(client, bufnr)
       vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
@@ -204,7 +196,21 @@ elixir.setup({
       end, { nargs = 0 })
     end
   }
-})
+  -- actually lexical
+--   elixirls = {
+--     enable = true,
+--     settings = elixirls.settings({
+--       enableTestLenses = false
+--     }),
+--     cmd = "/Users/davidbernheisel/lexical/_build/dev/rel/lexical/start_lexical.sh",
+--     on_attach = function(client, bufnr)
+--       a.nvim_buf_create_user_command(bufnr, 'Format', function()
+--         local params = require('vim.lsp.util').make_formatting_params({})
+--         client.request("textDocument/formatting", params, nil, bufnr)
+--       end, { nargs = 0 })
+--     end
+--   }
+ })
 
 require('colorizer').setup({
   'css',
