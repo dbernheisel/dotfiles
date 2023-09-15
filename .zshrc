@@ -45,6 +45,10 @@ export KERL_INSTALL_HTMLDOCS="no"
 export KERL_INSTALL_MANPAGES="no"
 
 have rg && export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
+if have bat; then
+  export BAT_THEME='Monokai Extended'
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
 
 # fzf default command
 if have fzf; then

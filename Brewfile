@@ -35,6 +35,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
 end
 
 brew 'bat'            # CLI utility. Colorized cat
+brew 'exa'            # CLI utility. Prettier ls
 brew 'dfu-util'       # CLI Firmware loader for keyboard
 brew 'git-delta'      # CLI diff-highlight for git
 brew 'fzf'            # CLI Fuzzy Finder CLI
