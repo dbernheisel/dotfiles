@@ -2,12 +2,14 @@ local terminal = require('dbern.plugins.fterm')
 local M = {}
 
 M.test_elixir_app = function(cmd)
-  if cmd == "mix test" and vim.fn.isdirectory('apps') == 1 then
-    local _, _, current_app = string.find(vim.fn.expand('%'), "apps/(%g+)/")
-    return cmd .. ' ' .. vim.fn.resolve("apps/" .. current_app)
-  else
-    return cmd
+  if cmd == "mix test" and vim.fn.isdirectory("apps") == 1 then
+    local _, _, current_app = string.find(vim.fn.expand("%"), "apps/(%g-)/")
+    local testdir = vim.fn.resolve("apps/" .. current_app .. "/test")
+    if vim.fn.isdirectory(testdir) then
+      return cmd .. ' ' .. vim.fn.resolve("apps/" .. current_app .. "/test")
+    end
   end
+  return cmd
 end
 
 _G.run_test_suite = function()
