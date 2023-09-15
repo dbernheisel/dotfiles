@@ -144,8 +144,16 @@ if have "exa"; then
   alias lt='exa -lT --git'
 fi
 
-alias listen='lsof -P -i -n'
-alias listen-ports='netstat -tulanp'
+alias listening='lsof -Pn -i'
+
+function listening-ports() {
+  if [ -z "$1" ]; then
+    echo "Usage: $0 tcp|udp|..."
+    echo "See /etc/protocols for full list"
+    return 1
+  fi
+  netstat -tulanp "$1"
+}
 
 function extract() {
   if [ -f "$1" ] ; then
