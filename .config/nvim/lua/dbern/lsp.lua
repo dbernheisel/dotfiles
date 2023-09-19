@@ -76,34 +76,6 @@ end
 
 -- :Mason
 mason.setup()
-
-    -- LSPs
-    -- ruby-lsp ruby_ls
-    -- bash-language-server bashls
-    -- css-lsp cssls
-    -- dockerfile-language-server dockerls
-    -- elixir-ls elixirls
-    -- erlang-ls erlangls
-    -- eslint-lsp eslint
-    -- html-lsp html
-    -- json-lsp jsonls
-    -- lua-language-server lua_ls
-    -- sqlls
-    -- tailwindcss-language-server tailwindcss
-    -- typescript-language-server tsserver
-    -- vetur-vls vuels
-    -- vim-language-server vimls
-    -- yaml-language-server yamlls
-    -- zls
-
-    -- Formatters
-    -- erb-lint
-    -- prettierd
-    -- rubocop
-    -- shellcheck
-    -- solargraph
-    -- sql-formatter
-    -- tree-sitter-cli
 mason_lspconfig.setup({
   ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls",
     "solargraph", "lua_ls", "tailwindcss", "tsserver", "vimls",
@@ -176,7 +148,7 @@ elixir.setup({
   },
   nextls = {
     enable = false,
-    version = "0.8.1",
+    version = "0.12.5",
     on_attach = make_on_attach({})
   },
   elixirls = {

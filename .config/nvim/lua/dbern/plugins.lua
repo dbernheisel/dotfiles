@@ -1,175 +1,173 @@
 local U = require("dbern.utils")
 
--- Recompile plugins after messing with plugins
-vim.cmd [[
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-augroup end
-]]
+-- Auto-install lazy.nvim if not installed
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Auto-install Packer if not installed
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 
-local packer_bootstrap = ensure_packer()
+vim.opt.rtp:prepend(lazypath)
 
--- Plugins
-return require('packer').startup({function(use)
-  use 'wbthomason/packer.nvim'
+-- Start lazy.nvim
+require("lazy").setup({
+  -- LSP
+  { 'williamboman/mason.nvim' },
+  { 'williamboman/mason-lspconfig.nvim' },
+  { 'elixir-tools/elixir-tools.nvim', dependencies = { "nvim-lua/plenary.nvim" } },
+  { 'mrshmllow/document-color.nvim' },
+  { 'neovim/nvim-lspconfig',
+    config = function() require('dbern.lsp') end },
+  { 'folke/trouble.nvim',
+    config = function() require('dbern.plugins.trouble') end },
+  { 'mfussenegger/nvim-jdtls' },
+  { 'mhanberg/output-panel.nvim',
+    config = function() require('output_panel').setup() end },
 
-  if not vim.g.vscode then
-    use { 'kyazdani42/nvim-web-devicons',
-      config = "require('dbern.plugins.nvim-web-devicons')" }
+  -- Snippets
+  { 'L3MON4D3/LuaSnip',
+    config = function() require('dbern.plugins.snippets') end},
 
-    -- LSP
-    use 'williamboman/mason.nvim'
-    use 'williamboman/mason-lspconfig.nvim'
-    use { 'elixir-tools/elixir-tools.nvim',
-      requires = { "nvim-lua/plenary.nvim" }
-    }
-    use 'mrshmllow/document-color.nvim'
-    use { 'neovim/nvim-lspconfig', config = "require('dbern.lsp')" }
-    use { 'folke/trouble.nvim',
-      config = "require('dbern.plugins.trouble')" }
-    use 'mfussenegger/nvim-jdtls'
-    use { 'mhanberg/output-panel.nvim',
-      config = "require('output_panel').setup()"
-    }
+  -- Completion
+  { 'hrsh7th/cmp-calc' },
+  { 'hrsh7th/cmp-path' },
+  { 'hrsh7th/cmp-cmdline' },
+  { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+  { 'hrsh7th/cmp-nvim-lsp-document-symbol' },
+  { 'hrsh7th/nvim-cmp',
+    event = "InsertEnter",
+    dependencies = {
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-buffer' }
+    },
+    config = function() require('dbern.plugins.completion') end},
+  { 'saadparwaiz1/cmp_luasnip' },
 
-    -- Completion
-    use { 'hrsh7th/nvim-cmp', config = "require('dbern.plugins.completion')" }
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-calc'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/cmp-nvim-lsp-signature-help'
-    use 'hrsh7th/cmp-nvim-lsp-document-symbol'
+  -- Finders
+  { 'nvim-lua/popup.nvim' },
 
-    -- Finders
-    use 'nvim-lua/popup.nvim'
-    -- use { 'nvim-telescope/telescope.nvim',
-    --   requires = { {'nvim-lua/plenary.nvim'} },
-    --   config = "require('dbern.plugins.telescope').setup()" }
-    -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    if U.executable('/usr/local/opt/fzf/bin/fzf') then
-      -- Use brew-installed fzf
-      use '/usr/local/opt/fzf'
-      vim.api.nvim_command("set rtp+=/usr/local/opt/fzf")
-    elseif U.executable('/usr/bin/fzf') then
-      -- Use arch-installed fzf
-      vim.api.nvim_command("set rtp+=/usr/bin/fzf")
-    else
-      use { 'junegunn/fzf', run = ':call fzf#install()' }
+  { -- Use brew-installed fzf
+    dir = '/usr/local/opt/fzf',
+    name = 'fzf-brew',
+    cond = U.executable('/opt/homebrew/bin/fzf'),
+    config = function()
+      vim.opt.rtp:append('/opt/homebrew/opt/fzf')
     end
-    use { 'ibhagwan/fzf-lua',
-      requires = { 'kyazdani42/nvim-web-devicons' },
-      config = { "require('dbern.plugins.fzf').setup()" }
-    }
-    use 'junegunn/fzf.vim'
-    use { "nvim-neo-tree/neo-tree.nvim",
-      config = { "require('dbern.plugins.neotree').setup()" },
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "kyazdani42/nvim-web-devicons",
-        "MunifTanjim/nui.nvim",
-      }
-    }
-
-    -- Treesitter
-    if U.has('nvim-0.6') then
-      use { 'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-        config = "require('dbern.plugins.treesitter').setup()" }
-    else
-      use { 'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-        config = "require('dbern.plugins.treesitter').setup()",
-        branch = '0.5-compat' }
+  },
+  { -- Use arch-installed fzf
+    dir = '/usr/local/opt/fzf',
+    name = 'fzf-arch',
+    cond = U.executable('/usr/bin/fzf'),
+    config = function()
+      vim.opt.rtp:append('/usr/bin/fzf')
     end
-    use 'nvim-treesitter/playground'
+  },
+  { 'junegunn/fzf',
+    -- Ensure fzf is installed
+    name = 'fzf-neovim',
+    cond = not U.executable('/opt/homebrew/bin/fzf') and not U.executable('/usr/bin/fzf'),
+    build = ':call fzf#install()'
+  },
+  { 'ibhagwan/fzf-lua',
+    dependencies = {
+      { 'kyazdani42/nvim-web-devicons' }
+    },
+    config = function() require('dbern.plugins.fzf').setup() end
+  },
+  { 'junegunn/fzf.vim' },
+  { "nvim-neo-tree/neo-tree.nvim",
+    config = function() require('dbern.plugins.neotree').setup() end,
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+      { "kyazdani42/nvim-web-devicons" },
+      { "MunifTanjim/nui.nvim" }
+    }
+  },
+  -- Treesitter
+  { 'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function() require('dbern.plugins.treesitter').setup() end },
+  { 'nvim-treesitter/playground' },
 
-    -- Terminal
-    use { 'numToStr/FTerm.nvim',
-      config = "require('dbern.plugins.fterm')" }
+  -- Terminal
+  { 'numToStr/FTerm.nvim',
+    init = function() require('dbern.plugins.fterm').setup() end },
 
-    -- Snippets
-    use { 'L3MON4D3/LuaSnip', config = "require('dbern.plugins.snippets')" }
-    use 'saadparwaiz1/cmp_luasnip'
+  { 'mrjones2014/dash.nvim',
+    cond = U.is_mac,
+    build = 'make install',
+    config = function() require('dbern.plugins.dash') end },
 
-    if U.is_mac then
-      use { 'mrjones2014/dash.nvim',
-        run = 'make install',
-        config = "require('dbern.plugins.dash')" }
-    end
+  { 'norcalli/nvim-colorizer.lua' },
 
-    use 'norcalli/nvim-colorizer.lua'
+  -- Search and Replace
+  { 'windwp/nvim-spectre',
+    config = function() require('dbern.plugins.spectre').setup() end },
 
-    -- Search and Replace
-    use { 'windwp/nvim-spectre', config = "require('dbern.plugins.spectre').setup()" }
+  { 'itchyny/calendar.vim',
+    config = function() require('dbern.plugins.calendar') end },
 
-    use { 'itchyny/calendar.vim',
-      config = "require('dbern.plugins.calendar')" }
+  -- <C-n> to select next word with new cursor
+  { 'mg979/vim-visual-multi' },
 
-    -- <C-n> to select next word with new cursor
-    use 'mg979/vim-visual-multi'
+  -- Easier block commenting.
+  { 'scrooloose/nerdcommenter',
+    config = function() require('dbern.plugins.nerdcomment') end },
 
-    -- Easier block commenting.
-    use { 'scrooloose/nerdcommenter', config = "require('dbern.plugins.nerdcomment')" }
+  -- Character as colorcolumn
+  { "lukas-reineke/virt-column.nvim"},
 
-    -- Character as colorcolumn
-    use { "lukas-reineke/virt-column.nvim", config = "require('virt-column').setup()" }
 
-    -- Git
-    use 'mhinz/vim-signify'
-    use { 'NeogitOrg/neogit', config = "require('dbern.plugins.neogit')" }
-    use { 'tpope/vim-fugitive', config = "require('dbern.plugins.fugitive')" }
+  -- Git
+  { 'mhinz/vim-signify' },
+  { 'NeogitOrg/neogit',
+    config = function() require('dbern.plugins.neogit') end },
+  { 'tpope/vim-fugitive',
+    config = function() require('dbern.plugins.fugitive') end },
 
-    -- Resize panes with C-e and hjkl
-    use { 'simeji/winresizer', config = [[
+  -- Resize panes with C-e and hjkl
+  { 'simeji/winresizer',
+    config = function()
       vim.api.nvim_set_keymap('t', '<c-e>', '<c-\\><c-n>:WinResizerStartResize<cr>', { noremap = true })
-    ]]}
+    end },
 
 
-    -- Theme
-    use { 'sonph/onehalf', rtp = 'vim/'}
-    use { 'sainnhe/sonokai', config = "require('dbern.theme').setup()" }
-    use { 'hoob3rt/lualine.nvim', config = "require('dbern.plugins.lualine')" }
-  end
+  -- Theme
+  { 'sonph/onehalf',
+    lazy = false,
+    config = function(plugin) vim.opt.rtp:append(plugin.dir .. '/vim') end },
+  { 'sainnhe/sonokai',
+    lazy = false,
+    config = function() require('dbern.theme').setup() end },
+  { 'hoob3rt/lualine.nvim',
+    lazy = false,
+    config = function() require('dbern.plugins.lualine') end },
 
   -- Add test commands
-  use { "vim-test/vim-test", config = "require('dbern.plugins.test').setup()" }
-  use { 'mfussenegger/nvim-dap', config = "require('dbern.plugins.dap')" }
+  { "vim-test/vim-test",
+    config = function() require('dbern.plugins.test').setup() end },
+  { 'mfussenegger/nvim-dap',
+    config = function() require('dbern.plugins.dap') end },
 
-  use 'tpope/vim-repeat'
-  use 'tpope/vim-surround'
-  use 'tpope/vim-eunuch'
-  use 'tpope/vim-projectionist'
-  use 'pbrisbin/vim-mkdir'
+  -- Convenience
+  { 'tpope/vim-repeat' },
+  { 'tpope/vim-surround' },
+  { 'tpope/vim-eunuch' },
+  { 'tpope/vim-projectionist' },
+  { 'pbrisbin/vim-mkdir' },
 
-  use 'godlygeek/tabular'
-  use 'reedes/vim-colors-pencil'
-  use 'reedes/vim-pencil'
-  use 'junegunn/limelight.vim'
-  use 'junegunn/goyo.vim'
-  use 'reedes/vim-wordy'
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end,
-config = {
-  display = {
-    open_fn = require('packer.util').float
-  }
-}})
-
+  -- Write better
+  { 'godlygeek/tabular' },
+  { 'reedes/vim-colors-pencil' },
+  { 'reedes/vim-pencil' },
+  { 'junegunn/limelight.vim' },
+  { 'junegunn/goyo.vim' },
+  { 'reedes/vim-wordy' },
+}, {})

@@ -37,10 +37,13 @@ _G.toggle_test = M.toggle_test
 _G.toggle_term = M.toggle_term
 _G.run_cmd = M.run_cmd
 
+M.setup = function()
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap('n', '<leader>t1', ':call v:lua.toggle_term()<cr>', opts)
+  vim.api.nvim_set_keymap('n', '<leader>t2', ':call v:lua.toggle_test()<cr>', opts)
+  vim.api.nvim_set_keymap('t', '<leader>t1', '<c-\\><c-n>:call v:lua.toggle_term()<cr>', opts)
+  vim.api.nvim_set_keymap('t', '<leader>t2', '<c-\\><c-n>:call v:lua.toggle_test()<cr>', opts)
+end
+
 -- Keymaps
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<leader>t1', ':call v:lua.toggle_term()<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>t2', ':call v:lua.toggle_test()<cr>', opts)
-vim.api.nvim_set_keymap('t', '<leader>t1', '<c-\\><c-n>:call v:lua.toggle_term()<cr>', opts)
-vim.api.nvim_set_keymap('t', '<leader>t2', '<c-\\><c-n>:call v:lua.toggle_test()<cr>', opts)
 return M

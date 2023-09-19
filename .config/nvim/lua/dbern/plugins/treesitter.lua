@@ -9,7 +9,6 @@ M.setup = function()
       'markdown_inline', 'php', 'python', 'regex', 'ruby', 'rust', 'scss',
       'surface', 'svelte', 'toml', 'tsx', 'typescript', 'vue', 'yaml', 'zig'
     },
-
     indent = { enable = true },
     highlight = { enable = true },
     incremental_selection = { enable = true },
