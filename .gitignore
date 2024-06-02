@@ -2,6 +2,7 @@
 *.sqlite3
 *.sw[nop]
 .env
+.env.*
 .log
 .secret*
 temp
@@ -35,6 +36,8 @@ fzf.bash
 
 config/Keybase
 config/keybase
+
+*.pem
 
 private_ssh_key
 
@@ -77,3 +80,4 @@ private_ssh_key
 .solargraph.yml
 .elixir_ls/
 .elixir-tools/
+.lexical/

@@ -22,14 +22,12 @@ require("lazy").setup({
   { 'williamboman/mason.nvim' },
   { 'williamboman/mason-lspconfig.nvim' },
   { 'elixir-tools/elixir-tools.nvim', dependencies = { "nvim-lua/plenary.nvim" } },
-  { 'mrshmllow/document-color.nvim' },
+  { 'themaxmarchuk/tailwindcss-colors.nvim' },
   { 'neovim/nvim-lspconfig',
     config = function() require('dbern.lsp') end },
   { 'folke/trouble.nvim',
     config = function() require('dbern.plugins.trouble') end },
   { 'mfussenegger/nvim-jdtls' },
-  { 'mhanberg/output-panel.nvim',
-    config = function() require('output_panel').setup() end },
 
   -- Snippets
   { 'L3MON4D3/LuaSnip',
@@ -87,7 +85,7 @@ require("lazy").setup({
     dependencies = {
       { "nvim-lua/plenary.nvim" },
       { "kyazdani42/nvim-web-devicons" },
-      { "MunifTanjim/nui.nvim" }
+      { "MunifTanjim/nui.nvim" },
     }
   },
   -- Treesitter
@@ -124,6 +122,11 @@ require("lazy").setup({
   -- Character as colorcolumn
   { "lukas-reineke/virt-column.nvim"},
 
+  -- View LSP logs
+  {
+    "mhanberg/output-panel.nvim",
+    event = "VeryLazy",
+    config = function() require("output_panel").setup() end },
 
   -- Git
   { 'mhinz/vim-signify' },
@@ -155,6 +158,11 @@ require("lazy").setup({
     config = function() require('dbern.plugins.test').setup() end },
   { 'mfussenegger/nvim-dap',
     config = function() require('dbern.plugins.dap') end },
+  { "andythigpen/nvim-coverage",
+    config = function() require("dbern.plugins.coverage").setup() end,
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+    }},
 
   -- Convenience
   { 'tpope/vim-repeat' },

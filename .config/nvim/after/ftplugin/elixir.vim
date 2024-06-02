@@ -35,7 +35,6 @@ endfunction
 command! -nargs=* Mix call MixFzf(<q-args>)
 
 augroup _elixir
-  autocmd!
   autocmd BufNewFile,BufRead *.html.eex,*.html.leex,*.heex set filetype=heex
   autocmd BufNewFile,BufRead *.livemd set filetype=markdown
   autocmd FileType elixir setlocal indentkeys+=end

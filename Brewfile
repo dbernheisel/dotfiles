@@ -29,7 +29,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
   brew 'sqlite'         # Service Database
 
   # Services
-  brew 'postgresql@14', restart_service: :changed
+  brew 'postgresql@15', restart_service: :changed
   brew 'redis', restart_service: :changed
   brew 'nginx', restart_service: :changed
 end
@@ -48,6 +48,7 @@ brew 'ripgrep'        # CLI rg grep current directory
 brew 'shellcheck'     # CLI POSIX shell linter
 brew 'tesseract'      # CLI tesseract OCR
 brew 'tidy-html5'     # CLI tidy HTML linting
+brew 'tldr'           # CLI tldr shorter man pages
 brew 'wget'           # CLI wget HTTP interface
 brew 'x264'           # Library video decoder
 brew 'xz'             # CLI xz compression

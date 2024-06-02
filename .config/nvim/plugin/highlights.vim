@@ -11,3 +11,4 @@ highlight VertSplit ctermbg=255 guibg=bg guifg=bg
 highlight BlackBg guibg=#151515
 highlight link elixirTSAttribute TSMethod
 highlight link elixirTSSymbol TSNumber
+highlight link @module.elixir @lsp.type.struct

@@ -4,12 +4,27 @@ local lspconfig_configs = require('lspconfig.configs')
 local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
-local document_color  = require('document-color')
+local tailwind_color = require("tailwindcss-colors")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 local elixir = require('elixir')
 local elixirls = require('elixir.elixirls')
+local u = require('dbern.utils')
 
 local lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
+
+local function lsp_supports(client, method)
+  local capability = vim.lsp._request_name_to_capability[method]
+  if not capability then
+    return false
+  end
+
+  if vim.tbl_get(client.server_capabilities, unpack(capability)) then
+    return true
+  else
+    return false
+  end
+end
+
 
 local function make_on_attach(_config)
   return function(client, bufnr)
@@ -39,11 +54,9 @@ local function make_on_attach(_config)
     end
     a.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
 
-    if client.supports_method("textDocument/documentColor") then
-      document_color.buf_attach(bufnr)
-    end
+    tailwind_color.buf_attach(bufnr)
 
-    if client.supports_method("textDocument/formatting") then
+    if lsp_supports(client, "textDocument/formatting") then
       -- Add :Format command
       a.nvim_buf_create_user_command(bufnr, 'Format', function()
         local params = require('vim.lsp.util').make_formatting_params({})
@@ -52,7 +65,7 @@ local function make_on_attach(_config)
     end
 
     -- Highlight
-    if client.supports_method("textDocument/documentHighlight") then
+    if lsp_supports(client, "textDocument/documentHighlight") then
       a.nvim_clear_autocmds({ group = lspHighlightAugroup, buffer = bufnr })
       a.nvim_create_autocmd("CursorHold", {
         group = lspHighlightAugroup,
@@ -78,23 +91,9 @@ end
 mason.setup()
 mason_lspconfig.setup({
   ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls",
-    "solargraph", "lua_ls", "tailwindcss", "tsserver", "vimls",
+    "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "tsserver", "vimls",
     "vuels", "ruby_ls", "sqlls", "yamlls", "zls" }
 })
-
--- This doesn't work yet
-if not lspconfig_configs.lexical then
-  lspconfig_configs.lexical = {
-    default_config = {
-      filetypes = { "elixir", "eelixir" },
-      cmd = { "/Users/davidbernheisel/lexical/_build/dev/rel/lexical/start_lexical.sh" },
-      settings = {},
-      root_dir = function(fname)
-        return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
-      end,
-    },
-  }
-end
 
 local lsp_servers = {
   bashls = {},
@@ -102,6 +101,9 @@ local lsp_servers = {
   dockerls = {},
   html = {},
   jsonls = {},
+  kotlin_language_server = {
+    filetypes = {"kotlin"}
+  },
   solargraph = {
     filetypes = {"ruby"}
   },
@@ -133,6 +135,14 @@ local lsp_servers = {
   zls = {},
 }
 
+local sourcekit_lsp = '/Library/Developer/CommandLineTools/usr/bin/sourcekit-lsp'
+if u.executable(sourcekit_lsp) then
+  lsp_servers.sourcekit = {
+    filetypes = {"swift"},
+    cmd = { sourcekit_lsp }
+  }
+end
+
 -- Add snippet support
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -144,19 +154,44 @@ end
 
 elixir.setup({
   credo = {
-    enable = false
+    enable = true
   },
   nextls = {
     enable = false,
-    version = "0.12.5",
-    on_attach = make_on_attach({})
+    version = "0.21.2",
+    on_attach = make_on_attach({}),
+    init_options = {
+      experimental = {
+        completions = {
+          enable = true -- control if completions are enabled. defaults to false
+        }
+      }
+    },
   },
+  -- elixirls = {
+  --   enable = true,
+  --   tag = "v0.20.0",
+  --   settings = elixirls.settings({
+  --     enableTestLenses = false
+  --   }),
+  --   on_attach = function(client, bufnr)
+  --     vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+  --     vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+  --     vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+  --
+  --     a.nvim_buf_create_user_command(bufnr, 'Format', function()
+  --       local params = require('vim.lsp.util').make_formatting_params({})
+  --       client.request("textDocument/formatting", params, nil, bufnr)
+  --     end, { nargs = 0 })
+  --   end
+  -- }
+  -- actually lexical
   elixirls = {
     enable = true,
-    tag = "v0.15.1",
     settings = elixirls.settings({
       enableTestLenses = false
     }),
+    cmd = os.getenv("HOME").."/lexical/_build/dev/package/lexical/bin/start_lexical.sh",
     on_attach = function(client, bufnr)
       vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
       vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
@@ -168,20 +203,6 @@ elixir.setup({
       end, { nargs = 0 })
     end
   }
-  -- actually lexical
---   elixirls = {
---     enable = true,
---     settings = elixirls.settings({
---       enableTestLenses = false
---     }),
---     cmd = "/Users/davidbernheisel/lexical/_build/dev/rel/lexical/start_lexical.sh",
---     on_attach = function(client, bufnr)
---       a.nvim_buf_create_user_command(bufnr, 'Format', function()
---         local params = require('vim.lsp.util').make_formatting_params({})
---         client.request("textDocument/formatting", params, nil, bufnr)
---       end, { nargs = 0 })
---     end
---   }
  })
 
 require('colorizer').setup({

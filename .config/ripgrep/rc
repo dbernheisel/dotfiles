@@ -6,6 +6,8 @@
 --smart-case
 --glob=!.git
 --glob=!.elixir_ls
+--glob=!.elixir-tools
+--glob=!.lexical
 --glob=!node_modules
 --glob=!_build
 --glob=!tags
