@@ -27,7 +27,7 @@ M.setup = function()
     }
   })
 
-  vim.api.nvim_set_keymap('n', '<leader>b', ':Neotree float reveal<cr>', { silent = true, noremap = true })
+  -- vim.api.nvim_set_keymap('n', '<leader>b', ':Neotree float reveal<cr>', { silent = true, noremap = true })
 end
 
 return M

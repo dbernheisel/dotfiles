@@ -30,8 +30,11 @@ M.setup = function()
       call v:lua.run_cmd(a:cmd)
     endfunction
 
-    let g:test#custom_strategies = {'FTerm': function('FTermStrategy')}
-    let g:test#strategy = 'FTerm'
+    let g:test#plugin_path = fnamemodify('~/.config/kitty', ':p:h')
+    let g:test#custom_strategies = {
+      \ 'FTerm': function('FTermStrategy'),
+    \ }
+    let g:test#strategy = 'kitty'
 
     let test#shell#bats#options = {
           \ 'nearest': '-t'

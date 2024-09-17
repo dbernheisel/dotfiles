@@ -1,3 +1,19 @@
+; Comments
+((comment) @injection.content
+ (#set! injection.language "comment"))
+
+; Documentation
+(unary_operator
+  operator: "@"
+  operand: (call
+    target: ((identifier) @_identifier (#any-of? @_identifier "moduledoc" "typedoc" "shortdoc" "doc"))
+    (arguments [
+      (string (quoted_content) @injection.content)
+      (sigil (quoted_content) @injection.content)
+    ])
+    (#set! injection.language "markdown")))
+
+; Sigils
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
@@ -9,12 +25,6 @@
   (quoted_content) @injection.content
  (#eq? @_sigil_name "SQL")
  (#set! injection.language "sql"))
-
-(sigil
-  (sigil_name) @_sigil_name
-  (quoted_content) @injection.content
- (#eq? @_sigil_name "JSON")
- (#set! injection.language "jsonc"))
 
 (sigil
   (sigil_name) @_sigil_name
@@ -31,29 +41,35 @@
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
- (#eq? @_sigil_name "ZIG")
+ (#any-of? @_sigil_name "z" "Z")
  (#set! injection.language "zig"))
 
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
- (#eq? @_sigil_name "r")
+ (#any-of? @_sigil_name "E" "L")
+ (#set! injection.language "eex"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+ (#eq? @_sigil_name "F")
+ (#set! injection.language "surface"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+ (#any-of? @_sigil_name "R" "r")
  (#set! injection.language "regex"))
 
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
- (#eq? @_sigil_name "R")
- (#set! injection.language "regex"))
-
-(sigil
-  (sigil_name) @_sigil_name
-  (quoted_content) @injection.content
- (#eq? @_sigil_name "H")
+ (#any-of? @_sigil_name "LVN" "H")
  (#set! injection.language "heex"))
 
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
- (#eq? @_sigil_name "LVN")
- (#set! injection.language "heex"))
+ (#any-of? @_sigil_name "j" "J" "JSON")
+ (#set! injection.language "jsonc"))

@@ -1,6 +1,8 @@
 local cmp = require('cmp')
 local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 local context = require("cmp.config.context")
+local tailwind_tools = require("tailwind-tools.cmp")
 -- require('dbern.gh_issues')
 -- require('dbern.plugins.cmp-hex')
 
@@ -10,6 +12,11 @@ local has_words_before = function()
 end
 
 cmp.setup({
+  formatting = {
+    format = lspkind.cmp_format({
+      before = tailwind_tools.lspkind_format
+    }),
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -56,7 +63,13 @@ cmp.setup({
   }, {
     { name = 'path' },
   }, {
-    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp' ,
+      option = {
+        markdown_oxide = {
+          keyword_pattern = [[\(\k\| \|\/\|#\)\+]]
+        }
+      }
+    },
   }, {
     { name = 'calc' },
     { name = 'luasnip' },

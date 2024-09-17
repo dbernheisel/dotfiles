@@ -1,4 +1,5 @@
 local m = vim.api.nvim_set_keymap
+local U = require('dbern.utils')
 
 -- Bash-like command complete selection
 m('c', '<left>', '<space><bs><left>', { noremap = true })
@@ -10,6 +11,10 @@ m('n', '<leader>sv', ':source $MYVIMRC<cr>', { noremap = true })
 -- Turn off linewise up and down movements
 m('n', 'j', 'gj', {})
 m('n', 'k', 'gk', {})
+
+if U.has('nvim-0.10') then
+  vim.keymap.set({'n', 'x', 'o'}, '<leader>/', 'gc', { silent = true, remap = true })
+end
 
 -- Disable Documentation Lookup
 m('', 'K', '', {})
@@ -59,9 +64,6 @@ function _G.show_documentation()
 end
 
 m('n', 'gd', ':call v:lua.show_documentation()<cr>', { silent = true })
-
-m('n', '<leader>/', '<leader>c<space>', {})
-m('v', '<leader>/', '<leader>c<space>', {})
 
 -- Emulate tmux shortcuts
 -- Remember to use :tabclose instead of :q for zoomed terminals

@@ -1,5 +1,7 @@
 .git
 .elixir_ls
+.lexical
+.elixir-tools
 node_modules
 _build
 tags
@@ -11,7 +13,6 @@ deps
 .hg
 .svn
 .sass-cache
-public
 *.cache
 .Trash
 .licenses

@@ -12,19 +12,24 @@ local has_prox = U.executable("proximity-sort")
 local fzf_opts = {
   ['--layout'] = false
 }
+
 if has_prox then
   fzf_opts['--tiebreak'] = 'index'
-end
 
-M.dynamic_fzf_args = function()
-  if has_prox and vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S') ~= '.' then
-    local opts = {}
-    opts.rg_opts = rg_opts.." | proximity-sort "..vim.fn.expand('%')
-    opts.fd_opts = fd_opts.." | proximity-sort "..vim.fn.expand('%')
-    return opts
+  M.dynamic_fzf_args = function()
+    if vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S') ~= '.' then
+      local opts = {}
+      opts.rg_opts = rg_opts.." | proximity-sort "..vim.fn.expand('%')
+      opts.fd_opts = fd_opts.." | proximity-sort "..vim.fn.expand('%')
+      return opts
+    end
+
+    return {}
   end
-
-  return {}
+else
+  M.dynamic_fzf_args = function()
+    return {}
+  end
 end
 
 M.grep = function()
@@ -32,7 +37,8 @@ M.grep = function()
 end
 
 M.files = function()
-  return fzf.files(M.dynamic_fzf_args)
+-- return fzf.files(M.dynamic_fzf_args)
+  return fzf.files()
 end
 
 M.vimrc = function()
@@ -76,6 +82,7 @@ _G.fzf_git_branches = M.git_branches
 M.setup = function()
   fzf.setup({
     winopts = {
+      fullscreen = true,
       border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
       hl = { border = 'FloatBorder' },
       preview = {
@@ -99,7 +106,14 @@ M.setup = function()
     previewers = {
       bat = {
         theme = "Monokai Extended"
-      }
+      },
+      builtin = {
+        extensions = {
+          ['png'] = { 'kitten', 'icat' },
+          ['webp'] = { 'kitten', 'icat' },
+          ['jpg'] = { 'kitten', 'icat' },
+        },
+      },
     },
     keymap = {
       fzf = {

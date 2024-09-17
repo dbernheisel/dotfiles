@@ -1,10 +1,10 @@
 local a = vim.api
 local lspconfig = require('lspconfig')
-local lspconfig_configs = require('lspconfig.configs')
+local _lspconfig_configs = require('lspconfig.configs')
+local lsputil = require 'lspconfig.util'
 local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
-local tailwind_color = require("tailwindcss-colors")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 local elixir = require('elixir')
 local elixirls = require('elixir.elixirls')
@@ -54,8 +54,6 @@ local function make_on_attach(_config)
     end
     a.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
 
-    tailwind_color.buf_attach(bufnr)
-
     if lsp_supports(client, "textDocument/formatting") then
       -- Add :Format command
       a.nvim_buf_create_user_command(bufnr, 'Format', function()
@@ -90,9 +88,9 @@ end
 -- :Mason
 mason.setup()
 mason_lspconfig.setup({
-  ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls",
-    "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "tsserver", "vimls",
-    "vuels", "ruby_ls", "sqlls", "yamlls", "zls" }
+  ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
+    "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
+    "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
 })
 
 local lsp_servers = {
@@ -104,7 +102,8 @@ local lsp_servers = {
   kotlin_language_server = {
     filetypes = {"kotlin"}
   },
-  solargraph = {
+  markdown_oxide = {},
+  ruby_lsp = {
     filetypes = {"ruby"}
   },
   sqlls = {},
@@ -127,8 +126,10 @@ local lsp_servers = {
       },
     },
   },
-  tailwindcss = {},
-  tsserver = {},
+  tailwindcss = {
+    root_dir = lsputil.root_pattern({".git"})
+  },
+  ts_ls = {},
   vimls = {},
   vuels = {},
   yamlls = {},
@@ -147,18 +148,27 @@ end
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
 for lsp_server, config in pairs(lsp_servers) do
+  -- print("LSP "..lsp_server.." starting...")
   config.on_attach = make_on_attach(config)
   config.capabilities = capabilities
+
+  if lsp_server == "markdown_oxide" then
+    config.capabilities.workspace = {
+      didChangeWatchedFiles = { dynamicRegistration = true }
+    }
+  end
+
   lspconfig[lsp_server].setup(config)
 end
 
 elixir.setup({
   credo = {
-    enable = true
+    on_attach = make_on_attach({}),
+    enable = false
   },
   nextls = {
     enable = false,
-    version = "0.21.2",
+    version = "0.23.1",
     on_attach = make_on_attach({}),
     init_options = {
       experimental = {
@@ -170,7 +180,7 @@ elixir.setup({
   },
   -- elixirls = {
   --   enable = true,
-  --   tag = "v0.20.0",
+  --   tag = "v0.23.0",
   --   settings = elixirls.settings({
   --     enableTestLenses = false
   --   }),
@@ -183,6 +193,7 @@ elixir.setup({
   --       local params = require('vim.lsp.util').make_formatting_params({})
   --       client.request("textDocument/formatting", params, nil, bufnr)
   --     end, { nargs = 0 })
+  --     make_on_attach({})(client, bufnr)
   --   end
   -- }
   -- actually lexical
@@ -201,6 +212,7 @@ elixir.setup({
         local params = require('vim.lsp.util').make_formatting_params({})
         client.request("textDocument/formatting", params, nil, bufnr)
       end, { nargs = 0 })
+      make_on_attach({})(client, bufnr)
     end
   }
  })

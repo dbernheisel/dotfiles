@@ -7,10 +7,10 @@ M.setup = function()
       'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir', 'go', 'eex',
       'heex', 'html', 'graphql', 'sql', 'javascript', 'jsonc', 'kotlin',
       'git_config', 'gitattributes', 'gitcommit', 'gitignore', 'git_rebase',
-      'gleam', 'diff', 'make', 'swift', 'scheme', 'ssh_config', 'toml',
+      'gleam', 'diff', 'make', 'swift', 'scheme', 'ssh_config', 'toml', 'http',
       'lua', 'markdown', 'markdown_inline', 'php', 'python', 'regex', 'ruby',
       'rust', 'scss', 'surface', 'svelte', 'toml', 'tsx', 'typescript',
-      'vue', 'yaml', 'zig'
+      'vue', 'yaml', 'zig', 'mermaid'
     },
     indent = { enable = true },
     highlight = { enable = true },

@@ -19,7 +19,7 @@
 --glob=!.hg
 --glob=!.svn
 --glob=!.sass-cache
---glob=!public
+--glob=!/public
 --glob=!*.cache
 --glob=!.Trash
 --glob=!.licenses
