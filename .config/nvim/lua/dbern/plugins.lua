@@ -99,26 +99,62 @@ require("lazy").setup({
   { 'mfussenegger/nvim-jdtls' },
 
   -- Snippets
-  { 'L3MON4D3/LuaSnip',
-    config = function() require('dbern.plugins.snippets') end},
 
   -- Completion
-  { 'hrsh7th/cmp-calc' },
-  { 'hrsh7th/cmp-path' },
-  { 'hrsh7th/cmp-cmdline' },
-  { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-  { 'hrsh7th/cmp-nvim-lsp-document-symbol' },
-  { 'hrsh7th/nvim-cmp',
-    event = "InsertEnter",
+  -- { 'hrsh7th/cmp-calc' },
+  -- { 'hrsh7th/cmp-path' },
+  -- { 'hrsh7th/cmp-cmdline' },
+  -- { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+  -- { 'hrsh7th/cmp-nvim-lsp-document-symbol' },
+  -- { 'hrsh7th/nvim-cmp',
+  --   event = "InsertEnter",
+  --   dependencies = {
+  --     'hrsh7th/cmp-nvim-lsp',
+  --     'hrsh7th/cmp-buffer',
+  --     "luckasRanarison/tailwind-tools.nvim",
+  --     "onsails/lspkind-nvim",
+  --   },
+  --   config = function() require('dbern.plugins.completion') end},
+  -- { 'saadparwaiz1/cmp_luasnip' },
+  {
+    'saghen/blink.cmp',
+    version = '0.*',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      "luckasRanarison/tailwind-tools.nvim",
-      "onsails/lspkind-nvim",
+      { 'L3MON4D3/LuaSnip',
+        config = function() require('dbern.plugins.snippets') end},
+      'saadparwaiz1/cmp_luasnip',
+      -- lock compat to tagged versions, if you've also locked blink.cmp to tagged versions
+      { 'saghen/blink.compat', version = '*', opts = { impersonate_nvim_cmp = true } }
     },
-    config = function() require('dbern.plugins.completion') end},
-  { 'saadparwaiz1/cmp_luasnip' },
+    opts = {
+      keymap = { preset = 'default' },
+      accept = {
+        expand_snippet = function(snippet) require('luasnip').lsp_expand(snippet) end,
+      },
+      nerd_font_variant = 'mono',
+      signature_help = {
+        enabled = true,
+      },
+      sources = {
+        completion = {
+          enabled_providers = { 'lsp', 'path', 'luasnip', 'buffer' },
+        },
+        providers = {
+          luasnip = {
+            name = 'luasnip',
+            module = 'blink.compat.source',
 
+            score_offset = -3,
+
+            opts = {
+              use_show_condition = false,
+              show_autosnippets = true,
+            },
+          },
+        },
+      },
+    },
+  },
   { 'mtrajano/tssorter.nvim',
     -- latest stable version, use `main` to keep up with the latest changes
     version = '*',
@@ -293,35 +329,6 @@ require("lazy").setup({
   { 'scrooloose/nerdcommenter',
     config = function() require('dbern.plugins.nerdcomment') end,
     cond = not U.has('nvim-0.10')
-  },
-
-  -- render mermaid!
-  {
-    "vhyrro/luarocks.nvim",
-    priority = 1001, -- this plugin needs to run before anything else
-    opts = {
-      rocks = { "magick" },
-    },
-  },
-  {
-    "3rd/image.nvim",
-    config = function() require("image").setup() end,
-    dependencies = { "vhyrro/luarocks.nvim" }
-  },
-  {
-    "3rd/diagram.nvim",
-    dependencies = {
-      "3rd/image.nvim",
-    },
-    opts = {
-      renderer_options = {
-        mermaid = {
-          background = 'transparent', -- nil | "transparent" | "white" | "#hex"
-          theme = 'dark', -- nil | "default" | "dark" | "forest" | "neutral"
-          scale = 2,
-        },
-      }
-    },
   },
 
   -- REST/GraphQL client

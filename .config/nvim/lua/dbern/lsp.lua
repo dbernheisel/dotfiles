@@ -4,7 +4,7 @@ local _lspconfig_configs = require('lspconfig.configs')
 local lsputil = require 'lspconfig.util'
 local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
-local cmp_nvim_lsp = require('cmp_nvim_lsp')
+-- local cmp_nvim_lsp = require('cmp_nvim_lsp')
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 local elixir = require('elixir')
 local elixirls = require('elixir.elixirls')
@@ -145,11 +145,12 @@ if u.executable(sourcekit_lsp) then
 end
 
 -- Add snippet support
-local capabilities = cmp_nvim_lsp.default_capabilities()
+-- local capabilities = cmp_nvim_lsp.default_capabilities()
 
 for lsp_server, config in pairs(lsp_servers) do
   -- print("LSP "..lsp_server.." starting...")
   config.on_attach = make_on_attach(config)
+  local capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
   config.capabilities = capabilities
 
   if lsp_server == "markdown_oxide" then
