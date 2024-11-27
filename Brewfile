@@ -1,9 +1,9 @@
 # Homebrew is bad at casks and updating. Just stop
 
 if RUBY_PLATFORM.downcase.include? 'darwin'
-  tap 'homebrew/cask-fonts'
-  brew 'font-fira-code-nerd-font'
-  brew 'font-jetbrains-mono'
+  cask "font-fira-code-nerd-font"
+  cask "font-jetbrains-mono-nerd-font"
+
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
@@ -15,7 +15,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
   brew 'glib'           # Library Build utility
   brew 'gpg'            # CLI GPG security
   brew 'gnu-sed'        # CLI sed, but GNU-y
-  brew 'htop-osx'       # CLI htop process utility
+  brew 'htop'           # CLI htop process utility
   brew 'gh'             # CLI add commands to git
   brew 'libxml2'        # Library XML parsing
   brew 'libyaml'        # Library for parsing YAML
@@ -35,7 +35,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
 end
 
 brew 'bat'            # CLI utility. Colorized cat
-brew 'exa'            # CLI utility. Prettier ls
+brew 'eza'            # CLI utility. Prettier ls
 brew 'dfu-util'       # CLI Firmware loader for keyboard
 brew 'git-delta'      # CLI diff-highlight for git
 brew 'fzf'            # CLI Fuzzy Finder CLI

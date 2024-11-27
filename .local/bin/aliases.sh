@@ -137,11 +137,11 @@ alias weather='curl wttr.in'
 alias ll='LC_COLLATE=C ls -lah'
 alias df='df -h'
 
-if have "exa"; then
-  alias l='exa -1a'
-  alias ls='exa'
-  alias ll='exa -lha --git'
-  alias lt='exa -lT --git'
+if have "eza"; then
+  alias l='eza -1a'
+  alias ls='eza'
+  alias ll='eza -lha --git'
+  alias lt='eza -lT --git'
 fi
 
 alias listening='lsof -Pn -i'

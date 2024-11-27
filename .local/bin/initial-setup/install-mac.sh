@@ -29,14 +29,6 @@ defaults write -globalDomain WebKitDeveloperExtras -bool true
 fancy_echo "Automatically quit printer app once the print jobs complete" "$yellow"
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
-fancy_echo "Enabling Safari debug menu" "$yellow"
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-
-fancy_echo "Enabling the Develop menu and the Web Inspector in Safari" "$yellow"
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-
 column
 fancy_echo "Installing programs" "$yellow"
 brew update

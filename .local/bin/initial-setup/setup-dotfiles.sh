@@ -110,10 +110,12 @@ is_crostini() {
   fi
 }
 
-if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
-  column
-  fancy_echo "You need to generate an SSH key" "$red"
-  ssh-keygen
+if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+  if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
+    column
+    fancy_echo "You need to generate an SSH key" "$red"
+    ssh-keygen
+  fi
 fi
 
 #### Prerequisites, like xcode and homebrew
@@ -150,14 +152,16 @@ install_asdf() {
 
 install_asdf_plugin() {
   local language="$1"; shift
+  local url="$1"; shift
   if ! asdf plugin-list | grep -v "$language" >/dev/null; then
-    asdf plugin-add "$language"
+    asdf plugin-add "$language" "$url"
   fi
 }
 
 install_asdf
 if type asdf &> /dev/null; then
   fancy_echo "Installing languages through asdf ..." "$yellow"
+  if prompt_install "Erlang"; then install_asdf_plugin erlang https://github.com/michallepicki/asdf-erlang-prebuilt-macos.git; fi
   if prompt_install "Ruby"; then install_asdf_plugin ruby; fi
   if prompt_install "Elixir"; then install_asdf_plugin elixir; fi
   if prompt_install "NodeJS"; then install_asdf_plugin nodejs; fi
