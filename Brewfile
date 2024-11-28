@@ -4,6 +4,7 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
   cask "font-fira-code-nerd-font"
   cask "font-jetbrains-mono-nerd-font"
 
+  brew '1password-cli'  # CLI Passwords
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
