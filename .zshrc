@@ -79,7 +79,10 @@ fi
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
 [ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"
 [ -e "$HOME/.secrets" ] && source "$HOME/.secrets"
+
+# completion
 have k3d && source <(k3d completion zsh)
+have docker && source <(docker completion zsh)
 
 [[ "$OSTYPE" == linux* ]] && reset_keyrate.sh
 
