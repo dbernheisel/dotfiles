@@ -214,8 +214,8 @@ require("lazy").setup({
         vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
       end
 
-      local HEIGHT_RATIO = 1.0
-      local WIDTH_RATIO = 1.0
+      local HEIGHT_RATIO = 0.9
+      local WIDTH_RATIO = 0.9
 
       require("nvim-tree").setup({
         view = {
@@ -323,7 +323,26 @@ require("lazy").setup({
     config = function() require('dbern.plugins.calendar') end },
 
   -- <C-n> to select next word with new cursor
-  { 'mg979/vim-visual-multi' },
+  { 'brenton-leighton/multiple-cursors.nvim',
+    version = '*',
+    opts = {
+      pre_hook = function()
+        require("cmp").setup({ enabled = false })
+      end,
+      post_hook = function()
+        require("cmp").setup({ enabled = true })
+      end
+    },
+    keys = {
+      -- {"<C-j>", "<Cmd>MultipleCursorsAddDown<CR>", mode = {"n", "x"}, desc = "Add cursor and move down"},
+      -- {"<C-k>", "<Cmd>MultipleCursorsAddUp<CR>", mode = {"n", "x"}, desc = "Add cursor and move up"},
+      {"<C-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", mode = {"n", "i"}, desc = "Add or remove cursor"},
+      {"<c-n>", "<Cmd>MultipleCursorsAddMatches<CR>", mode = {"n", "x"}, desc = "Add cursors to cword"},
+      -- {"<Leader>d", "<Cmd>MultipleCursorsAddJumpNextMatch<CR>", mode = {"n", "x"}, desc = "Add cursor and jump to next cword"},
+      -- {"<Leader>D", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = {"n", "x"}, desc = "Jump to next cword"},
+      -- {"<leader>l", "<Cmd>MultipleCursorsLock<CR>", mode = {"n", "x"}, desc = "Lock virtual cursors"},
+    }
+  },
 
   -- Easier block commenting.
   { 'scrooloose/nerdcommenter',

@@ -37,8 +37,8 @@ M.grep = function()
 end
 
 M.files = function()
--- return fzf.files(M.dynamic_fzf_args)
-  return fzf.files()
+  return fzf.files(M.dynamic_fzf_args)
+--  return fzf.files()
 end
 
 M.vimrc = function()
