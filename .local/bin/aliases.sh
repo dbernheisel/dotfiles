@@ -73,7 +73,6 @@ alias gs='git status'
 alias gd='git diff --color-moved'
 alias gds='git diff --staged --color-moved'
 alias gp='git push -u origin'
-alias undeployed='git fetch --multiple production origin && git log production/master..origin/master'
 
 gcof() {
   if [ -z "$1" ]; then
@@ -259,52 +258,5 @@ if have "heroku"; then
     heroku pg:backups:capture --app "$heroku_app" && \
     heroku pg:backups:download --app "$heroku_app" && \
     pg_restore --verbose --clean --no-acl --no-owner -h localhost -d "$local_db" latest.dump
-  }
-fi
-
-if have "fzf" && have "op" && have "jq"; then
-  function jbranch() {
-    local item_1pass_uuid jq_template query username password branch_name
-
-    if [ -z "$OP_SESSION_bernheisel" ]; then
-      eval $(op signin)
-    fi
-
-    jq_template='"'\
-'\(.key). \(.fields.summary)'\
-'\t'\
-'Reporter: \(.fields.reporter.displayName)\n'\
-'Created: \(.fields.created)\n'\
-'Updated: \(.fields.updated)\n\n'\
-'\(.fields.description)'\
-'"'
-    query='assignee=currentUser() AND status!=Done'
-    item_1pass_uuid='a5gbmdleufbe5bcn5trkmpf7fa'
-    username=$(op get item $item_1pass_uuid --fields username)
-    password=$(op get item $item_1pass_uuid --fields token)
-
-    branch_name=$(
-      curl \
-        --data-urlencode "jql=$query" \
-        --get \
-        --user "$username:$password" \
-        --silent \
-        --compressed \
-        'https://taxjar.atlassian.net/rest/api/2/search' |
-      jq ".issues[] | $jq_template" |
-      sed -e 's/"\(.*\)"/\1/' -e 's/\\t/\t/' |
-      fzf \
-        --with-nth=1 \
-        --delimiter='\t' \
-        --preview='echo -e {2}' \
-        --preview-window=top:wrap |
-      cut -f1 |
-      sed -e 's/\. /\t/' -e 's/[^a-zA-Z0-9\t]/-/g' |
-      awk '{printf "%s-%s", $1, tolower($2)}'
-    )
-
-    if [ -n "$branch_name" ]; then
-      git checkout -b "$branch_name"
-    fi
   }
 fi
