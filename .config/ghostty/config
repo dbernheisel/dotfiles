@@ -50,6 +50,7 @@ window-padding-color = background
 window-colorspace = display-p3
 background-opacity = 0.75
 background-blur-radius = 32
-theme = light:OneHalfLight,dark:Afterglow
+# theme = light:OneHalfLight,dark:Afterglow
+theme = Afterglow
 custom-shader = shaders/bloom.glsl
 
