@@ -3,6 +3,14 @@ click-repeat-interval = 500
 auto-update-channel = stable
 shell-integration-features = true
 
+# Preferences
+mouse-hide-while-typing = true
+window-inherit-working-directory = true
+unfocused-split-fill = #000000
+unfocused-split-opacity = 0.50
+confirm-close-surface = false
+
+# Keybinds
 keybind = global:cmd+s=toggle_quick_terminal
 keybind = cmd+shift+i=inspector:toggle
 
@@ -14,16 +22,14 @@ keybind = ctrl+a>h=goto_split:left
 keybind = ctrl+a>j=goto_split:bottom
 keybind = ctrl+a>k=goto_split:top
 
-mouse-hide-while-typing = true
-window-inherit-working-directory = true
-unfocused-split-fill = #000000
-unfocused-split-opacity = 0.50
-
+# Appearance
 window-theme = auto
-macos-titlebar-style = tabs
+macos-icon = custom-style
+macos-titlebar-style = transparent
 macos-auto-secure-input = true
 macos-secure-input-indication = true
 
+# Font
 font-family = FiraCode Nerd Font Mono
 font-family-italic = JetBrainsMono NFM Italic
 font-family-bold-italic = JetBrainsMono NFM Bold Italic
@@ -38,13 +44,12 @@ font-feature = ss07
 font-feature = cv14
 font-size = 16
 
+# Theme
 bold-is-bright = true
-
 window-padding-color = background
 window-colorspace = display-p3
-background-blur-radius = 5
-background-opacity = 0.98
+background-opacity = 0.75
+background-blur-radius = 32
 theme = light:OneHalfLight,dark:Afterglow
-# theme = light:OneHalfLight,dark:Monokai Soda
 custom-shader = shaders/bloom.glsl
 
