@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -f /opt/homebrew/opt/imagemagick@6/bin/convert ]; then
+  echo "Looking for: /opt/homebrew/opt/imagemagick@6/bin/convert"
+  echo "You must have imagemagick@6 installed to use the autotrim script"
+  exit 1
+fi
+
 DESTINATION="$1"; shift
 
 for IN in "$@"; do
