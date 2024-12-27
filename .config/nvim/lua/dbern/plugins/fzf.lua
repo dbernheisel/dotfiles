@@ -84,7 +84,7 @@ M.setup = function()
     winopts = {
       fullscreen = true,
       border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-      hl = { border = 'FloatBorder' },
+      hls = { border = 'FloatBorder' },
       preview = {
         border = 'noborder',
         hidden = 'hidden'

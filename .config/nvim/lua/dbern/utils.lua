@@ -23,7 +23,7 @@ M.is_mac = M.has("maxunix")
 M.is_linux = not M.is_wsl and not M.is_mac
 
 M.env_has = function(x, y)
-  return string.find(os.getenv(x) or "", y)
+  return string.find(os.getenv(x) or "", y) ~= nil
 end
 
 M.env_present = function(x)
@@ -32,27 +32,13 @@ M.env_present = function(x)
 end
 
 M.is_modern_terminal = function()
-  if M.env_has("TERM_PROGRAM", "iTerm") then
-    return true
-  end
-
-  if M.env_has("TERMINFO", "kitty") then
-    return true
-  end
-
-  if M.env_present("KITTY_WINDOW_ID") then
-    return true
-  end
-
-  if M.env_present("SSH_CLIENT") then
-    return true
-  end
-
-  if M.env_present("ALACRITTY_LOG") then
-    return true
-  end
-
-  return false
+  return M.env_has("TERM_PROGRAM", "ghostty") or
+    M.env_has("TERMINFO", "kitty") or
+    M.env_has("TERM_PROGRAM", "iTerm") or
+    M.env_present("KITTY_WINDOW_ID") or
+    M.env_present("SSH_CLIENT") or
+    M.env_present("ALACRITTY_LOG") or
+    false
 end
 
 return M
