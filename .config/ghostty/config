@@ -19,6 +19,7 @@ window-inherit-working-directory = true
 unfocused-split-fill = #000000
 unfocused-split-opacity = 0.50
 
+window-theme = auto
 macos-titlebar-style = tabs
 macos-auto-secure-input = true
 macos-secure-input-indication = true
