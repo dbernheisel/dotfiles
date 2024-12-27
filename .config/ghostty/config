@@ -23,7 +23,6 @@ keybind = ctrl+a>j=goto_split:bottom
 keybind = ctrl+a>k=goto_split:top
 
 # Appearance
-window-theme = auto
 macos-icon = custom-style
 macos-titlebar-style = transparent
 macos-auto-secure-input = true
@@ -45,12 +44,12 @@ font-feature = cv14
 font-size = 16
 
 # Theme
-bold-is-bright = true
+window-theme = dark
 window-padding-color = background
 window-colorspace = display-p3
 background-opacity = 0.75
 background-blur-radius = 32
-# theme = light:OneHalfLight,dark:Afterglow
-theme = Afterglow
+theme = light:OneHalfLight,dark:Afterglow
 custom-shader = shaders/bloom.glsl
+bold-is-bright = true
 
