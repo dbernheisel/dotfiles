@@ -1,10 +1,10 @@
 # Homebrew is bad at casks and updating. Just stop
 
-if RUBY_PLATFORM.downcase.include? 'darwin'
+if OS.mac?
   cask "font-fira-code-nerd-font"
   cask "font-jetbrains-mono-nerd-font"
+  cask '1password-cli'  # CLI Passwords
 
-  brew '1password-cli'  # CLI Passwords
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
@@ -29,10 +29,18 @@ if RUBY_PLATFORM.downcase.include? 'darwin'
   brew 'yarn'           # CLI JavaScript package manager
   brew 'sqlite'         # Service Database
 
+  brew 'mas'            # CLI to install from Mac App Store
+  mas 'Wipr 2', id: 1662217862
+  mas 'Noir', id: 1592917505
+  mas 'Parcel', id: 639968404
+  mas '1Password for Safari', id: 1569813296
+  mas 'Wireguard', id: 1451685025
+  mas 'Medis', id: 1063631769
+  mas 'Slack', id: 803453959
+
   # Services
   brew 'postgresql@15', restart_service: :changed
   brew 'redis', restart_service: :changed
-  brew 'nginx', restart_service: :changed
 end
 
 brew 'bat'            # CLI utility. Colorized cat
