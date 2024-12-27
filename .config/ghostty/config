@@ -11,7 +11,7 @@ unfocused-split-opacity = 0.50
 confirm-close-surface = false
 
 # Keybinds
-keybind = global:cmd+s=toggle_quick_terminal
+keybind = global:cmd+shift+slash=toggle_quick_terminal
 keybind = cmd+shift+i=inspector:toggle
 
 keybind = ctrl+a>n=new_window
@@ -47,9 +47,8 @@ font-size = 16
 window-theme = dark
 window-padding-color = background
 window-colorspace = display-p3
-background-opacity = 0.75
+background-opacity = 0.95
 background-blur-radius = 32
 theme = light:OneHalfLight,dark:Afterglow
 custom-shader = shaders/bloom.glsl
 bold-is-bright = true
-
