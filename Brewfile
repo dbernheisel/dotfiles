@@ -5,6 +5,10 @@ if OS.mac?
   cask "font-jetbrains-mono-nerd-font"
   cask '1password-cli'  # CLI Passwords
 
+  # Better Tiling window management
+  tap  'nikitabobko/tap'
+  cask 'aerospace'
+
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
