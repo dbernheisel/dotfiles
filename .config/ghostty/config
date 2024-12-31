@@ -47,8 +47,11 @@ font-size = 16
 window-theme = dark
 window-padding-color = background
 window-colorspace = display-p3
-background-opacity = 0.95
+window-padding-balance = true
+background-opacity = 0.90
 background-blur-radius = 32
 theme = light:OneHalfLight,dark:Afterglow
 custom-shader = shaders/bloom.glsl
-bold-is-bright = true
+bold-is-bright = false
+
+# vi: ft=toml

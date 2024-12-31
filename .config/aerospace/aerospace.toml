@@ -12,7 +12,7 @@ after-login-command = []
 after-startup-command = []
 
 # Start AeroSpace at login
-start-at-login = true
+start-at-login = false
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -167,9 +167,10 @@ up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
-if.app-id="com.mitchellh.ghostty"
-run= ["layout tiling"]
+if.app-id = "com.mitchellh.ghostty"
+check-further-callbacks = true
+run = "layout floating"
 
 [[on-window-detected]]
-if.app-id="com.1password.1password"
-run= ["layout floating"]
+if.app-id = "com.1password.1password"
+run = ["layout floating"]
