@@ -1,4 +1,5 @@
 local terminal = require('dbern.plugins.fterm')
+local U = require("dbern.utils")
 local M = {}
 
 M.test_elixir_app = function(cmd)
@@ -30,21 +31,25 @@ M.setup = function()
       call v:lua.run_cmd(a:cmd)
     endfunction
 
-    let g:test#plugin_path = fnamemodify('~/.config/kitty', ':p:h')
     let g:test#custom_strategies = {
       \ 'FTerm': function('FTermStrategy'),
     \ }
-    let g:test#strategy = 'kitty'
 
     let test#shell#bats#options = {
           \ 'nearest': '-t'
           \ }
   ]]
 
-  vim.api.nvim_set_keymap('n', '<leader>t', ':TestNearest<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<leader>T', ':TestFile<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<leader>l', ':TestLast<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<leader>a', ':call v:lua.run_test_suite()<cr>', { silent = true })
+  if U.is_kitty() then
+    vim.cmd [[
+      let g:test#plugin_path = fnamemodify('~/.config/kitty', ':p:h')
+      let g:test#strategy = 'kitty'
+    ]]
+  else
+    vim.cmd [[
+      let g:test#strategy = 'neovim'
+    ]]
+  end
 end
 
 return M

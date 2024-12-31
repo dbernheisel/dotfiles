@@ -43,9 +43,9 @@ end
 
 if U.is_mac then
   vim.o.clipboard = 'unnamed'
-  vim.go.python_host_prog = '/usr/bin/python'
-  vim.go.python3_host_prog = '/usr/bin/python3'
-  vim.go.python2_host_prog = '/usr/bin/python2'
+  vim.g.python_host_prog = '/usr/bin/python'
+  vim.g.python3_host_prog = '/usr/bin/python3'
+  vim.g.python2_host_prog = '/usr/bin/python2'
 end
 
 if U.is_linux then

@@ -11,9 +11,6 @@ vim.cmd [[
     " JSON w/ comments
     autocmd FileType json syntax match Comment +\/\/.\+$+
 
-    " Remove trailing whitespace on save
-    autocmd BufWritePre * :%s/\s\+$//e
-
     " Resize panes when window resizes
     autocmd VimResized * :wincmd =
   augroup END

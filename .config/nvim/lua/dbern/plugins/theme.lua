@@ -1,19 +1,5 @@
 local M = {}
 
-vim.g.sonokai_transparent_background = true
-vim.g.sonokai_enable_italic = false
-vim.g.sonokai_disable_italic_comment = false
-vim.g.sonokai_better_performance = true
--- Comment when italics are disabled
--- vim.cmd [[let &t_ZH="\e[3m"]]
--- vim.cmd [[let &t_ZR="\e[23m"]]
-
-M.setup = function()
-  vim.api.nvim_set_keymap('n', '<leader>dm', ':call v:lua.dark_mode()<cr>', {})
-  vim.api.nvim_set_keymap('n', '<leader>lm', ':call v:lua.light_mode()<cr>', {})
-  vim.api.nvim_set_keymap('', '<f10>', ':call v:lua.current_highlights()<cr>', {})
-  M.dark_mode()
-end
 
 M.light_mode = function()
   vim.opt.background = 'light'

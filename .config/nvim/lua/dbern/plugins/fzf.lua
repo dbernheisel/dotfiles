@@ -90,7 +90,9 @@ M.setup = function()
         hidden = 'hidden'
       },
     },
-    lsp = { async_or_timeout = 3000 },
+    lsp = {
+      includeDeclaration = false
+    },
     fzf_opts = fzf_opts,
     files = {
       fd_opts = fd_opts,
@@ -134,12 +136,6 @@ M.setup = function()
     }
   })
 
-  vim.api.nvim_set_keymap('n', '<leader>f', ':call v:lua.fzf_grep()<cr>', { silent = true, noremap = true })
-  vim.api.nvim_set_keymap('n', '<c-p>', ':call v:lua.fzf_files()<cr>', { silent = true, noremap = true })
-  vim.api.nvim_set_keymap('n', '<leader>ev', ':call v:lua.fzf_vimrc()<cr>', { silent = true, noremap = true })
-  vim.api.nvim_set_keymap('n', '<leader>ed', ':call v:lua.fzf_dotfiles()<cr>', { silent = true, noremap = true })
-  vim.api.nvim_set_keymap('n', '<leader>el', ':call v:lua.fzf_local()<cr>', { silent = true, noremap = true })
-  vim.api.nvim_set_keymap('n', '<leader>gb', ':call v:lua.fzf_git_branches()<cr>', { silent = true, noremap = true })
   fzf.register_ui_select({winopts = {preview = {winopts = {number = false}}}}, true)
 end
 
