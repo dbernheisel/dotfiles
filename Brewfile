@@ -1,13 +1,29 @@
 # Homebrew is bad at casks and updating. Just stop
 
-if OS.mac?
-  cask "font-fira-code-nerd-font"
-  cask "font-jetbrains-mono-nerd-font"
-  cask '1password-cli'  # CLI Passwords
+brew 'bat'            # CLI utility. Colorized cat
+brew 'eza'            # CLI utility. Prettier ls
+brew 'dfu-util'       # CLI Firmware loader for keyboard
+brew 'git-delta'      # CLI diff-highlight for git
+brew 'fzf'            # CLI Fuzzy Finder CLI
+brew 'git'            # CLI Git version control
+brew 'imagemagick'    # CLI magick Image converter CLI
+brew 'lame'           # Library audio encoder/decoder
+tap 'neovim/neovim'
+brew 'neovim'         # CLI nvim text editor
+brew 'ripgrep'        # CLI rg grep current directory
+brew 'shellcheck'     # CLI POSIX shell linter
+brew 'tesseract'      # CLI tesseract OCR
+brew 'tidy-html5'     # CLI tidy HTML linting
+brew 'tldr'           # CLI tldr shorter man pages
+brew 'wget'           # CLI wget HTTP interface
+brew 'x264'           # Library video decoder
+brew 'xz'             # CLI xz compression
 
-  # Better Tiling window management
-  tap  'nikitabobko/tap'
-  cask 'aerospace'
+if OS.mac?
+  cask 'font-fira-code-nerd-font'
+  cask 'font-jetbrains-mono-nerd-font'
+  cask '1password-cli'  # CLI Passwords
+  cask 'rectangle'      # Better tiling
 
   brew 'autoconf'       # CLI Build utility
   brew 'automake'       # CLI Build utility
@@ -34,34 +50,28 @@ if OS.mac?
   brew 'sqlite'         # Service Database
 
   brew 'mas'            # CLI to install from Mac App Store
-  mas 'Wipr 2', id: 1662217862
-  mas 'Noir', id: 1592917505
-  mas 'Parcel', id: 639968404
-  mas '1Password for Safari', id: 1569813296
-  mas 'Wireguard', id: 1451685025
-  mas 'Medis', id: 1063631769
-  mas 'Slack', id: 803453959
+
+  printf 'Install Safari Extensions? (y/N) '
+  if gets.chomp == 'y' then
+    # Safari Extensions
+    mas 'Wipr 2', id: 1662217862
+    mas 'Noir', id: 1592917505
+    mas '1Password for Safari', id: 1569813296
+  end
+
+  # Apps
+  printf 'Install App Store apps? (y/N) '
+  if gets.chomp == 'y' then
+    mas 'Parcel', id: 639968404
+    mas 'Wireguard', id: 1451685025
+    mas 'Medis', id: 1063631769
+    mas 'Slack', id: 803453959
+  end
 
   # Services
-  brew 'postgresql@15', restart_service: :changed
-  brew 'redis', restart_service: :changed
+  printf 'Install Services? (y/N) '
+  if gets.chomp == 'y' then
+    brew 'postgresql@15', restart_service: :changed
+    brew 'redis', restart_service: :changed
+  end
 end
-
-brew 'bat'            # CLI utility. Colorized cat
-brew 'eza'            # CLI utility. Prettier ls
-brew 'dfu-util'       # CLI Firmware loader for keyboard
-brew 'git-delta'      # CLI diff-highlight for git
-brew 'fzf'            # CLI Fuzzy Finder CLI
-brew 'git'            # CLI Git version control
-brew 'imagemagick'    # CLI magick Image converter CLI
-brew 'lame'           # Library audio encoder/decoder
-tap 'neovim/neovim'
-brew 'neovim'         # CLI nvim text editor
-brew 'ripgrep'        # CLI rg grep current directory
-brew 'shellcheck'     # CLI POSIX shell linter
-brew 'tesseract'      # CLI tesseract OCR
-brew 'tidy-html5'     # CLI tidy HTML linting
-brew 'tldr'           # CLI tldr shorter man pages
-brew 'wget'           # CLI wget HTTP interface
-brew 'x264'           # Library video decoder
-brew 'xz'             # CLI xz compression
