@@ -13,6 +13,7 @@ deps
 .hg
 .svn
 .sass-cache
+__pycache__
 *.cache
 .Trash
 .licenses

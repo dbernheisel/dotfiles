@@ -2,13 +2,6 @@
 setlocal textwidth=120
 setlocal colorcolumn=+1
 
-function! ElixirUmbrellaTransform(cmd) abort
-  return luaeval("require('dbern.plugins.test').test_elixir_app(_A)", a:cmd)
-endfunction
-
-let g:test#custom_transformations = {'elixir_umbrella': function('ElixirUmbrellaTransform')}
-let g:test#transformation = 'elixir_umbrella'
-"
 function! g:MixRun(selection) abort
   if !empty(a:selection)
     execute "!mix ".a:selection

@@ -102,6 +102,7 @@ local lsp_servers = {
   kotlin_language_server = {},
   markdown_oxide = {},
   ruby_lsp = {},
+  pylsp = {},
   sqlls = {},
   lua_ls = {},
   tailwindcss = {},
@@ -180,6 +181,10 @@ elixir.setup({
       enableTestLenses = false
     }),
     cmd = os.getenv("HOME").."/lexical/_build/dev/package/lexical/bin/start_lexical.sh",
+    root_dir = function(fname)
+      return lsputil.root_pattern("mix.exs", ".git")(fname) or vim.uv.cwd()
+    end,
+    filetypes = { "elixir", "eelixir", "heex" },
     on_attach = function(client, bufnr)
       vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
       vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
