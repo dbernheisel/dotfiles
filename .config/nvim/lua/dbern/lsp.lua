@@ -99,36 +99,12 @@ local lsp_servers = {
   dockerls = {},
   html = {},
   jsonls = {},
-  kotlin_language_server = {
-    filetypes = {"kotlin"}
-  },
+  kotlin_language_server = {},
   markdown_oxide = {},
-  ruby_lsp = {
-    filetypes = {"ruby"}
-  },
+  ruby_lsp = {},
   sqlls = {},
-  lua_ls = {
-    settings = {
-      Lua = {
-        runtime = {
-          version = 'LuaJIT',
-          path = vim.split(package.path, ';')
-        },
-        diagnostics = {
-          globals = {'vim'},
-        },
-        workspace = {
-          library = {
-            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-          }
-        },
-      },
-    },
-  },
-  tailwindcss = {
-    root_dir = lsputil.root_pattern({".git"})
-  },
+  lua_ls = {},
+  tailwindcss = {},
   ts_ls = {},
   vimls = {},
   vuels = {},

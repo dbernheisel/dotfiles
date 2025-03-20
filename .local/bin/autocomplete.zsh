@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+BREW_PREFIX=$(brew --prefix)
+
 if type fzf &> /dev/null; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     # If Arch
@@ -15,15 +17,16 @@ if type fzf &> /dev/null; then
   else
     if type brew &> /dev/null; then
       echo "Running fzf install"
-      $(brew --prefix)/opt/fzf/install
+      "$BREW_PREFIX/opt/fzf/install"
     fi
   fi
 fi
 
-# asdf version manager
-if [ -e $HOME/.asdf/asdf.sh ]; then
-  fpath=("$ASDF_DIR/completions" $fpath)
-  autoload -Uz compinit && compinit
+# brew completions
+if type brew &> /dev/null; then
+  if [ -f "$BREW_PREFIX/share/zsh/site-functions" ]; then
+    fpath=("$BREW_PREFIX/share/zsh/site-functions" $fpath)
+  fi
 fi
 
 # Kitty
@@ -31,3 +34,4 @@ if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
   kitty + complete setup zsh | source /dev/stdin
 fi
 
+autoload -Uz compinit && compinit

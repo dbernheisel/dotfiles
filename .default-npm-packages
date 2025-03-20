@@ -1,6 +1,7 @@
+@babel/eslint-parser
+@mermaid-js/mermaid-cli
+eslint
 neovim
 prettier
-typescript
-eslint
-@babel/eslint-parser
 tree-sitter-cli
+typescript

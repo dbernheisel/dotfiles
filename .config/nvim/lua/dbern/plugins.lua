@@ -3,7 +3,7 @@ local U = require("dbern.utils")
 -- Auto-install lazy.nvim if not installed
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -50,11 +50,6 @@ require("lazy").setup({
   { 'hoob3rt/lualine.nvim',
     lazy = false,
     config = function() require('dbern.plugins.lualine') end },
-  { 'linrongbin16/lsp-progress.nvim',
-    config = function()
-      require('lsp-progress').setup()
-    end
-  },
 
   -- LSP
   { 'williamboman/mason.nvim' },
@@ -76,15 +71,10 @@ require("lazy").setup({
   { 'folke/trouble.nvim',
     config = function() require('dbern.plugins.trouble') end,
     keys = {
-      {
-        "<leader>xX",
+     {
+        "<leader>x",
         "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnostics (Trouble)",
-      },
-      {
-        "<leader>xx",
-        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-        desc = "Buffer Diagnostics (Trouble)",
+        desc = "Diagnotics (Trouble)",
       },
       {
         "<leader>cs",
@@ -150,7 +140,6 @@ require("lazy").setup({
     },
     opts = {
       fuzzy = {
-        use_typo_resistance = true,
         use_frecency = true,
         use_proximity = true,
       },
@@ -175,21 +164,12 @@ require("lazy").setup({
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
             return { 'buffer', 'path' }
           else
-            return { 'lsp', 'path', 'luasnip', 'buffer' }
+            return { 'lsp', 'path', 'snippets', 'buffer' }
           end
         end,
-        providers = {
-          luasnip = {
-            name = 'luasnip',
-            score_offset = -3,
-            opts = {
-              use_show_condition = false,
-              show_autosnippets = true,
-            },
-          },
-        },
       },
       snippets = {
+        preset = 'luasnip',
         expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
         active = function(filter)
           if filter and filter.direction then
@@ -227,8 +207,22 @@ require("lazy").setup({
   {
     "folke/snacks.nvim",
     priority = 1000,
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons", lazy = true },
+    },
     lazy = false,
     keys = {
+      { "<leader>f", function() Snacks.picker.grep({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find text" },
+      { "<leader>S", function() Snacks.scratch() end, desc = "Find text" },
+      { "<c-p>", function() Snacks.picker.files({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find File" },
+      { "<leader>ev", function() Snacks.picker.files({
+        cwd = "~/.config/nvim",
+        matcher = { cwd_bonus = true, frecency = true, sort_empty = true },
+        exclude = { "undo/" }
+      }) end, desc = "Find neovim file" },
+      { "<leader>b", function() Snacks.picker.explorer({ auto_close = true }) end, desc = "Explore Files" },
+      { "<leader>ed", function() Snacks.picker.files({ finder = "git_files", cwd = "~/.cfg" }) end, desc = "Find dotfile" },
+      { "<leader>gco", function() Snacks.picker.git_branches() end, desc = "Find git branch" },
       { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
       { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
       { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
@@ -313,6 +307,9 @@ require("lazy").setup({
           { section = "startup" },
         },
       },
+      explorer = {
+        replace_netrw = true,
+      },
       indent = {
         indent = { only_scope = true },
         animate = { enabled = false },
@@ -321,6 +318,10 @@ require("lazy").setup({
       input = {
         only_scope = true,
         enabled = true
+      },
+      notifier = {
+        enabled = true,
+        style = "minimal"
       },
       scope = {
         enabled = true,
@@ -342,7 +343,24 @@ require("lazy").setup({
           }
         },
       },
-      notifier = { enabled = true },
+      picker = {
+        enabled = true,
+        -- layout = {
+        --   box = "horizontal",
+        --   reverse = true,
+        --   width = 0.8,
+        --   min_width = 120,
+        --   height = 0.8,
+        --   {
+        --     box = "vertical",
+        --     border = "rounded",
+        --     title = "{title} {live} {flags}",
+        --     { win = "list", border = "bottom" },
+        --     { win = "input", height = 1, border = "none" },
+        --   },
+        --   { win = "preview", title = "{preview}", border = "rounded", width = 0.5 }
+        -- },
+      },
       quickfile = { enabled = true },
       -- statuscolumn = { enabled = true },
       words = { enabled = true },
@@ -361,80 +379,25 @@ require("lazy").setup({
           vim.print = _G.dd
         end
       })
+      vim.api.nvim_create_autocmd("LspProgress", {
+        ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+        callback = function(ev)
+          local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+          vim.notify(vim.lsp.status(), 2, {
+            id = "lsp_progress",
+            title = "LSP Progress",
+            opts = function(notif)
+              notif.icon = ev.data.params.value.kind == "end" and " "
+                or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+            end,
+          })
+        end,
+      })
     end
   },
 
   -- Finders
   { 'nvim-lua/popup.nvim' },
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {
-      { "JMarkin/nvim-tree.lua-float-preview",
-        lazy = true,
-      }
-    },
-    config = function()
-      local function on_attach(bufnr)
-        local api = require "nvim-tree.api"
-
-        local function opts(desc)
-          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-        end
-
-        api.config.mappings.default_on_attach(bufnr)
-        local FloatPreview = require("float-preview")
-        FloatPreview.attach_nvimtree(bufnr)
-
-        vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
-        vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
-      end
-
-      local HEIGHT_RATIO = 0.9
-      local WIDTH_RATIO = 0.9
-
-      require("nvim-tree").setup({
-        view = {
-          width = function()
-            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-          end,
-          float = {
-            enable = true,
-            open_win_config = function()
-              local screen_w = vim.opt.columns:get()
-              local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-              local window_w = screen_w * WIDTH_RATIO
-              local window_h = screen_h * HEIGHT_RATIO
-              local window_w_int = math.floor(window_w)
-              local window_h_int = math.floor(window_h)
-              local center_x = (screen_w - window_w) / 2
-              local center_y = ((vim.opt.lines:get() - window_h) / 2)
-                              - vim.opt.cmdheight:get()
-              return {
-                border = 'rounded',
-                relative = 'editor',
-                row = center_y,
-                col = center_x,
-                width = window_w_int,
-                height = window_h_int,
-              }
-            end,
-          }
-        },
-        update_focused_file = { enable = true },
-        on_attach = on_attach,
-        git = { enable = false },
-      })
-    end,
-    keys = {
-      -- 👇 in this section, choose your own keymappings!
-      {
-        "<leader>b",
-        "<cmd>NvimTreeFocus<cr>",
-        desc = "Open explorer at the current file",
-      }
-
-    },
-  },
 
   { -- Use brew-installed fzf
     dir = '/opt/homebrew/opt/fzf',
@@ -442,6 +405,14 @@ require("lazy").setup({
     cond = U.executable('/opt/homebrew/bin/fzf'),
     config = function()
       vim.opt.rtp:append('/opt/homebrew/opt/fzf')
+    end
+  },
+  { -- Use Intel brew-installed fzf
+    dir = '/usr/local/opt/fzf',
+    name = 'fzf-intel-brew',
+    cond = U.executable('/usr/local/bin/fzf'),
+    config = function()
+      vim.opt.rtp:append('/usr/local/opt/fzf')
     end
   },
   { -- Use arch-installed fzf
@@ -455,7 +426,7 @@ require("lazy").setup({
   { "junegunn/fzf",
     -- Ensure fzf is installed
     name = "fzf-neovim",
-    cond = not U.executable('/opt/homebrew/bin/fzf') and not U.executable('/usr/bin/fzf'),
+    cond = not U.executable('/usr/local/bin/fzf') and not U.executable('/opt/homebrew/bin/fzf') and not U.executable('/usr/bin/fzf'),
     build = ':call fzf#install()'
   },
   { "ibhagwan/fzf-lua",
@@ -464,58 +435,15 @@ require("lazy").setup({
     },
     config = function() require('dbern.plugins.fzf').setup() end,
     keys = {
-      { "<leader>f", ':call v:lua.fzf_grep()<cr>', desc = "Find text" },
-      { "<c-p>", ':call v:lua.fzf_files()<cr>', desc = "Find file" },
-      { "<leader>ev", ':call v:lua.fzf_vimrc()<cr>', desc = "Find vimrc file" },
-      { "<leader>ed", ':call v:lua.fzf_dotfiles()<cr>', desc = "Find dotfile" },
-      { "<leader>el", ':call v:lua.fzf_local()<cr>', desc = "Find local file" },
-      { "<leader>gco", ':call v:lua.fzf_git_branches()<cr>', desc = "Find git branch" },
+      -- { "<leader>f", ':call v:lua.fzf_grep()<cr>', desc = "Find text" },
+      -- { "<c-p>", ':call v:lua.fzf_files()<cr>', desc = "Find file" },
+      -- { "<leader>ev", ':call v:lua.fzf_vimrc()<cr>', desc = "Find vimrc file" },
+      -- { "<leader>ed", ':call v:lua.fzf_dotfiles()<cr>', desc = "Find dotfile" },
+      -- { "<leader>el", ':call v:lua.fzf_local()<cr>', desc = "Find local file" },
+      -- { "<leader>gco", ':call v:lua.fzf_git_branches()<cr>', desc = "Find git branch" },
     },
   },
   { "junegunn/fzf.vim" },
-  { "nvim-neo-tree/neo-tree.nvim",
-    init = function()
-      vim.g.neo_tree_remove_legacy_commands = true
-    end,
-    config = function(_, opts)
-      local function on_move(data)
-        Snacks.rename.on_rename_file(data.source, data.destination)
-      end
-      local events = require("neo-tree.events")
-      opts.event_handlers = opts.event_handlers or {}
-      vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED, handler = on_move },
-        { event = events.FILE_RENAMED, handler = on_move },
-      })
-    end,
-    opts = {
-      enable_git_status = false,
-      enable_diagnostics = false,
-      close_if_last_window = false,
-      filesystem = {
-        use_libuv_file_watcher = true,
-        hijack_netrw_behavior = "open_default",
-        window = {
-          popup = {
-            position = { col = "0%", row = "0" },
-            size = function(state)
-              local root_name = vim.fn.fnamemodify(state.path, ":~")
-              local root_len = string.len(root_name) + 4
-              return {
-                width = math.max(root_len, 50),
-                height = vim.o.lines - 6
-              }
-            end
-          }
-        }
-      }
-    },
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-tree/nvim-web-devicons", lazy = true },
-      { "MunifTanjim/nui.nvim" },
-    }
-  },
   -- Treesitter
   { 'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
