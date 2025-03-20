@@ -25,7 +25,6 @@ if [ "$XDG_CURRENT_DESKTOP" = "sway" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; t
   export KITTY_ENABLE_WAYLAND=1
 fi
 
-[[ -d $HOME/Library/Python/3.9/bin ]] && export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 [[ -d $HOME/flutter/bin ]] && export PATH="$HOME/flutter/bin:$PATH"
 [[ -d $HOME/.yarn/bin ]] && export PATH="$HOME/.yarn/bin:$PATH"
 [[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
@@ -45,8 +44,8 @@ export KERL_INSTALL_HTMLDOCS="no"
 export KERL_INSTALL_MANPAGES="no"
 
 have rg && export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
+
 if have bat; then
-  export BAT_THEME='Monokai Extended'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
@@ -67,15 +66,10 @@ if have fzf; then
   fi
 fi
 
-# Newer git
-if have brew && [ -f $(brew --prefix git)/bin/git ]; then
-  export PATH=$(brew --prefix git)/bin:$PATH
-fi
-
 # asdf
-[[ -d $HOME/.asdf ]] && source $HOME/.asdf/asdf.sh
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
-[ -e "$HOME/.local/bin/.autocomplete.zsh" ] && source "$HOME/.local/bin/.autocomplete.zsh"
+[ -e "$HOME/.local/bin/autocomplete.zsh" ] && source "$HOME/.local/bin/autocomplete.zsh"
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
 [ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"
 [ -e "$HOME/.secrets" ] && source "$HOME/.secrets"

@@ -140,21 +140,11 @@ fi
 
 #### asdf Install, plugins, and languages
 column
-install_asdf() {
-  if [ ! -d "$HOME/.asdf" ]; then
-    fancy_echo "Installing asdf ..." "$yellow"
-    git clone git://github.com/asdf-vm/asdf.git "$HOME/.asdf"
-  fi
-
-  # shellcheck disable=SC1090
-  source "$HOME/.asdf/asdf.sh"
-}
-
 install_asdf_plugin() {
   local language="$1"; shift
   local url="$1"; shift
-  if ! asdf plugin-list | grep -v "$language" >/dev/null; then
-    asdf plugin-add "$language" "$url"
+  if ! asdf plugin list | grep -v "$language" >/dev/null; then
+    asdf plugin add "$language" "$url"
   fi
 }
 
