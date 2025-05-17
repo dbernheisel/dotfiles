@@ -1,8 +1,12 @@
 #!/usr/bin/env zsh
 
+function have() {
+  type "$1" &> /dev/null
+}
+
 BREW_PREFIX=$(brew --prefix)
 
-if type fzf &> /dev/null; then
+if have fzf; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     # If Arch
     source /usr/share/fzf/key-bindings.zsh
@@ -11,14 +15,10 @@ if type fzf &> /dev/null; then
   elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
     # If Debian
     source /usr/share/doc/fzf/examples/key-bindings.zsh
-  elif [ -f ~/.fzf.zsh ]; then
+  elif [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
     # If Homebrew
-    source ~/.fzf.zsh
-  else
-    if type brew &> /dev/null; then
-      echo "Running fzf install"
-      "$BREW_PREFIX/opt/fzf/install"
-    fi
+    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+    source /opt/homebrew/opt/fzf/shell/completion.zsh
   fi
 fi
 
@@ -29,9 +29,26 @@ if type brew &> /dev/null; then
   fi
 fi
 
-# Kitty
-if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ]; then
-  kitty + complete setup zsh | source /dev/stdin
+mkdir -p "$HOME/.cache/completions"
+if have docker && [ ! -f "$HOME/.cache/completions/_docker" ]; then
+  docker completion zsh > "$HOME/.cache/completions/_docker"
 fi
 
+if have k3d && [ ! -f "$HOME/.cache/completions/_k3d" ]; then
+  k3d completion zsh > "$HOME/.cache/completions/_k3d"
+fi
+
+if have kubectl && [ ! -f "$HOME/.cache/completions/_kubectl" ]; then
+  kubectl completion zsh > "$HOME/.cache/completions/_kubectl"
+fi
+
+if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ] && [ ! -f "$HOME/.cache/completions/_kitty" ]; then
+  kitty + complete setup zsh > "$HOME/.cache/completions/_kitty"
+fi
+
+if have npm && [ ! -f "$HOME/.cache/completions/_npm" ]; then
+  npm completion > "$HOME/.cache/completions/_npm"
+fi
+
+fpath=("$HOME/.cache/completions" $fpath)
 autoload -Uz compinit && compinit

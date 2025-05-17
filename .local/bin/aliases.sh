@@ -141,6 +141,7 @@ if have "eza"; then
   alias ls='eza'
   alias ll='eza -lha --git'
   alias lt='eza -lT --git'
+  alias tree='eza -TL3'
 fi
 
 alias listening='lsof -Pn -i'
