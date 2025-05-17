@@ -73,3 +73,9 @@
   (quoted_content) @injection.content
  (#any-of? @_sigil_name "j" "J" "JSON")
  (#set! injection.language "jsonc"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+ (#any-of? @_sigil_name "RTF")
+ (#set! injection.language "heex"))

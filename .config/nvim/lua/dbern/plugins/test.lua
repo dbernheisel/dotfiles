@@ -2,20 +2,20 @@ local terminal = require('dbern.plugins.fterm')
 local U = require("dbern.utils")
 local M = {}
 
+M.git_root = nil
 M.monorepo = nil
 M.monorepos = {
   ["dscout"] = {
     setup = function()
-      -- Dendra is too complex for vim-test, has its own runner
-      vim.g["test#javascript#runner"] = "dendra"
       -- Overriding since built-in vim-test detection fails due to monorepo
       vim.g["test#elixir#exunit#executable"] = "mix test"
-      vim.g["test#custom_runners"] = {
-        ["JavaScript"] = {'dendra'},
-      }
       vim.g["test#ruby#rspec#executable"] = "bundle exec rspec"
       vim.g["test#ruby#use_binstubs"] = 0
       vim.g["test#ruby#bundle_exec"] = 1
+      vim.g["test#custom_runners"] = { ["JavaScript"] = {'dendra'} }
+
+      local git_root = vim.system({"git", "rev-parse", "--show-toplevel"}, { text = true }):wait()
+      M.git_root = git_root.stdout:gsub("\n", "")
 
       _G.TestFindRoot = function()
         local roots = {
@@ -33,7 +33,6 @@ M.monorepos = {
         return vim.uv.cwd()
       end
 
-
       _G.test_monorepo = function(cmd)
         -- If in Monorepo
         if M.monorepo then
@@ -46,10 +45,8 @@ M.monorepos = {
           end
 
           if M.monorepo.run_in_container then
-            terminal.run_cmd({
-              app_config.reset_container_cmd,
-              app_config.enter_container_cmd
-            })
+            terminal.run_cmd(app_config.reset_container_cmd)
+            terminal.run_cmd(app_config.enter_container_cmd)
           else
             if app_config.host_cmd ~= nil then
               cmd = app_config.host_cmd.." "..cmd
@@ -68,25 +65,25 @@ M.monorepos = {
     app_config = function(cmd)
       if cmd:find("poetry") then
         return {
-          host_cmd = "../../bin/astro",
+          host_cmd = M.git_root.."/bin/astro",
           reset_container_cmd = "[[ $INDOCKER == 'true' && $HOSTNAME != 'astro' ]] && exit",
-          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && ../../bin/astro zsh",
+          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && "..M.git_root.."/bin/astro zsh",
         }
       end
 
       if cmd:find("mix test") then
         return {
-          host_cmd = "../../bin/axon",
+          host_cmd = M.git_root.."/bin/axon",
           reset_container_cmd = "[[ $INDOCKER == 'true' && $HOSTNAME != 'axon' ]] && exit",
-          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && ../../bin/axon zsh",
+          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && "..M.git_root.."/bin/axon zsh",
         }
       end
 
       if cmd:find("karma") then
         return {
-          host_cmd = "../../bin/dendra",
+          host_cmd = M.git_root.."/bin/dendra",
           reset_container_cmd = "[[ $INDOCKER == 'true' && $HOSTNAME != 'dendra' ]] && exit",
-          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && ../../bin/dendra zsh",
+          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && "..M.git_root.."/bin/dendra zsh",
           placeholders = {
             ["{CONFIG}"] = function(test_cmd)
               if string.find(test_cmd, "_test%.") then
@@ -101,9 +98,9 @@ M.monorepos = {
 
       if cmd:find("rspec") then
         return {
+          host_cmd = M.git_root.."/bin/soma",
           reset_container_cmd = "[[ $INDOCKER == 'true' && $HOSTNAME != 'soma' ]] && exit",
-          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && ../../bin/soma zsh",
-          host_cmd = "../../bin/soma",
+          enter_container_cmd = "[[ $INDOCKER != 'true' ]] && "..M.git_root.."/bin/soma zsh",
         }
       end
 

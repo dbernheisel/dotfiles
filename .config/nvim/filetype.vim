@@ -1,14 +1,14 @@
-if exists("did_load_filetypes")
-  finish
-endif
-
 augroup filetypedetect
-  au! BufNewFile,BufRead *.env* setf env | setlocal syntax=sh
-  au! BufNewFile,BufRead *.jsonc setf json
-  au! BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setf heex
-  au! BufNewFile,BufRead Procfile,Brewfile setf ruby
-  au! BufNewFile,BufRead *.md setf markdown
-  au! BufNewFile,BufRead mix.lock setf elixir
-  au! BufNewFile,BufRead *.arb setf eruby
-  au! BufNewFile,BufRead irbrc,pryrc setf ruby
+  au! BufNewFile,BufRead .env,.env.*,.secrets setl syntax=sh | lua vim.diagnostic.disable()
+  "au! BufNewFile,BufEnter .env,.env.*,.secrets lua vim.diagnostic.disable()
+  au! BufNewFile,BufRead *.jsonc,*.jsons,*.json5 setl filetype=jsonc
+  au! BufNewFile,BufRead *.html.eex,*.html.leex,*.drab setl filetype=eelixir
+  au! BufNewFile,BufRead *.heex,*.reex setl filetype=heex
+  au! BufNewFile,BufRead Procfile,Brewfile setl filetype=ruby
+  au! BufNewFile,BufRead *.md setl filetype=markdown
+  au! BufNewFile,BufRead *.ex,*.exs,mix.lock setl filetype=elixir
+  au! BufNewFile,BufRead *.arb setl filetype=eruby
+  au! BufNewFile,BufRead irbrc,pryrc setl filetype=ruby
+  au! BufNewFile,BufRead Caddyfile setl filetype=caddy
+
 augroup END

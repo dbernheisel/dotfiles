@@ -22,31 +22,148 @@ require("lazy").setup({
   { 'sonph/onehalf',
     priority = 1000,
     lazy = false,
-    config = function(plugin) vim.opt.rtp:append(plugin.dir .. '/vim') end },
-  { 'sainnhe/sonokai',
+      config = function(plugin) vim.opt.rtp:append(plugin.dir .. '/vim') end },
+  { "bluz71/vim-moonfly-colors",
+    name = "moonfly",
     priority = 1000,
     lazy = false,
-    init = function()
-      vim.g.sonokai_transparent_background = true
-      vim.g.sonokai_enable_italic = false
-      vim.g.sonokai_disable_italic_comment = false
-      vim.g.sonokai_better_performance = true
-      -- Comment when italics are disabled
-      -- vim.cmd [[let &t_ZH="\e[3m"]]
-      -- vim.cmd [[let &t_ZR="\e[23m"]]
-
+    config = function()
+      vim.g.moonflyCursorColor = true
+      vim.g.moonflyTransparent = true
       require('dbern.plugins.theme')
-      vim.api.nvim_set_keymap('n', '<leader>dm', ':call v:lua.dark_mode()<cr>', {})
-      vim.api.nvim_set_keymap('n', '<leader>lm', ':call v:lua.light_mode()<cr>', {})
       vim.api.nvim_set_keymap('', '<f10>', ':call v:lua.current_highlights()<cr>', {})
-
-      vim.o.background = 'dark'
-      vim.cmd [[colorscheme sonokai]]
-      if vim.g.lightline then
-        vim.g.lightlight.colorscheme = 'sonokai'
-      end
+      vim.cmd([[colorscheme moonfly]])
     end
   },
+  -- { "catppuccin/nvim",
+  --   name = "catppuccin",
+  --   priority = 1000,
+  --   lazy = false,
+  --   config = function()
+  --     require("catppuccin").setup({
+  --       background = { light = "latte", dark = "mocha" },
+  --       flavour = "mocha",
+  --       transparent_background = true,
+  --       show_end_of_buffer = false,
+  --       term_colors = true,
+  --       styles = {
+  --         conditionals = { },
+  --         comments = { "italic" },
+  --       },
+  --       color_overrides = {
+  --         mocha = {
+  --           base = "#1e1e1e",
+  --           mantle = "#181818",
+  --           crust = "#1a1a1a",
+  --           text = "#d6d6d6",
+  --           subtext1 = "#bababa",
+  --           subtext0 = "#a6a6a6",
+  --           overlay2 = "#939393",
+  --           overlay1 = "#7f7f7f",
+  --           overlay0 = "#6c6c6c",
+  --           surface2 = "#585858",
+  --           surface1 = "#454545",
+  --           surface0 = "#313131",
+  --           rosewater = "#f5e0dc",
+  --           flamingo = "#e2e2e2",
+  --           pink = "#f5c2e7",
+  --           mauve = "#9e86c8",
+  --           red = "#ac4142",
+  --           maroon = "#ed76a7",
+  --           peach = "#e87d3e",
+  --           yellow = "#f9e2af",
+  --           green = "#a6e3a1",
+  --           teal = "#94e2d5",
+  --           sky = "#89dceb",
+  --           sapphire = "#74c7ec",
+  --           blue = "#89b4fa",
+  --           lavender = "#b4befe",
+  --         }
+  --       },
+  --       integrations = {
+  --         diffview = true,
+  --         mason = true,
+  --         octo = true,
+  --         snacks = {
+  --           enabled = true,
+  --           indent_scope_color = "mauve",
+  --         },
+  --         dadbod_ui = true,
+  --         lsp_trouble = true,
+  --         native_lsp = {
+  --           enabled = true,
+  --           virtual_text = {
+  --             errors = { "italic" },
+  --             hints = { "italic" },
+  --             warnings = { "italic" },
+  --             information = { "italic" },
+  --             ok = { "italic" },
+  --           },
+  --           underlines = {
+  --             errors = { "underline" },
+  --             hints = { "underline" },
+  --             warnings = { "underline" },
+  --             information = { "underline" },
+  --             ok = { "underline" },
+  --           },
+  --           inlay_hints = {
+  --             background = true,
+  --           },
+  --         },
+  --       }
+  --     })
+  --   require('dbern.plugins.theme')
+  --   vim.api.nvim_set_keymap('', '<f10>', ':call v:lua.current_highlights()<cr>', {})
+  --   vim.cmd([[colorscheme catppuccin-mocha]])
+  -- end },
+  -- { 'loctvl842/monokai-pro.nvim',
+  --   priority = 1000,
+  --   lazy = false,
+  --   config = function()
+  --     require("monokai-pro").setup({
+  --       transparent_background = true,
+  --       terminal_colors = true,
+  --       devicons = true,
+  --       filter = "spectrum",
+  --       inc_search = "background",
+  --       styles = {
+  --         comment = { italic = true },
+  --       },
+  --       background_clear = {
+  --         "float_win",
+  --         "toggleterm",
+  --         "renamer",
+  --         "notify",
+  --       },
+  --     })
+  --     vim.o.background = 'dark'
+  --     vim.cmd([[colorscheme monokai-pro]])
+  --   end
+  -- },
+  -- { 'sainnhe/sonokai',
+  --   priority = 1000,
+  --   lazy = false,
+  --   init = function()
+  --     vim.g.sonokai_transparent_background = true
+  --     vim.g.sonokai_enable_italic = false
+  --     vim.g.sonokai_disable_italic_comment = false
+  --     vim.g.sonokai_better_performance = true
+  --     -- Comment when italics are disabled
+  --     -- vim.cmd [[let &t_ZH="\e[3m"]]
+  --     -- vim.cmd [[let &t_ZR="\e[23m"]]
+  --
+  --     require('dbern.plugins.theme')
+  --     vim.api.nvim_set_keymap('n', '<leader>dm', ':call v:lua.dark_mode()<cr>', {})
+  --     vim.api.nvim_set_keymap('n', '<leader>lm', ':call v:lua.light_mode()<cr>', {})
+  --     vim.api.nvim_set_keymap('', '<f10>', ':call v:lua.current_highlights()<cr>', {})
+  --
+  --     vim.o.background = 'dark'
+  --     vim.cmd [[colorscheme sonokai]]
+  --     if vim.g.lightline then
+  --       vim.g.lightlight.colorscheme = 'sonokai'
+  --     end
+  --   end
+  -- },
   { 'hoob3rt/lualine.nvim',
     lazy = false,
     config = function() require('dbern.plugins.lualine') end },
@@ -54,52 +171,50 @@ require("lazy").setup({
   -- LSP
   { 'williamboman/mason.nvim' },
   { 'williamboman/mason-lspconfig.nvim' },
-  { 'elixir-tools/elixir-tools.nvim', dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "luckasRanarison/tailwind-tools.nvim",
-    lazy = true,
     name = "tailwind-tools",
     build = ":UpdateRemotePlugins",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "neovim/nvim-lspconfig",
     },
-    opts = {} -- your configuration
-  },
-  { 'neovim/nvim-lspconfig',
-    config = function() require('dbern.lsp') end },
-  { 'folke/trouble.nvim',
-    config = function() require('dbern.plugins.trouble') end,
-    keys = {
-     {
-        "<leader>x",
-        "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnotics (Trouble)",
-      },
-      {
-        "<leader>cs",
-        "<cmd>Trouble symbols toggle focus=false<cr>",
-        desc = "Symbols (Trouble)",
-      },
-      {
-        "<leader>cl",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
-      },
-      {
-        "<leader>xL",
-        "<cmd>Trouble loclist toggle<cr>",
-        desc = "Location List (Trouble)",
-      },
-      {
-        "<leader>xQ",
-        "<cmd>Trouble qflist toggle<cr>",
-        desc = "Quickfix List (Trouble)",
+    opts = {
+      server = {
+        enabled = false
       },
     }
   },
+  { 'neovim/nvim-lspconfig',
+    dependencies = { 'saghen/blink.cmp' },
+    config = function() require('dbern.lsp').setup() end },
+  { 'folke/trouble.nvim',
+    opts = {
+      use_diagnostic_signs = true,
+    },
+    keys = {
+      { "<leader>x", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnotics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+    }
+  },
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod', lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', lazy = true },
+    },
+    cmd = { 'DBUI', 'DBUIToggle', 'DBUIAddConnection', 'DBUIFindBuffer' },
+    keys = {
+      { "<leader>db", "<cmd>DBUIToggle<cr>", desc = "Open Dadbod UI" },
+    },
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
   { 'mfussenegger/nvim-jdtls' },
-  { '3rd/image.nvim', lazy = true },
   {
     'narutoxy/silicon.lua',
     cond = U.executable('silicon'),
@@ -132,19 +247,20 @@ require("lazy").setup({
   },
   {
     'saghen/blink.cmp',
-    version = '0.*',
+    version = '1.*',
     dependencies = {
       { 'L3MON4D3/LuaSnip',
         version =  'v2.*',
         config = function() require('dbern.plugins.snippets') end},
     },
+    opts_extend = { "sources.default" },
     opts = {
       fuzzy = {
-        use_frecency = true,
-        use_proximity = true,
+        implementation = 'prefer_rust_with_warning',
       },
       keymap = {
         preset = 'default' ,
+        ['<C-e>'] = {},
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
       },
@@ -159,7 +275,7 @@ require("lazy").setup({
           end },
       },
       sources = {
-        default = function(ctx)
+        default = function(_ctx)
           local success, node = pcall(vim.treesitter.get_node)
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
             return { 'buffer', 'path' }
@@ -167,6 +283,13 @@ require("lazy").setup({
             return { 'lsp', 'path', 'snippets', 'buffer' }
           end
         end,
+        per_filetype = {
+          codecompanion = { "codecompanion" },
+          sql = { 'snippets', 'dadbod', 'buffer' }
+        },
+        providers = {
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+        },
       },
       snippets = {
         preset = 'luasnip',
@@ -182,7 +305,6 @@ require("lazy").setup({
     },
   },
   { 'mtrajano/tssorter.nvim',
-    -- latest stable version, use `main` to keep up with the latest changes
     version = '*',
     opts = {
       sortables = {
@@ -199,11 +321,11 @@ require("lazy").setup({
     },
     config = function()
       vim.api.nvim_create_user_command('Sort', function()
-        require('tssorter').sort()
+        require('tssorter').sort({})
       end, { nargs = 0 })
     end
   },
-  { "cappyzawa/trim.nvim", config = {} },
+  { "cappyzawa/trim.nvim" },
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -212,16 +334,41 @@ require("lazy").setup({
     },
     lazy = false,
     keys = {
-      { "<leader>f", function() Snacks.picker.grep({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find text" },
+      -- { "<leader>f", function() Snacks.picker.grep({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find text" },
       { "<leader>S", function() Snacks.scratch() end, desc = "Find text" },
-      { "<c-p>", function() Snacks.picker.files({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find File" },
-      { "<leader>ev", function() Snacks.picker.files({
-        cwd = "~/.config/nvim",
-        matcher = { cwd_bonus = true, frecency = true, sort_empty = true },
-        exclude = { "undo/" }
-      }) end, desc = "Find neovim file" },
-      { "<leader>b", function() Snacks.picker.explorer({ auto_close = true }) end, desc = "Explore Files" },
-      { "<leader>ed", function() Snacks.picker.files({ finder = "git_files", cwd = "~/.cfg" }) end, desc = "Find dotfile" },
+      { "<leader>H", function() Snacks.picker.highlights() end, desc = "Find highlights" },
+      { "<c-p>", function()
+        Snacks.picker.files({
+          exclude = { "@types/" },
+          hidden = true,
+          matcher = {
+            cwd_bonus = true,
+            frecency = true,
+            sort_empty = true
+          }
+        })
+      end, desc = "Find File" },
+      { "<leader>ed", function()
+        Snacks.picker.pick("git_files", {
+          cwd = os.getenv("HOME"),
+          matcher = { frecency = true, sort_empty = true },
+          args = { "--git-dir="..os.getenv("HOME").."/.cfg" }
+        })
+      end, desc = "Find dotfiles" },
+      { "<leader>ev", function()
+        Snacks.picker.files({
+          cwd = "~/.config/nvim",
+          matcher = { frecency = true, sort_empty = true },
+          exclude = { "undo/" }
+        })
+      end, desc = "Find neovim file" },
+      { "<leader>b", function()
+        Snacks.picker.explorer({
+          hidden = true,
+          preset = "sidebar",
+          auto_close = true
+        })
+      end, desc = "Explore Files" },
       { "<leader>gco", function() Snacks.picker.git_branches() end, desc = "Find git branch" },
       { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
       { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
@@ -246,15 +393,20 @@ require("lazy").setup({
 "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░",
 "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░",
 "░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░ ",
-          }, "\n")
+          }, "\n"),
+          keys = {
+            { icon = " ", key = "p", desc = "Find File", action = ":lua Snacks.picker.files({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } })" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "g", desc = "Find Text", action = ':lua require("fzf-lua").live_grep()' },
+            { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
         },
         sections = {
           { section = "header" },
           { section = "keys", gap = 0, padding = 1 },
-          { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = { 1, 1 } },
           { icon = " ", title = "Projects", section = "projects", indent = 2, padding = {1, 1} },
           {
-            pane = 2,
             icon = " ",
             desc = "Browse Repo",
             padding = 1,
@@ -263,65 +415,37 @@ require("lazy").setup({
               Snacks.gitbrowse()
             end,
           },
-          function()
-            local in_git = Snacks.git.get_root() ~= nil
-            local cmds = {
-              {
-                title = "Open Issues",
-                cmd = "gh issue list -L 3",
-                key = "i",
-                action = function()
-                  vim.fn.jobstart("gh issue list --web", { detach = true })
-                end,
-                icon = " ",
-                height = 7,
-              },
-              {
-                icon = " ",
-                title = "Open PRs",
-                cmd = "gh pr list -L 3",
-                key = "p",
-                action = function()
-                  vim.fn.jobstart("gh pr list --web", { detach = true })
-                end,
-                height = 7,
-              },
-              {
-                icon = " ",
-                title = "Git Status",
-                cmd = "git --no-pager diff --stat -B -M -C",
-                height = 10,
-              },
-            }
-            return vim.tbl_map(function(cmd)
-              return vim.tbl_extend("force", {
-                pane = 2,
-                section = "terminal",
-                enabled = in_git,
-                padding = 1,
-                ttl = 5 * 60,
-                indent = 3,
-              }, cmd)
-            end, cmds)
-          end,
           { section = "startup" },
         },
       },
       explorer = {
         replace_netrw = true,
       },
-      indent = {
-        indent = { only_scope = true },
-        animate = { enabled = false },
-        enabled = true
-      },
       input = {
         only_scope = true,
         enabled = true
       },
+      image = {
+        enabled = true,
+        -- Only images, not PDFs nor videos
+        formats = { "png", "jpg", "jpeg", "gif", "bmp", "webp", "tiff", "heic", "avif" },
+      },
+      lazygit = {
+        enabled = true
+      },
+      indent = {
+        enabled = true,
+        animate = { enabled = false },
+        only_scope = false,
+        only_current = true
+      },
       notifier = {
         enabled = true,
-        style = "minimal"
+        style = "minimal",
+        top_down = true,
+        filter = function(notification)
+          return notification.msg ~= "No information available"
+        end
       },
       scope = {
         enabled = true,
@@ -344,22 +468,37 @@ require("lazy").setup({
         },
       },
       picker = {
-        enabled = true,
+        -- snacks.picker.layout.Config
         -- layout = {
-        --   box = "horizontal",
+        --   cycle = true,
         --   reverse = true,
-        --   width = 0.8,
-        --   min_width = 120,
-        --   height = 0.8,
-        --   {
-        --     box = "vertical",
-        --     border = "rounded",
-        --     title = "{title} {live} {flags}",
-        --     { win = "list", border = "bottom" },
-        --     { win = "input", height = 1, border = "none" },
-        --   },
-        --   { win = "preview", title = "{preview}", border = "rounded", width = 0.5 }
+        --   backdrop = true,
+        --   layout = {
+        --     box = "horizontal",
+        --     reverse = true,
+        --     width = 0.8,
+        --     min_width = 120,
+        --     height = 0.8,
+        --     {
+        --       { win = "list", border = "bottom" },
+        --       { win = "input", height = 1, border = "none" },
+        --       box = "vertical",
+        --       border = "rounded",
+        --       title = "{title} {live} {flags}",
+        --     },
+        --     { win = "preview", title = "{preview}", height = 0.4, border = "top" },
+        --   }
         -- },
+        ui_select = true,
+        enabled = true,
+        win = {
+          -- input window
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            }
+          }
+        }
       },
       quickfile = { enabled = true },
       -- statuscolumn = { enabled = true },
@@ -435,7 +574,7 @@ require("lazy").setup({
     },
     config = function() require('dbern.plugins.fzf').setup() end,
     keys = {
-      -- { "<leader>f", ':call v:lua.fzf_grep()<cr>', desc = "Find text" },
+      { "<leader>f", ':call v:lua.fzf_grep()<cr>', desc = "Find text" },
       -- { "<c-p>", ':call v:lua.fzf_files()<cr>', desc = "Find file" },
       -- { "<leader>ev", ':call v:lua.fzf_vimrc()<cr>', desc = "Find vimrc file" },
       -- { "<leader>ed", ':call v:lua.fzf_dotfiles()<cr>', desc = "Find dotfile" },
@@ -443,20 +582,20 @@ require("lazy").setup({
       -- { "<leader>gco", ':call v:lua.fzf_git_branches()<cr>', desc = "Find git branch" },
     },
   },
-  { "junegunn/fzf.vim" },
+  { 'junegunn/fzf.vim' },
   -- Treesitter
   { 'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = 'VeryLazy',
     opts = {
       ensure_installed = {
-        'bash', 'css', 'dart', 'dockerfile', 'erlang', 'elixir', 'go', 'eex',
+        'bash', 'caddy', 'css', 'dart', 'dockerfile', 'erlang', 'elixir', 'go', 'eex',
         'heex', 'html', 'graphql', 'sql', 'javascript', 'jsonc', 'kotlin',
         'git_config', 'gitattributes', 'gitcommit', 'gitignore', 'git_rebase',
         'gleam', 'diff', 'make', 'swift', 'scheme', 'ssh_config', 'toml', 'http',
         'lua', 'markdown', 'markdown_inline', 'php', 'python', 'regex', 'ruby',
         'rust', 'scss', 'surface', 'svelte', 'toml', 'tsx', 'typescript',
-        'vue', 'yaml', 'zig', 'mermaid'
+        'vue', 'yaml', 'zig', 'mermaid', 'query'
       },
       indent = { enable = true },
       highlight = { enable = true },
@@ -464,12 +603,10 @@ require("lazy").setup({
       textobjects = { enable = true },
     },
     config = function(_, opts)
+      vim.treesitter.language.register("bash", "zsh")
+      vim.treesitter.language.register("bash", "env")
       require("nvim-treesitter.configs").setup(opts)
     end,
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-     event = 'VeryLazy',
   },
   { 'nvim-treesitter/playground',
      event = 'VeryLazy',
@@ -491,6 +628,7 @@ require("lazy").setup({
   -- Search and Replace
   { 'windwp/nvim-spectre',
     lazy = true,
+    cmd = { 'Spectre' },
     keys = {
       { '<leader>sr', function() require('spectre').open() end, desc = "Find/Replace" },
       { '<leder>srw', function() require('spectre').open_visual() end, desc = "Find/Replace Word", mode = { "n", "v" } },
@@ -590,8 +728,8 @@ require("lazy").setup({
     keys = {
       { "<leader>m", "<cmd>Grapple toggle<cr>", desc = "Grapple toggle tag" },
       { "<leader>M", "<cmd>Grapple toggle_tags<cr>", desc = "Grapple open tags window" },
-      { "<leader>n", "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
-      { "<leader>p", "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
+      -- { "<leader>n", "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
+      -- { "<leader>p", "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
       { "<leader>1", "<cmd>Grapple select index=1<cr>", desc = "Grapple first tag" },
       { "<leader>2", "<cmd>Grapple select index=2<cr>", desc = "Grapple second tag" },
       { "<leader>3", "<cmd>Grapple select index=3<cr>", desc = "Grapple third tag" },
@@ -606,36 +744,40 @@ require("lazy").setup({
   -- Character as colorcolumn
   { "lukas-reineke/virt-column.nvim"},
 
-  -- View LSP logs
-  { "mhanberg/output-panel.nvim", event = "VeryLazy" },
   -- Git
   { 'mhinz/vim-signify' },
-  { 'NeogitOrg/neogit',
-    lazy = true,
-    keys = {
-      { "<leader>g", ":Neogit<cr>", desc = "Open Neogit" }
-    }
-  },
-  { 'tpope/vim-fugitive' },
+  { 'sindrets/diffview.nvim' },
   { 'pwntester/octo.nvim',
     lazy = true,
+    cmd = {"Octo"},
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'ibhagwan/fzf-lua',
+      'folke/snacks.nvim',
       { "nvim-tree/nvim-web-devicons", lazy = true }
     },
     opts = {
       suppress_missing_scope = {
         projects_v2 = true,
       },
-      picker = "fzf-lua",
+      picker = "snacks",
     },
   },
+  { 'echasnovski/mini-git',
+    version = '*',
+    main = 'mini.git'},
 
-  -- Resize panes with C-e and hjkl
-  { 'simeji/winresizer',
+  -- Resize panes with C-e and hjkl and arrows
+  { 'mrjones2014/smart-splits.nvim',
+    version = '>=1.0.0',
+    opts = {
+      ignored_filetypes = { 'NvimTree', 'snacks_picker_list' },
+    },
     keys = {
-      { '<c-e>', '<c-\\><c-n>:WinResizerStartResize<cr>', mode = 't'}
+      -- Resize with arrows
+      { '<C-e>k', function() require('smart-splits').resize_up() end, desc = 'Resize split up' },
+      { '<C-e>j', function() require('smart-splits').resize_down() end, desc = 'Resize split down' },
+      { '<C-e>h', function() require('smart-splits').resize_left() end, desc = 'Resize split left' },
+      { '<C-e>l', function() require('smart-splits').resize_right() end, desc = 'Resize split right' },
     }
   },
 
@@ -649,34 +791,61 @@ require("lazy").setup({
       { '<leader>a', ':call v:lua.run_test_suite()<cr>', desc = "Test All" },
     },
   },
-  { "andythigpen/nvim-coverage",
-    lazy = true,
-    opts = {
-      commands = true,
-      highlights = {
-        covered = { fg = "#C3E88D" },
-        uncovered = { fg = "#F07178" },
-      },
-      signs = {
-        covered = { hl = "CoverageCovered", text = "▎" },
-        uncovered = { hl = "CoverageUncovered", text = "▎" },
-      },
-      summary = {
-        min_coverage = 80.0,
-      },
-      lang = {},
-    },
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-    }
-  },
 
   -- Convenience
   { 'tpope/vim-repeat' },
-  { 'tpope/vim-surround' },
+  { 'echasnovski/mini.surround',
+    version = '*',
+    config = function() require('mini.surround').setup({}) end },
+  { 'echasnovski/mini.ai',
+    version = '*',
+    config = function() require('mini.ai').setup({}) end },
+  { 'echasnovski/mini.splitjoin',
+    version = '*',
+    config = function() require('mini.splitjoin') end },
+  { 'echasnovski/mini.trailspace',
+    version = '*',
+    config = function()
+      vim.api.nvim_create_autocmd({'BufWritePre'}, {
+        group = vim.api.nvim_create_augroup('Trim', {}),
+        callback = function(event)
+          -- Only trimming if an LSP is attached
+          if not vim.tbl_isempty(vim.lsp.get_clients({ bufnr = event.buf })) then
+            local ts = require('mini.trailspace')
+            ts.trim()
+            ts.trim_last_lines()
+          end
+        end
+      })
+    end },
   { 'tpope/vim-eunuch' },
   { 'tpope/vim-projectionist' },
   { 'pbrisbin/vim-mkdir' },
+
+  -- AI bullcrap
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "ravitemer/mcphub.nvim"
+    },
+    config = function()
+      require('dbern.plugins.codecompanion').setup()
+    end
+  },
+
+  {
+    "ravitemer/mcphub.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest",
+    config = function()
+      require("mcphub").setup()
+    end
+  },
 
   -- Write better
   { 'godlygeek/tabular' },

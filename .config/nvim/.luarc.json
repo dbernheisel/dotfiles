@@ -6,6 +6,7 @@
     "lua/?/init.lua"
   ],
   "diagnostics.globals": ["vim"],
+  "diagnostics.unusedLocalExclude": ["_*"],
   "workspace.checkThirdParty": false,
   "workspace.library": [
     "$VIMRUNTIME",

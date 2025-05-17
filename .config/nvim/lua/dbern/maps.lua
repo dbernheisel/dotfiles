@@ -53,6 +53,8 @@ m('v', '<A-j>', ':move \'>+1<cr>gv=gv', { noremap = true})
 m('n', '<A-h>', '<<', { noremap = true, silent = true })
 m('n', '<A-l>', '>>', { noremap = true, silent = true })
 
+m('n', '<leader>cp', ':let @+ = expand("%") | lua vim.notify("Copied filename")<cr>', { noremap = true, silent = true })
+
 m('n', '<leader><leader>', '<c-^>', { noremap = true })
 
 function _G.show_documentation()

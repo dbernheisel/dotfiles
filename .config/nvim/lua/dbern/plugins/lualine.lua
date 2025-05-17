@@ -5,7 +5,7 @@ local trouble = require('trouble')
 local opts = {
   options = {
     globalstatus = U.has('nvim-0.7'),
-    theme = 'sonokai',
+    theme = 'moonfly',
   },
   sections = {
     lualine_a = {'mode'},

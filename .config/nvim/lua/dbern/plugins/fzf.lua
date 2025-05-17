@@ -136,7 +136,7 @@ M.setup = function()
     }
   })
 
-  fzf.register_ui_select({winopts = {preview = {winopts = {number = false}}}}, true)
+  -- fzf.register_ui_select({winopts = {preview = {winopts = {number = false}}}}, true)
 end
 
 return M

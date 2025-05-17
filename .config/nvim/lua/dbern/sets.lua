@@ -28,7 +28,8 @@ vim.cmd [[
 silent !mkdir -p ~/.cache/nvim/undo > /dev/null 2>&1
 ]]
 vim.opt.undofile = true
-vim.opt.undodir = vim.loop.os_homedir()..'/.cache/nvim/undo'
+vim.opt.undodir = vim.uv.os_homedir()..'/.cache/nvim/undo'
+vim.o.winborder = 'rounded'
 
 vim.g.backup = false
 vim.g.writebackup = false
@@ -88,6 +89,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.autowrite = true
 vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
 vim.opt.ruler = true
 vim.opt.number = true
 vim.opt.redrawtime = 10000

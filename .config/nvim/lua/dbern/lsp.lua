@@ -1,111 +1,53 @@
 local a = vim.api
-local lspconfig = require('lspconfig')
-local _lspconfig_configs = require('lspconfig.configs')
-local lsputil = require 'lspconfig.util'
-local mason = require('mason')
-local mason_lspconfig = require('mason-lspconfig')
--- local cmp_nvim_lsp = require('cmp_nvim_lsp')
+local lsputil = require('vim.lsp.util')
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
-local elixir = require('elixir')
-local elixirls = require('elixir.elixirls')
-local u = require('dbern.utils')
 
-local lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
+local M = {}
 
-local function lsp_supports(client, method)
-  local capability = vim.lsp._request_name_to_capability[method]
-  if not capability then
-    return false
-  end
-
-  if vim.tbl_get(client.server_capabilities, unpack(capability)) then
-    return true
-  else
-    return false
-  end
-end
-
-
-local function make_on_attach(_config)
-  return function(client, bufnr)
-    -- print("LSP "..client.name.." starting...")
-
-    local opts = { noremap = true, silent = true }
-    a.nvim_buf_set_keymap(bufnr, 'n', 'K',  '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-    a.nvim_buf_set_keymap(bufnr, 'n', '<c-space>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    a.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-    a.nvim_buf_set_keymap(bufnr, 'n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-    a.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-
-    if hasFzf then
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>FzfLua lsp_references<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gs', '<cmd>FzfLua lsp_document_symbols<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gw', '<cmd>FzfLua lsp_workspace_symbols<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>FzfLua lsp_incoming_calls<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>go', '<cmd>FzfLua lsp_outgoing_calls<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>FzfLua lsp_code_actions<cr>', opts)
-    else
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gs', '<cmd>lua vim.lsp.buf.document_symbol()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gw', '<cmd>lua vim.lsp.buf.workspace_symbol()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>lua vim.lsp.buf.incoming_calls()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>go', '<cmd>lua vim.lsp.buf.outgoing_calls()<cr>', opts)
-      a.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-    end
-    a.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-
-    if lsp_supports(client, "textDocument/formatting") then
-      -- Add :Format command
-      a.nvim_buf_create_user_command(bufnr, 'Format', function()
-        local params = require('vim.lsp.util').make_formatting_params({})
-        client.request("textDocument/formatting", params, nil, bufnr)
-      end, { nargs = 0 })
-    end
-
-    -- Highlight
-    if lsp_supports(client, "textDocument/documentHighlight") then
-      a.nvim_clear_autocmds({ group = lspHighlightAugroup, buffer = bufnr })
-      a.nvim_create_autocmd("CursorHold", {
-        group = lspHighlightAugroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.document_highlight()
-        end,
-      })
-      a.nvim_create_autocmd("CursorMoved", {
-        group = lspHighlightAugroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.clear_references()
-        end,
-      })
-    end
-
-    a.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
-  end
-end
-
--- :Mason
-mason.setup()
-mason_lspconfig.setup({
-  ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
-    "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
-    "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
-})
-
-local lsp_servers = {
-  bashls = {},
+M.servers = {
+  bashls = {
+    filetypes = {"sh", "bash", "zsh"},
+    settings = {
+      bashIde = {
+        globPattern = "*@(.sh|.inc|.bash|.command|.zsh|zshrc|zsh_*)"
+      }
+    }
+  },
   cssls = {},
   dockerls = {},
   html = {},
   jsonls = {},
   kotlin_language_server = {},
-  markdown_oxide = {},
-  ruby_lsp = {},
-  pylsp = {},
-  sqlls = {},
+  lexical = {},
   lua_ls = {},
-  tailwindcss = {},
+  markdown_oxide = {
+    capabilities = {
+      workspace = {
+        didChangeWatchedFiles = {
+          dynamicRegistration = true
+        }
+      }
+    }
+  },
+  pylsp = {},
+  -- "ruby_lsp",
+  sourcekit = {},
+  sqlls = {},
+  tailwindcss = {
+    -- https://github.com/neovim/nvim-lspconfig/pull/3854
+    settings = {
+      tailwindCSS = {
+        includeLanguages = {
+          eelixir = "html-eex",
+          elixir = "phoenix-heex",
+          eruby = "erb",
+          heex = "phoenix-heex",
+          htmlangular = "html",
+          templ = "html",
+        },
+      },
+    },
+  },
   ts_ls = {},
   vimls = {},
   vuels = {},
@@ -113,105 +55,129 @@ local lsp_servers = {
   zls = {},
 }
 
-local sourcekit_lsp = '/Library/Developer/CommandLineTools/usr/bin/sourcekit-lsp'
-if u.executable(sourcekit_lsp) then
-  lsp_servers.sourcekit = {
-    filetypes = {"swift"},
-    cmd = { sourcekit_lsp }
-  }
-end
+M.on_attach = function(args)
+  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+  local bufnr = args.buf
 
--- Add snippet support
--- local capabilities = cmp_nvim_lsp.default_capabilities()
-
-for lsp_server, config in pairs(lsp_servers) do
-  -- print("LSP "..lsp_server.." starting...")
-  config.on_attach = make_on_attach(config)
-  local capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-  config.capabilities = capabilities
-
-  if lsp_server == "markdown_oxide" then
-    config.capabilities.workspace = {
-      didChangeWatchedFiles = { dynamicRegistration = true }
-    }
+  local kmp = function(lhs, rhs, desc)
+    a.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap = true, silent = true, desc = desc })
   end
 
-  lspconfig[lsp_server].setup(config)
+  kmp('K', '<cmd>lua vim.lsp.buf.hover()<cr>', "Show help")
+  kmp('<c-space>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', "Show signature help")
+  if _G.Snacks then
+    kmp('gd', '<cmd>lua Snacks.picker.lsp_definitions()<cr>', "Goto definition")
+    kmp('gt', '<cmd>lua Snacks.picker.lsp_type_definitions()<cr>', "Goto type definition")
+    kmp('gi', '<cmd>lua Snacks.picker.lsp_implementations()<cr>', "Goto implementation")
+    kmp('<leader>gr', '<cmd>lua Snacks.picker.lsp_references()<cr>', "References")
+    kmp('<leader>gs', '<cmd>lua Snacks.picker.lsp_symbols()<cr>', "Document Symbols")
+    kmp('<leader>gw', '<cmd>lua Snacks.picker.lsp_workspace_symbols()<cr>', "Workspace symbols")
+    if hasFzf then
+      kmp('<leader>gi', '<cmd>FzfLua lsp_incoming_calls<cr>', "Incoming calls")
+      kmp('<leader>go', '<cmd>FzfLua lsp_outgoing_calls<cr>', "Outgoing calls")
+    end
+  elseif hasFzf then
+    kmp('gd', '<cmd>lua <cmd>FzfLua lsp_definitions()<cr>', "Goto definition")
+    kmp('gt', '<cmd>lua <cmd>FzfLua lsp_typedefs()<cr>', "Goto type definition")
+    kmp('gi', '<cmd>lua <cmd>FzfLua lsp_implementations()<cr>', "Goto implementation")
+    kmp('<leader>gr', '<cmd>FzfLua lsp_references<cr>', "References")
+    kmp('<leader>gs', '<cmd>FzfLua lsp_document_symbols<cr>', "Document Symbols")
+    kmp('<leader>gw', '<cmd>FzfLua lsp_workspace_symbols<cr>', "Workspace symbols")
+    kmp('<leader>gi', '<cmd>FzfLua lsp_incoming_calls<cr>', "Incoming calls")
+    kmp('<leader>go', '<cmd>FzfLua lsp_outgoing_calls<cr>', "Outgoing calls")
+  else
+    kmp('<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>', "LSP References")
+    kmp('<leader>gs', '<cmd>lua vim.lsp.buf.document_symbol()<cr>', "Document Symbols")
+    kmp('<leader>gw', '<cmd>lua vim.lsp.buf.workspace_symbol()<cr>', "Workspace symbols")
+    kmp('<leader>gi', '<cmd>lua vim.lsp.buf.incoming_calls()<cr>', "Incoming calls")
+    kmp('<leader>go', '<cmd>lua vim.lsp.buf.outgoing_calls()<cr>', "Outgoing calls")
+  end
+
+  kmp('<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', "Code actions")
+
+  if client:supports_method("textDocument/rename") then
+    kmp('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', "Rename")
+  end
+
+  if client:supports_method('textDocument/foldingRange') then
+    local win = vim.api.nvim_get_current_win()
+    vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+  end
+
+  if client:supports_method("textDocument/formatting") then
+    a.nvim_buf_create_user_command(bufnr, 'Format', function()
+      client:request("textDocument/formatting", lsputil.make_formatting_params(), nil, bufnr)
+    end, { nargs = 0 })
+  end
+
+  -- Highlight
+  if client:supports_method("textDocument/documentHighlight") then
+    a.nvim_clear_autocmds({ group = M.lspHighlightAugroup, buffer = bufnr })
+    a.nvim_create_autocmd("CursorHold", {
+      group = M.lspHighlightAugroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.document_highlight()
+      end,
+    })
+    a.nvim_create_autocmd("CursorMoved", {
+      group = M.lspHighlightAugroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.clear_references()
+      end,
+    })
+  end
+
+  a.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 end
 
-elixir.setup({
-  credo = {
-    on_attach = make_on_attach({}),
-    enable = false
-  },
-  nextls = {
-    enable = false,
-    version = "0.23.1",
-    on_attach = make_on_attach({}),
-    init_options = {
-      experimental = {
-        completions = {
-          enable = true -- control if completions are enabled. defaults to false
-        }
-      }
-    },
-  },
-  -- elixirls = {
-  --   enable = true,
-  --   tag = "v0.23.0",
-  --   settings = elixirls.settings({
-  --     enableTestLenses = false
-  --   }),
-  --   on_attach = function(client, bufnr)
-  --     vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-  --     vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-  --     vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
-  --
-  --     a.nvim_buf_create_user_command(bufnr, 'Format', function()
-  --       local params = require('vim.lsp.util').make_formatting_params({})
-  --       client.request("textDocument/formatting", params, nil, bufnr)
-  --     end, { nargs = 0 })
-  --     make_on_attach({})(client, bufnr)
-  --   end
-  -- }
-  -- actually lexical
-  elixirls = {
-    enable = true,
-    settings = elixirls.settings({
-      enableTestLenses = false
-    }),
-    cmd = os.getenv("HOME").."/lexical/_build/dev/package/lexical/bin/start_lexical.sh",
-    root_dir = function(fname)
-      return lsputil.root_pattern("mix.exs", ".git")(fname) or vim.uv.cwd()
-    end,
-    filetypes = { "elixir", "eelixir", "heex" },
-    on_attach = function(client, bufnr)
-      vim.keymap.set("n", "<space>pf", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-      vim.keymap.set("n", "<space>pt", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-      vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+---@param args vim.api.keyset.create_autocmd.callback_args
+M.on_detach = function(args)
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  if not client or not client.attached_buffers then return end
+  for buf_id in pairs(client.attached_buffers) do
+    if buf_id ~= args.buf then return end
+  end
+  client:stop()
+end
 
-      a.nvim_buf_create_user_command(bufnr, 'Format', function()
-        local params = require('vim.lsp.util').make_formatting_params({})
-        client.request("textDocument/formatting", params, nil, bufnr)
-      end, { nargs = 0 })
-      make_on_attach({})(client, bufnr)
+M.setup = function()
+  M.lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
+
+  a.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
+    callback = M.on_attach,
+    desc = "Start LSP clients"
+  })
+
+  a.nvim_create_autocmd("LspDetach", {
+    group = vim.api.nvim_create_augroup("my.lsp.detact", {}),
+    callback = M.on_detach,
+    desc = "Stop LSP client when no buffer is attached",
+  })
+
+  require('lspconfig')
+
+  -- :Mason
+  require('mason').setup()
+  require('mason-lspconfig').setup({
+    automatic_enable = true,
+    automatic_installation = false,
+    ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
+      "solargraph", "lexical", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
+      "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
+  })
+
+  for server, server_config in pairs(M.servers) do
+    if vim.tbl_count(server_config) ~= 0 then
+      vim.lsp.config(server, server_config)
     end
-  }
- })
+    vim.lsp.enable(server)
+  end
 
-require('colorizer').setup({
-  'css',
-  'scss',
-  'sass',
-  'javascript',
-  'html',
-  'svg',
-  'lua',
-  'vim',
-  'svg',
-  'conf',
-  'eelixir',
-  'elixir',
-  'heex',
-  'erb'
-})
+  require('colorizer').setup({'css', 'scss', 'sass', 'javascript', 'html',
+    'svg', 'lua', 'vim', 'svg', 'conf', 'eelixir', 'elixir', 'heex', 'erb'})
+end
+
+return M
