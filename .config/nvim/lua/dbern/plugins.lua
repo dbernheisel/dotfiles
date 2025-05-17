@@ -374,7 +374,6 @@ require("lazy").setup({
       { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
       { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
-    { "<leader>gB",   function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
     },
     ---@type snacks.Config
     opts = {
@@ -746,7 +745,21 @@ require("lazy").setup({
 
   -- Git
   { 'mhinz/vim-signify' },
-  { 'sindrets/diffview.nvim' },
+  { 'sindrets/diffview.nvim',
+    lazy = true,
+    keys = {
+      { '<leader>gb', '<cmd>DiffviewFileHistory %<cr>', desc = 'Show git history', mode = {'n', 'x'} },
+      { '<leader>gb', ':DiffviewFileHistory<cr>', desc = 'Show git history', mode = {'v'} },
+    },
+  },
+  { 'FabijanZulj/blame.nvim',
+    lazy = true,
+    cmd = {'BlameToggle'},
+    config = function()
+      require('blame').setup()
+      vim.cmd([[cnoreabbrev Blame BlameToggle]])
+    end,
+  },
   { 'pwntester/octo.nvim',
     lazy = true,
     cmd = {"Octo"},
@@ -764,7 +777,9 @@ require("lazy").setup({
   },
   { 'echasnovski/mini-git',
     version = '*',
-    main = 'mini.git'},
+    main = 'mini.git',
+    config = function() require('mini.git').setup() end,
+  },
 
   -- Resize panes with C-e and hjkl and arrows
   { 'mrjones2014/smart-splits.nvim',
@@ -796,15 +811,19 @@ require("lazy").setup({
   { 'tpope/vim-repeat' },
   { 'echasnovski/mini.surround',
     version = '*',
+    main = 'mini.git',
     config = function() require('mini.surround').setup({}) end },
   { 'echasnovski/mini.ai',
     version = '*',
+    main = 'mini.git',
     config = function() require('mini.ai').setup({}) end },
   { 'echasnovski/mini.splitjoin',
     version = '*',
+    main = 'mini.git',
     config = function() require('mini.splitjoin') end },
   { 'echasnovski/mini.trailspace',
     version = '*',
+    main = 'mini.git',
     config = function()
       vim.api.nvim_create_autocmd({'BufWritePre'}, {
         group = vim.api.nvim_create_augroup('Trim', {}),
