@@ -1,0 +1,15 @@
+// Static tasks configuration.
+[
+  {
+    "label": "Run Elixir Test Suite",
+    "command": "mix test"
+  },
+  {
+    "label": "Run Elixir Test File",
+    "command": "mix test $ZED_FILE"
+  },
+  {
+    "label": "Run Elixir Test",
+    "command": "mix test $ZED_FILE:$ZED_ROW"
+  }
+]

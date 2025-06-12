@@ -1,0 +1,60 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "icon_theme": "Colored Zed Icons Theme Dark",
+  "features": {
+    "edit_prediction_provider": "none"
+  },
+  "terminal": {
+    "dock": "right"
+  },
+  "buffer_font_family": "FiraCode Nerd Font",
+  "buffer_font_features": {
+    "zero": true,
+    "ss01": true,
+    "ss02": true,
+    "ss03": true,
+    "ss05": true,
+    "ss06": true,
+    "ss07": true,
+    "cv14": true
+  },
+  "context_servers": {
+    "tidewave": {
+      "command": {
+        "path": "mcp-proxy",
+        "args": ["http://localhost:5000/mcp/tidewave"]
+      },
+      "settings": {}
+    }
+  },
+  "telemetry": {
+    "metrics": false
+  },
+  "languages": {
+    "Elixir": {
+      "language_servers": ["lexical", "!nextls", "!elixir-ls", "..."],
+      "tab_size": 2,
+      "format_on_save": {
+        "external": {
+          "command": "mix",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    }
+  },
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "dark",
+    "light": "Zedokai Light",
+    "dark": "Catppuccin Mocha (Blur)"
+  }
+}
