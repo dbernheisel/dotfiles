@@ -231,17 +231,17 @@ require("lazy").setup({
       {
         '<leader>s', function()
           require('silicon').visualise_api({ visible = true })
-        end, { mode = "v", desc = "Take Code Screenshot of Selected" }
+        end, mode = 'v', desc = 'Take Code Screenshot of visible'
       },
       {
-        '<leader>ss', function()
-          require('silicon').visualise_api({ show_buf = true })
-        end, { mode = "v", desc = "Take Code Screenshot of Buffer" }
+        '<leader>sb', function()
+          require('silicon').visualise_api({ visible = true })
+        end, mode = 'n', desc = 'Take Code Screenshot of visible'
       },
       {
-        '<leader>s', function()
-          require('silicon').visualise_api({ show_buf = true })
-        end, { des = "Take Code Screenshot of Line" }
+        '<leader>sbb', function()
+          require('silicon').visualise_api({ show_bug = true })
+        end, mode = 'n', desc = 'Take Code Screenshot of visible'
       }
     }
   },
@@ -337,6 +337,7 @@ require("lazy").setup({
       -- { "<leader>f", function() Snacks.picker.grep({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find text" },
       { "<leader>S", function() Snacks.scratch() end, desc = "Find text" },
       { "<leader>H", function() Snacks.picker.highlights() end, desc = "Find highlights" },
+      { "<c-s-p>", function() Snacks.picker.resume() end, desc = "Resume picking" },
       { "<c-p>", function()
         Snacks.picker.files({
           exclude = { "@types/" },
@@ -573,7 +574,7 @@ require("lazy").setup({
     },
     config = function() require('dbern.plugins.fzf').setup() end,
     keys = {
-      { "<leader>f", ':call v:lua.fzf_grep()<cr>', desc = "Find text" },
+      { "<leader>f", ':call v:lua.fzf_grep()<cr>', silent = true, desc = "Find text" },
       -- { "<c-p>", ':call v:lua.fzf_files()<cr>', desc = "Find file" },
       -- { "<leader>ev", ':call v:lua.fzf_vimrc()<cr>', desc = "Find vimrc file" },
       -- { "<leader>ed", ':call v:lua.fzf_dotfiles()<cr>', desc = "Find dotfile" },
@@ -775,11 +776,6 @@ require("lazy").setup({
       picker = "snacks",
     },
   },
-  { 'echasnovski/mini-git',
-    version = '*',
-    main = 'mini.git',
-    config = function() require('mini.git').setup() end,
-  },
 
   -- Resize panes with C-e and hjkl and arrows
   { 'mrjones2014/smart-splits.nvim',
@@ -842,6 +838,14 @@ require("lazy").setup({
   { 'pbrisbin/vim-mkdir' },
 
   -- AI bullcrap
+  {
+    "coder/claudecode.nvim",
+    config = true,
+    keys = {
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+    },
+  },
   {
     "olimorris/codecompanion.nvim",
     opts = {},

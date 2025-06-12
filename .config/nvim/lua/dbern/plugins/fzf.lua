@@ -2,6 +2,7 @@
 -- let s:git_project = v:shell_error == 0
 
 local fzf = require('fzf-lua')
+local actions = require('fzf-lua.actions')
 local U = require('dbern.utils')
 local M = {}
 
@@ -18,7 +19,7 @@ if has_prox then
 
   M.dynamic_fzf_args = function()
     if vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S') ~= '.' then
-      local opts = {}
+      local opts = { resume = true }
       opts.rg_opts = rg_opts.." | proximity-sort "..vim.fn.expand('%')
       opts.fd_opts = fd_opts.." | proximity-sort "..vim.fn.expand('%')
       return opts
@@ -28,21 +29,21 @@ if has_prox then
   end
 else
   M.dynamic_fzf_args = function()
-    return {}
+    return { resume = true }
   end
 end
 
 M.grep = function()
-  return fzf.grep()
+  return fzf.grep({ resume = true })
 end
 
 M.files = function()
   return fzf.files(M.dynamic_fzf_args)
---  return fzf.files()
 end
 
 M.vimrc = function()
   return fzf.files({
+    resume = true,
     prompt = "nvimrc❯ ",
     fd_opts = "--color=never --type f --exclude .netrwhist --exclude undo --exclude plugged",
     rg_opts = "--color=never --files -g '!.netrwhist' -g '!undo' -g '!plugged'",
@@ -52,6 +53,7 @@ end
 
 M.dotfiles = function()
   return fzf.files({
+    resume = true,
     prompt = "dotfiles❯ ",
     fd_opts = "--color=never --type f --exclude calibre/ --exclude tmux/plugins/tpm/ --exclude coc/ --exclude chromium/ --exclude yarn/ --exclude nvim/ --exclude pulse/ --exclude kak/plugins/",
     rg_opts = "--color=never --files -g '!calibre/' -g '!tmux/plugins/tmp/' -g '!coc/' -g '!chromium/' -g '!yarn/' -g '!nvim/' -g '!pulse/' -g '!kak/plugins/'",
@@ -61,6 +63,7 @@ end
 
 M.locals = function()
   return fzf.files({
+    resume = true,
     prompt = "local❯ ",
     fd_opts = "--color=never --type f --exclude include/ --exclude kitty.app/ --exclude lib/ --exclude share/ --exclude discord/",
     rg_opts = "--color=never --files -g '!include/' -g '!kitty.app/' -g '!lib/' -g '!share/' -g '!discord/'",
