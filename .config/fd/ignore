@@ -6,13 +6,13 @@ node_modules
 _build
 tags
 bower_components
-storage
 tmp
 coverage
 deps
 .hg
 .svn
 .sass-cache
+ops/platform/datadog
 __pycache__
 *.cache
 .Trash
