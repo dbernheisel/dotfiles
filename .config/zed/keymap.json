@@ -7,19 +7,31 @@
 // from the command palette.
 [
   {
-    "context": "Editor && mode==full && vim_mode == normal",
+    "context": "Editor && mode==full && (vim_mode == normal || vim_mode == visual)",
     "bindings": {
       "ctrl-g": "workspace::CopyPath",
       ";": "command_palette::Toggle",
       ":": "go_to_line::Toggle",
       "K": "editor::Hover",
-      "ctrl-n": ["workspace::SendKeystrokes", "g l"],
+      "ctrl-w k": "vim::ResizePaneUp",
+      "ctrl-w j": "vim::ResizePaneDown",
+      "ctrl-w h": "vim::ResizePaneLeft",
+      "ctrl-w l": "vim::ResizePaneRight",
+      "ctrl-n": "vim::SelectNext",
       "ctrl-p": "file_finder::Toggle",
       "space b": "project_panel::ToggleFocus",
       "space n": "notification_panel::ToggleFocus",
       "space f": "pane::DeploySearch",
       "space t": "terminal_panel::ToggleFocus",
+      "space g c": "git_panel::ToggleFocus",
+      "space g c o": "git::CheckoutBranch",
       "space space": ["workspace::SendKeystrokes", "ctrl-tab enter"]
+    }
+  },
+  {
+    "context": "Editor && mode==full && vim_mode == visual",
+    "bindings": {
+      "space /": "vim::ToggleComments"
     }
   },
   {
@@ -34,6 +46,12 @@
     "context": "ProjectSearchBar > Editor",
     "bindings": {
       "escape": "pane::CloseActiveItem"
+    }
+  },
+  {
+    "context": "AgentPanel > MessageEditor > Editor",
+    "bindings": {
+      "escape": "workspace::ToggleRightDock"
     }
   },
   {

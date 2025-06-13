@@ -26,10 +26,17 @@
     "cv14": true
   },
   "context_servers": {
-    "tidewave": {
+    "tidewave-local": {
       "command": {
         "path": "mcp-proxy",
         "args": ["http://localhost:5000/mcp/tidewave"]
+      },
+      "settings": {}
+    },
+    "tidewave-dscout": {
+      "command": {
+        "path": "mcp-proxy",
+        "args": ["https://app.dscout.internal/mcp/tidewave"]
       },
       "settings": {}
     }
@@ -54,7 +61,7 @@
   "buffer_font_size": 16,
   "theme": {
     "mode": "dark",
-    "light": "Zedokai Light",
-    "dark": "Catppuccin Mocha (Blur)"
+    "light": "Catppuccin Latte (Blur)",
+    "dark": "Zedokai Darker"
   }
 }
