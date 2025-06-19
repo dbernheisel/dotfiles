@@ -33,21 +33,7 @@ M.servers = {
   -- "ruby_lsp",
   sourcekit = {},
   sqlls = {},
-  tailwindcss = {
-    -- https://github.com/neovim/nvim-lspconfig/pull/3854
-    settings = {
-      tailwindCSS = {
-        includeLanguages = {
-          eelixir = "html-eex",
-          elixir = "phoenix-heex",
-          eruby = "erb",
-          heex = "phoenix-heex",
-          htmlangular = "html",
-          templ = "html",
-        },
-      },
-    },
-  },
+  tailwindcss = {},
   ts_ls = {},
   vimls = {},
   vuels = {},

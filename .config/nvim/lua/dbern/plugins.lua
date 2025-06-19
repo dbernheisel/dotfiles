@@ -246,6 +246,14 @@ require("lazy").setup({
     }
   },
   {
+    "coder/claudecode.nvim",
+    config = true,
+    keys = {
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+    },
+  },
+  {
     'saghen/blink.cmp',
     version = '1.*',
     dependencies = {
