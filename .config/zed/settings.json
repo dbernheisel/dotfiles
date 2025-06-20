@@ -7,12 +7,20 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent": {
+    "model_parameters": [],
+    "always_allow_tool_actions": true,
+    "version": "2"
+  },
   "icon_theme": "Colored Zed Icons Theme Dark",
   "features": {
     "edit_prediction_provider": "none"
   },
   "terminal": {
-    "dock": "right"
+    "dock": "right",
+    "env": {
+      "EDITOR": "zed --wait"
+    }
   },
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_features": {
@@ -62,6 +70,6 @@
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Latte (Blur)",
-    "dark": "Zedokai Darker"
+    "dark": "Catppuccin Espresso (Blur)"
   }
 }

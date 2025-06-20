@@ -9,7 +9,6 @@
   {
     "context": "Editor && mode==full && (vim_mode == normal || vim_mode == visual)",
     "bindings": {
-      "ctrl-g": "workspace::CopyPath",
       ";": "command_palette::Toggle",
       ":": "go_to_line::Toggle",
       "K": "editor::Hover",
@@ -17,14 +16,23 @@
       "ctrl-w j": "vim::ResizePaneDown",
       "ctrl-w h": "vim::ResizePaneLeft",
       "ctrl-w l": "vim::ResizePaneRight",
+      "ctrl-g": "workspace::CopyPath",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
       "ctrl-n": "vim::SelectNext",
       "ctrl-p": "file_finder::Toggle",
       "space b": "project_panel::ToggleFocus",
-      "space n": "notification_panel::ToggleFocus",
       "space f": "pane::DeploySearch",
+      "space n": "notification_panel::ToggleFocus",
       "space t": "terminal_panel::ToggleFocus",
-      "space g c": "git_panel::ToggleFocus",
-      "space g c o": "git::CheckoutBranch",
+      "space x": "diagnostics::Deploy",
+      "space a c": "agent::ToggleFocus",
+      "space g s": "git_panel::ToggleFocus",
+      "space g c": "git::ExpandCommitEditor",
+      "space g f": "git::Pull",
+      "space g c o": "git::Switch",
       "space space": ["workspace::SendKeystrokes", "ctrl-tab enter"]
     }
   },
@@ -37,9 +45,9 @@
   {
     "context": "ProjectPanel",
     "bindings": {
-      "space b": "workspace::ToggleLeftDock",
       "q": "workspace::ToggleLeftDock",
-      "escape": "workspace::ToggleLeftDock"
+      "escape": "workspace::ToggleLeftDock",
+      "space b": "workspace::ToggleLeftDock"
     }
   },
   {
@@ -49,14 +57,57 @@
     }
   },
   {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
     "context": "AgentPanel > MessageEditor > Editor",
     "bindings": {
       "escape": "workspace::ToggleRightDock"
     }
   },
   {
+    "context": "GitPanel && ChangesList",
+    "bindings": {
+      "c": "git::ExpandCommitEditor",
+      "s": "git::ToggleStaged",
+      "r": "git::RestoreFile",
+      "escape": "workspace::ToggleLeftDock",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "git_panel::FocusEditor"
+    }
+  },
+  {
+    "context": "GitPanel > Editor",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "git_panel::FocusChanges",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
     "context": "Terminal",
     "bindings": {
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown",
       "escape": "workspace::ToggleBottomDock"
     }
   },
@@ -67,11 +118,12 @@
     }
   },
   {
-    "context": "Editor && (extension==ex || extension==exs)",
+    "context": "Editor && mode == full && vim_mode == normal && (extension==ex || extension==exs)",
     "bindings": {
-      "space t": ["task::Spawn", { "task_name": "Run Elixir Test" }],
-      "space shift-t": ["task::Spawn", { "task_name": "Run Elixir Test File" }],
-      "space a": ["task::Spawn", { "task_name": "Run Mix Test Suite" }]
+      "space t t": ["task::Spawn", { "task_name": "Run Elixir Test" }],
+      "space t f": ["task::Spawn", { "task_name": "Run Elixir Test File" }],
+      "space t a": ["task::Spawn", { "task_name": "Run Mix Test Suite" }],
+      "space t l": "task::Rerun"
     }
   },
   {

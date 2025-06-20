@@ -6,10 +6,10 @@
   },
   {
     "label": "Run Elixir Test File",
-    "command": "mix test $ZED_FILE"
+    "command": "mix test $ZED_RELATIVE_FILE"
   },
   {
     "label": "Run Elixir Test",
-    "command": "mix test $ZED_FILE:$ZED_ROW"
+    "command": "mix test $ZED_RELATIVE_FILE:$ZED_ROW"
   }
 ]
