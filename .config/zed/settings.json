@@ -16,10 +16,34 @@
   "features": {
     "edit_prediction_provider": "none"
   },
+  "auto_install_extensions": {
+    "catppuccin-blur": true,
+    "colored-zed-icons-theme": true,
+    "docker-compose": true,
+    "dockerfile": true,
+    "elixir": true,
+    "graphql": true,
+    "html": true,
+    "sql": true,
+    "toml": true
+  },
+  "use_smartcase_search": true,
   "terminal": {
+    "detect_venv": "off",
     "dock": "right",
     "env": {
       "EDITOR": "zed --wait"
+    },
+    "font_family": "FiraCode Nerd Font",
+    "font_features": {
+      "zero": true,
+      "ss01": true,
+      "ss02": true,
+      "ss03": true,
+      "ss05": true,
+      "ss06": true,
+      "ss07": true,
+      "cv14": true
     }
   },
   "buffer_font_family": "FiraCode Nerd Font",
@@ -32,22 +56,6 @@
     "ss06": true,
     "ss07": true,
     "cv14": true
-  },
-  "context_servers": {
-    "tidewave-local": {
-      "command": {
-        "path": "mcp-proxy",
-        "args": ["http://localhost:5000/mcp/tidewave"]
-      },
-      "settings": {}
-    },
-    "tidewave-dscout": {
-      "command": {
-        "path": "mcp-proxy",
-        "args": ["https://app.dscout.internal/mcp/tidewave"]
-      },
-      "settings": {}
-    }
   },
   "telemetry": {
     "metrics": false

@@ -45,9 +45,7 @@
   {
     "context": "ProjectPanel",
     "bindings": {
-      "q": "workspace::ToggleLeftDock",
-      "escape": "workspace::ToggleLeftDock",
-      "space b": "workspace::ToggleLeftDock"
+      "escape": "workspace::ToggleLeftDock"
     }
   },
   {
@@ -66,6 +64,8 @@
       "x": "project_panel::Cut",
       "c": "project_panel::Copy",
       "p": "project_panel::Paste",
+      "q": "workspace::ToggleLeftDock",
+      "space b": "workspace::ToggleLeftDock",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
@@ -108,7 +108,7 @@
       "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-w k": "workspace::ActivatePaneUp",
       "ctrl-w j": "workspace::ActivatePaneDown",
-      "escape": "workspace::ToggleBottomDock"
+      "escape": "workspace::ToggleRightDock"
     }
   },
   {
