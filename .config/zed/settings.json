@@ -62,7 +62,7 @@
   },
   "languages": {
     "Elixir": {
-      "language_servers": ["lexical", "!nextls", "!elixir-ls", "..."],
+      "language_servers": ["next-ls", "!lexical", "!elixir-ls", "..."],
       "tab_size": 2,
       "format_on_save": {
         "external": {

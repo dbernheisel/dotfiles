@@ -6,8 +6,21 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
+  // {
+  //   "context": "Editor && mode==full && vim_mode == visual",
+  //   "bindings": {
+  //     ";": "vim::so",
+  //     ":": "go_to_line::Toggle"
+  //   }
+  // },
   {
     "context": "Editor && mode==full && (vim_mode == normal || vim_mode == visual)",
+    "bindings": {
+      "ctrl-n": "vim::SelectNext"
+    }
+  },
+  {
+    "context": "Editor && mode==full && vim_mode == normal",
     "bindings": {
       ";": "command_palette::Toggle",
       ":": "go_to_line::Toggle",
@@ -21,7 +34,6 @@
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
-      "ctrl-n": "vim::SelectNext",
       "ctrl-p": "file_finder::Toggle",
       "space b": "project_panel::ToggleFocus",
       "space f": "pane::DeploySearch",
@@ -84,6 +96,7 @@
       "c": "git::ExpandCommitEditor",
       "s": "git::ToggleStaged",
       "r": "git::RestoreFile",
+      "space b": "project_panel::ToggleFocus",
       "escape": "workspace::ToggleLeftDock",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
@@ -94,6 +107,7 @@
   {
     "context": "GitPanel > Editor",
     "bindings": {
+      "space b": "project_panel::ToggleFocus",
       "escape": "workspace::ToggleLeftDock",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
