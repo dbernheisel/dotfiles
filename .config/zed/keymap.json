@@ -25,6 +25,8 @@
       ";": "command_palette::Toggle",
       ":": "go_to_line::Toggle",
       "K": "editor::Hover",
+      "shift-left": "pane::ActivatePreviousItem",
+      "shift-right": "pane::ActivateNextItem",
       "ctrl-w k": "vim::ResizePaneUp",
       "ctrl-w j": "vim::ResizePaneDown",
       "ctrl-w h": "vim::ResizePaneLeft",
@@ -45,7 +47,7 @@
       "space g c": "git::ExpandCommitEditor",
       "space g f": "git::Pull",
       "space g c o": "git::Switch",
-      "space space": ["workspace::SendKeystrokes", "ctrl-tab enter"]
+      "space space": "pane::AlternateFile"
     }
   },
   {
@@ -134,9 +136,9 @@
   {
     "context": "Editor && mode == full && vim_mode == normal && (extension==ex || extension==exs)",
     "bindings": {
-      "space t t": ["task::Spawn", { "task_name": "Run Elixir Test" }],
-      "space t f": ["task::Spawn", { "task_name": "Run Elixir Test File" }],
-      "space t a": ["task::Spawn", { "task_name": "Run Mix Test Suite" }],
+      "space t t": ["task::Spawn", { "task_tag": "#elixir-test" }],
+      "space t f": ["task::Spawn", { "task_tag": "#elixir-module-test" }],
+      "space t a": ["task::Spawn", { "task_name": "mix test" }],
       "space t l": "task::Rerun"
     }
   },

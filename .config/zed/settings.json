@@ -8,6 +8,10 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "agent": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
     "model_parameters": [],
     "always_allow_tool_actions": true,
     "version": "2"
@@ -61,13 +65,56 @@
     "metrics": false
   },
   "languages": {
-    "Elixir": {
-      "language_servers": ["next-ls", "!lexical", "!elixir-ls", "..."],
+    "HEEX": {
+      "language_servers": [
+        "next-ls",
+        "tailwindcss-language-server",
+        "vtsls",
+        "!lexical",
+        "!elixir-ls",
+        "..."
+      ],
       "tab_size": 2,
       "format_on_save": {
         "external": {
           "command": "mix",
           "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    },
+    "Elixir": {
+      "language_servers": [
+        "next-ls",
+        "tailwindcss-language-server",
+        "!lexical",
+        "!elixir-ls",
+        "..."
+      ],
+      "tab_size": 2,
+      "format_on_save": {
+        "external": {
+          "command": "mix",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    }
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "includeLanguages": {
+          "heex": "html",
+          "Elixir": "html"
+        }
+      }
+    },
+    "next-ls": {
+      "initialization_options": {
+        "extensions": {
+          "credo": { "enable": true }
+        },
+        "experimental": {
+          "completions": { "enable": true }
         }
       }
     }
