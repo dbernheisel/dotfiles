@@ -15,6 +15,9 @@ if have fzf; then
   elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
     # If Debian
     source /usr/share/doc/fzf/examples/key-bindings.zsh
+    if [ -f /etc/profile.d/fzf.zsh ]; then
+      source /etc/profile.d/fzf.zsh
+    fi
   elif [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
     # If Homebrew
     source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
@@ -23,15 +26,20 @@ if have fzf; then
 fi
 
 # brew completions
-if type brew &> /dev/null; then
-  if [ -f "$BREW_PREFIX/share/zsh/site-functions" ]; then
-    fpath=("$BREW_PREFIX/share/zsh/site-functions" $fpath)
-  fi
-fi
+# Already done with eval "$(brew shellenv)"
+# if type brew &> /dev/null; then
+#   if [ -f "$BREW_PREFIX/share/zsh/site-functions" ]; then
+#     fpath=("$BREW_PREFIX/share/zsh/site-functions" $fpath)
+#   fi
+# fi
 
 mkdir -p "$HOME/.cache/completions"
 if have docker && [ ! -f "$HOME/.cache/completions/_docker" ]; then
   docker completion zsh > "$HOME/.cache/completions/_docker"
+fi
+
+if have just && [ ! -f "$HOME/.cache/completions/_just" ]; then
+  just --completions zsh > "$HOME/.cache/completions/_just"
 fi
 
 if have k3d && [ ! -f "$HOME/.cache/completions/_k3d" ]; then

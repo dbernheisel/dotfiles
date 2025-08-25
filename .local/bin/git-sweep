@@ -1,32 +1,114 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-git checkout master
-git fetch
-git remote prune origin
-git branch --merged master | grep -v 'master$' | xargs git branch -d
+GREEN='\033[0;32m'
+RESET='\033[0m'
+BOLD='\033[1m'
+ITALIC='\033[3m'
+YELLOWBOLD='\033[1;33m'
+RED='\033[0;31m'
 
-REMOVABLE=$(git branch -r --merged master \
-  | sed 's/ *origin\///' \
-  | grep -v 'master$' \
-  | grep -v 'production$' \
-  | grep -v 'staging$' \
-  | grep -v 'develop$' \
-  | grep -v 'review.$' \
-  | grep -v '^release' \
-  | grep -v 'next$'
-)
+declare -a MODES=()
+declare DRY_RUN=false
+SCRIPT_NAME=$(basename "$0")
 
-if [[ -z "$REMOVABLE" ]]; then
-  exit 0
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  echo -e "${RED}Must be in a git repositiory${RESET}"
+  exit 1
 fi
 
-echo "The following remote branches are fully merged and will be removed:"
-for branch in $REMOVABLE; do
-  echo "$branch"
+banner() {
+  local OUT="$1"; shift
+  local side=""
+  local side_n=0
+
+  total_width=$(tput cols)
+  # shellcheck disable=SC2001
+  OUT_CLEAN=$(echo "$OUT" | sed 's/\033\[[0-9;]\{1,\}[A-Za-z]//g')
+  length=$(wc -L <<< "$OUT_CLEAN" | tr -d ' ')
+  side_n=$((((total_width - length) / 2) - 2))
+  for ((i=0; i<side_n; i++)); do side+="="; done
+  echo -e "$side $OUT $side"
+}
+
+usage() {
+  echo "Clean remote git tags and branches associated with my user."
+  echo
+  echo "Usage:"
+  echo -e "  $ $SCRIPT_NAME ${GREEN}MODE [FLAGS]${RESET}"
+  echo
+  echo "Modes:"
+  echo -e "  ${GREEN}branches${RESET} - Review all branches with your involvement, prompting you if you want to delete them."
+  echo -e "  ${GREEN}all${RESET} - all modes"
+  echo
+  echo "Flags:"
+  echo -e "  ${GREEN}-d${RESET}, ${GREEN}--dry-run${RESET} Dry-run, do not actually delete"
+  echo
+  echo "Examples:"
+  echo -e "    $ $SCRIPT_NAME ${GREEN}branches${RESET}"
+  echo -e "    $ $SCRIPT_NAME ${GREEN}all${RESET}"
+  echo
+}
+
+confirm_delete() {
+  local REF="$1"; shift
+
+  echo ""
+  banner "Reviewing ${TYPE} ${YELLOWBOLD}${REF}${RESET}"
+  git --no-pager log --pretty=format:'%cr %C(auto)%h%d %s - %cn' "main..$REF"
+  echo ""
+  echo -en "> ${RED}Delete${RESET} branch ${RED}${REF}${RESET}? "
+  echo -n " ([y]es/[N]o/[a]bort) "
+  read -u 1 yn
+  case $yn in
+      [Yy]* )
+        if [ "$DRY_RUN" = true ]; then
+          echo "${ITALIC}Would delete ${REF}${RESET}"
+        else
+          git branch -D "$REF"
+          if git show-branch "remotes/origin/$REF" &> /dev/null; then
+            git push --no-verify --delete origin "$REF"
+          fi
+        fi;;
+
+      [Aa]*)
+        exit 1;;
+      *)
+        return;;
+  esac
+}
+
+clean_branches() {
+  banner "Reviewing branches with my involvement"
+
+  while read -r BRANCH; do
+    confirm_delete "$BRANCH"
+  done < <(
+    git for-each-ref \
+      --format=' %(authorname) %09 %(refname)' \
+      --sort=-committerdate | \
+      grep "$(git config user.name)" | \
+      awk -F"refs/heads/" '/refs\/heads\//{print $2}' | \
+      grep -v -e "main" -e "staging-*" -e "dependabot/*"
+  )
+}
+
+[[ $# -eq 0 ]] && usage && exit 0
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--dry-run)
+      DRY_RUN=true
+      shift;;
+    branches)
+      MODES+=(branches)
+      shift;;
+    all)
+      MODES+=(branches)
+      shift;;
+    *)
+      usage
+      exit 1;;
+  esac
 done
 
-read -p "Continue (y/n)? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo "$REMOVABLE" | xargs git push origin --delete
-fi
+[[ " ${MODES[*]} " =~ " branches " ]] && clean_branches

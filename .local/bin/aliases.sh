@@ -52,7 +52,7 @@ function col {
 
 # Color cat
 if have "bat"; then
- alias cat='bat --style=plain'
+ alias cat='bat --style=header,grid'
 elif have "ccat"; then
  alias cat='ccat'
 fi

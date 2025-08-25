@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+set -e
+
+temp=$(mktemp -d)
+for f in "$1"/**/{.,}*.flac(N); do
+  if ! type ffmpeg &>/dev/null; then
+    echo "This requires ffmpeg"
+    exit 1
+  fi
+
+  file=$(basename "$f")
+  filename="${file%.*}"
+  out_file="$temp/${filename}.m4a"
+
+  ffmpeg -y -i "$f" -c:v copy -c:a alac "$out_file"
+  osascript -e "tell application \"Music\" to add POSIX file \"$out_file\""
+done

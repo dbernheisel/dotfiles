@@ -27,11 +27,15 @@ fi
 
 [[ -d $HOME/flutter/bin ]] && export PATH="$HOME/flutter/bin:$PATH"
 [[ -d $HOME/.yarn/bin ]] && export PATH="$HOME/.yarn/bin:$PATH"
-[[ -d $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
+if [[ -d $HOME/.cargo/bin ]]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+  source "$HOME/.cargo/env"
+fi
 [[ -d $HOME/go/bin ]] && export PATH="$HOME/go/bin:$PATH"
-[[ -f /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+[[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ $TERMINFO =~ "kitty" ]] && export COLORTERM="truecolor"
 [[ $TERMINFO =~ "iterm" ]] && export COLORTERM="truecolor"
+[[ $TERMINFO =~ "Ghostty.app" ]] && export COLORTERM="truecolor"
 [[ -d "/Applications/Visual Studio Code.app" ]] && export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # PostgreSQL
@@ -45,11 +49,10 @@ export KERL_INSTALL_MANPAGES="no"
 export PLUG_EDITOR="nvim"
 
 export SUDO_EDITOR="nvim"
-have rg && export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
 
-if have bat; then
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-fi
+have rg && export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/rc"
+# have bat && export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+have nvim && export MANPAGER='nvim +Man!'
 
 # fzf default command
 if have fzf; then
@@ -61,19 +64,14 @@ if have fzf; then
   if have bat; then
     FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
   fi
-
-  # Keybindings CTRL-R, CTRL-T, ALT-C
-  if [ -f /etc/profile.d/fzf.zsh ]; then
-    source /etc/profile.d/fzf.zsh
-  fi
 fi
 
-# asdf
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
+[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/shims" ] && export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+[ -d "${MIX_HOME:-$HOME/.mix}/escripts" ] && export PATH="${MIX_HOME:-$HOME/.mix}/escripts:$PATH"
+[ -e "$HOME/.local/bin/mise" ] && eval "$(~/.local/bin/mise activate zsh)"
 [ -e "$HOME/.local/bin/autocomplete.zsh" ] && source "$HOME/.local/bin/autocomplete.zsh"
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
 [ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"
 [ -e "$HOME/.secrets" ] && source "$HOME/.secrets"
 [ -e "$HOME/.zshlocal" ] && source "$HOME/.zshlocal"
-[[ -d "$HOME/.local/bin/zsh/zsh-autoenv" ]] && source "$HOME/.local/bin/zsh/zsh-autoenv/autoenv.zsh"
+[ -d "$HOME/.local/bin/zsh/zsh-autoenv" ] && source "$HOME/.local/bin/zsh/zsh-autoenv/autoenv.zsh"
