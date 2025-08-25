@@ -185,15 +185,41 @@ require("lazy").setup({
       },
     }
   },
+  {
+    "elixir-tools/elixir-tools.nvim",
+    version = "*",
+    dependencies = {
+      "nvim-lua/plenary.nvim" ,
+      "neovim/nvim-lspconfig",
+    },
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      projectionist = { enable = true },
+      nextls = { enable = false },
+      elixirls = {
+        enable = true,
+        tag = "v0.29.2",
+        settings = {
+          elixirLS = {
+            mcpEnabled = true,
+            dialyzerEnabled = true,
+            enableTestLenses = true,
+          },
+        },
+      },
+    },
+  },
   { 'neovim/nvim-lspconfig',
-    dependencies = { 'saghen/blink.cmp' },
+    dependencies = {
+      'saghen/blink.cmp',
+    },
     config = function() require('dbern.lsp').setup() end },
   { 'folke/trouble.nvim',
     opts = {
       use_diagnostic_signs = true,
     },
     keys = {
-      { "<leader>x", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnotics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnotics (Trouble)" },
       { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
@@ -637,12 +663,20 @@ require("lazy").setup({
   { 'windwp/nvim-spectre',
     lazy = true,
     cmd = { 'Spectre' },
+    build = 'make build-oxi',
     keys = {
       { '<leader>sr', function() require('spectre').open() end, desc = "Find/Replace" },
       { '<leder>srw', function() require('spectre').open_visual() end, desc = "Find/Replace Word", mode = { "n", "v" } },
       { '<leader>sp', function() require('spectre').open_file_search() end, desc = "Find/Replace in Buffer" },
 
     },
+    opts = {
+      default = {
+        replace = {
+          cmd = "oxi"
+        }
+      }
+    }
   },
 
   { 'itchyny/calendar.vim',
@@ -804,10 +838,10 @@ require("lazy").setup({
   { "vim-test/vim-test",
     config = function() require('dbern.plugins.test').setup() end,
     keys = {
-      { '<leader>t', ':TestNearest<cr>', desc = "Test Nearest" },
-      { '<leader>T', ':TestFile<cr>', desc = "Test File" },
-      { '<leader>l', ':TestLast<cr>', desc = "Test Last" },
-      { '<leader>a', ':call v:lua.run_test_suite()<cr>', desc = "Test All" },
+      { '<leader>tt', ':TestNearest<cr>', desc = "Test Nearest" },
+      { '<leader>tf', ':TestFile<cr>', desc = "Test File" },
+      { '<leader>tl', ':TestLast<cr>', desc = "Test Last" },
+      { '<leader>ta', ':call v:lua.run_test_suite()<cr>', desc = "Test All" },
     },
   },
 
@@ -854,36 +888,74 @@ require("lazy").setup({
       { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
     },
   },
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {},
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "ravitemer/mcphub.nvim"
-    },
-    config = function()
-      require('dbern.plugins.codecompanion').setup()
-    end
-  },
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   opts = {},
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "ravitemer/mcphub.nvim"
+  --   },
+  --   config = function()
+  --     require('dbern.plugins.codecompanion').setup()
+  --   end
+  -- },
 
-  {
-    "ravitemer/mcphub.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    build = "npm install -g mcp-hub@latest",
-    config = function()
-      require("mcphub").setup()
-    end
-  },
+  -- {
+  --   "ravitemer/mcphub.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --   },
+  --   config = function()
+  --     require("mcphub").setup()
+  --   end
+  -- },
 
   -- Write better
   { 'godlygeek/tabular' },
   { 'reedes/vim-colors-pencil' },
   { 'reedes/vim-pencil' },
   { 'junegunn/limelight.vim' },
-  { 'junegunn/goyo.vim' },
+  {
+    "folke/twilight.nvim",
+    opts = {
+      dimming = {
+        alpha = 0.50, -- amount of dimming
+        color = { "Normal", "#ffffff" },
+        term_bg = "#000000", -- if guibg=NONE, this will be used to calculate text color
+        inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+      },
+    },
+  },
+  { "folke/zen-mode.nvim",
+    opts = {
+      plugins = {
+        options = {
+          enabled = true,
+          ruler = false, -- disables the ruler text in the cmd line area
+          showcmd = false, -- disables the command in the last line of the screen
+          laststatus = 0, -- turn off the statusline in zen mode
+        },
+        twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
+        gitsigns = { enabled = true }, -- disables git signs
+      },
+      window = {
+        width = 80,
+        options = {
+          signcolumn = "no", -- disable signcolumn
+          number = false, -- disable number column
+          relativenumber = false, -- disable relative numbers
+          cursorline = false, -- disable cursorline
+          cursorcolumn = false, -- disable cursor column
+          foldcolumn = "0", -- disable fold column
+          list = false, -- disable whitespace characters
+        },
+      }
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
   { 'reedes/vim-wordy' },
 }, {
   rocks = {

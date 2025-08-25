@@ -1,5 +1,5 @@
 local a = vim.api
-local lsputil = require('vim.lsp.util')
+local lsputil = require("vim.lsp.util")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 
 local M = {}
@@ -15,10 +15,10 @@ M.servers = {
   },
   cssls = {},
   dockerls = {},
+  -- elixirls is configured by elixir-tools.nvim in plugins
   html = {},
   jsonls = {},
   kotlin_language_server = {},
-  lexical = {},
   lua_ls = {},
   markdown_oxide = {
     capabilities = {
@@ -44,6 +44,12 @@ M.servers = {
 M.on_attach = function(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
   local bufnr = args.buf
+
+  if client.name == "ElixirLS" then
+    vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+    vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+    vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+  end
 
   local kmp = function(lhs, rhs, desc)
     a.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap = true, silent = true, desc = desc })
@@ -151,7 +157,7 @@ M.setup = function()
     automatic_enable = true,
     automatic_installation = false,
     ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
-      "solargraph", "lexical", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
+      "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
       "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
   })
 

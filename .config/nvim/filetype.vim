@@ -8,7 +8,7 @@ augroup filetypedetect
   au! BufNewFile,BufRead *.md setl filetype=markdown
   au! BufNewFile,BufRead *.ex,*.exs,mix.lock setl filetype=elixir
   au! BufNewFile,BufRead *.arb setl filetype=eruby
+  au! BufNewFile,BufRead *.pml setl filetype=markdown
   au! BufNewFile,BufRead irbrc,pryrc setl filetype=ruby
   au! BufNewFile,BufRead Caddyfile setl filetype=caddy
-
 augroup END

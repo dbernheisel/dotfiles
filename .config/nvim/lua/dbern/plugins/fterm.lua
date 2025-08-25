@@ -41,8 +41,8 @@ M.setup = function()
   local opts = { noremap = true, silent = true }
   vim.api.nvim_set_keymap('n', '<leader>t1', ':call v:lua.toggle_term()<cr>', opts)
   vim.api.nvim_set_keymap('n', '<leader>t2', ':call v:lua.toggle_test()<cr>', opts)
-  vim.api.nvim_set_keymap('t', '<leader>t1', '<c-\\><c-n>:call v:lua.toggle_term()<cr>', opts)
-  vim.api.nvim_set_keymap('t', '<leader>t2', '<c-\\><c-n>:call v:lua.toggle_test()<cr>', opts)
+  vim.api.nvim_set_keymap('t', '<leader>t1', '<c-\\><c-n>:call v:lua.toggle_term()<cr><esc>', opts)
+  vim.api.nvim_set_keymap('t', '<leader>t2', '<c-\\><c-n>:call v:lua.toggle_test()<cr><esc>', opts)
 end
 
 -- Keymaps
