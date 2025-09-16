@@ -12,6 +12,9 @@ tmp/**/*
 .zed/
 .autoenv.zsh
 
+# Claude
+settings.local.json
+
 # Ruby
 !tmp/cache/.keep
 .bundle
@@ -82,3 +85,5 @@ private_ssh_key
 .elixir_ls/
 .elixir-tools/
 .lexical/
+.next-ls/
+.expert/

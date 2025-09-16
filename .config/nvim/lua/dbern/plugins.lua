@@ -185,30 +185,6 @@ require("lazy").setup({
       },
     }
   },
-  {
-    "elixir-tools/elixir-tools.nvim",
-    version = "*",
-    dependencies = {
-      "nvim-lua/plenary.nvim" ,
-      "neovim/nvim-lspconfig",
-    },
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      projectionist = { enable = true },
-      nextls = { enable = false },
-      elixirls = {
-        enable = true,
-        tag = "v0.29.2",
-        settings = {
-          elixirLS = {
-            mcpEnabled = true,
-            dialyzerEnabled = true,
-            enableTestLenses = true,
-          },
-        },
-      },
-    },
-  },
   { 'neovim/nvim-lspconfig',
     dependencies = {
       'saghen/blink.cmp',

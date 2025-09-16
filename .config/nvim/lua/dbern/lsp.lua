@@ -1,6 +1,10 @@
 local a = vim.api
 local lsputil = require("vim.lsp.util")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
+local osInfo = vim.uv.os_uname()
+local homedir = vim.uv.os_homedir()
+local expert = vim.fn.resolve(homedir.."/.local/bin/" .."expert_"..string.lower(osInfo.sysname).."_"..string.lower(osInfo.machine))
+print(expert)
 
 local M = {}
 
@@ -15,7 +19,11 @@ M.servers = {
   },
   cssls = {},
   dockerls = {},
-  -- elixirls is configured by elixir-tools.nvim in plugins
+  expert = {
+    cmd = { expert },
+    root_markers = {'mix.exs', '.git'},
+    filetypes = { "elixir", "eelixir", "heex" },
+  },
   html = {},
   jsonls = {},
   kotlin_language_server = {},
