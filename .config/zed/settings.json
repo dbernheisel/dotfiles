@@ -7,18 +7,29 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent_servers": {
+    "your_agent": {
+      "command": "path_to_executable",
+      "args": [],
+      "env": {}
+    }
+  },
   "agent": {
+    "play_sound_when_agent_done": true,
     "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4"
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-latest"
     },
     "model_parameters": [],
-    "always_allow_tool_actions": true,
-    "version": "2"
+    "always_allow_tool_actions": true
   },
   "icon_theme": "Colored Zed Icons Theme Dark",
   "features": {
     "edit_prediction_provider": "none"
+  },
+  "file_types": {
+    "Markdown": ["*.md", "*.pml"],
+    "Dockerfile": ["Dockerfile*"]
   },
   "auto_install_extensions": {
     "catppuccin-blur": true,
@@ -64,39 +75,30 @@
   "telemetry": {
     "metrics": false
   },
+  "tab_size": 2,
   "languages": {
     "HEEX": {
       "language_servers": [
-        "next-ls",
+        "expert",
         "tailwindcss-language-server",
         "vtsls",
+        "!next-ls",
         "!lexical",
         "!elixir-ls",
         "..."
       ],
-      "tab_size": 2,
-      "format_on_save": {
-        "external": {
-          "command": "mix",
-          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
-        }
-      }
+      "tab_size": 2
     },
     "Elixir": {
       "language_servers": [
-        "next-ls",
+        "expert",
         "tailwindcss-language-server",
+        "!next-ls",
         "!lexical",
         "!elixir-ls",
         "..."
       ],
-      "tab_size": 2,
-      "format_on_save": {
-        "external": {
-          "command": "mix",
-          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
-        }
-      }
+      "tab_size": 2
     }
   },
   "lsp": {
@@ -105,16 +107,6 @@
         "includeLanguages": {
           "heex": "html",
           "Elixir": "html"
-        }
-      }
-    },
-    "next-ls": {
-      "initialization_options": {
-        "extensions": {
-          "credo": { "enable": true }
-        },
-        "experimental": {
-          "completions": { "enable": true }
         }
       }
     }

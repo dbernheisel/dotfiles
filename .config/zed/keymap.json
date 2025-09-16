@@ -20,7 +20,7 @@
     }
   },
   {
-    "context": "Editor && mode==full && vim_mode == normal",
+    "context": "(Editor && mode==full && vim_mode == normal) || EmptyPane",
     "bindings": {
       ";": "command_palette::Toggle",
       ":": "go_to_line::Toggle",
@@ -57,12 +57,6 @@
     }
   },
   {
-    "context": "ProjectPanel",
-    "bindings": {
-      "escape": "workspace::ToggleLeftDock"
-    }
-  },
-  {
     "context": "ProjectSearchBar > Editor",
     "bindings": {
       "escape": "pane::CloseActiveItem"
@@ -71,6 +65,7 @@
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
+      "escape": "workspace::ToggleLeftDock",
       "a": "project_panel::NewFile",
       "A": "project_panel::NewDirectory",
       "r": "project_panel::Rename",
@@ -89,7 +84,21 @@
   {
     "context": "AgentPanel > MessageEditor > Editor",
     "bindings": {
-      "escape": "workspace::ToggleRightDock"
+      "escape": "workspace::ToggleRightDock",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Pane > KeyContextView",
+    "bindings": {
+      "escape": "pane::CloseActiveItem",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
     }
   },
   {
@@ -113,6 +122,8 @@
       "escape": "workspace::ToggleLeftDock",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-k": "git_panel::FocusChanges",
       "ctrl-j": "workspace::ActivatePaneDown"
     }
@@ -120,6 +131,7 @@
   {
     "context": "Terminal",
     "bindings": {
+      "cmd-t": "workspace::NewTerminal",
       "ctrl-w h": "workspace::ActivatePaneLeft",
       "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-w k": "workspace::ActivatePaneUp",
