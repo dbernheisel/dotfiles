@@ -52,49 +52,6 @@ M.cleanup_old_buffers = function(opts)
   local cwd = vim.fn.getcwd()
   local unmodified_buffers, modified_buffers = categorize_buffers(cwd)
 
-  -- If current buffer is being closed, switch to a safe buffer first
-  local current_buf = vim.api.nvim_get_current_buf()
-  local current_will_close = false
-
-  for _, bufnr in ipairs(unmodified_buffers) do
-    if bufnr == current_buf then
-      current_will_close = true
-      break
-    end
-  end
-
-  if not current_will_close then
-    for _, bufnr in ipairs(modified_buffers) do
-      if bufnr == current_buf then
-        current_will_close = true
-        break
-      end
-    end
-  end
-
-  if current_will_close then
-    -- Try to find a buffer in the new project to switch to
-    local safe_buffer = nil
-    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_loaded(bufnr) then
-        local bufname = vim.api.nvim_buf_get_name(bufnr)
-        local buftype = vim.bo[bufnr].buftype
-        if bufname ~= '' and buftype == '' and vim.startswith(bufname, cwd) then
-          safe_buffer = bufnr
-          break
-        end
-      end
-    end
-
-    -- If no buffer in new project, create a scratch buffer
-    if not safe_buffer then
-      safe_buffer = vim.api.nvim_create_buf(false, true)
-      vim.bo[safe_buffer].bufhidden = 'wipe'
-    end
-
-    vim.api.nvim_set_current_buf(safe_buffer)
-  end
-
   -- Close unmodified buffers automatically
   for _, bufnr in ipairs(unmodified_buffers) do
     vim.api.nvim_buf_delete(bufnr, { force = false })
