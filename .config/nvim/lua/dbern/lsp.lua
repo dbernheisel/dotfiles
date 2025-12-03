@@ -135,11 +135,20 @@ end
 ---@param args vim.api.keyset.create_autocmd.callback_args
 M.on_detach = function(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if not client or not client.attached_buffers then return end
+  if not client then return end
+
+  -- Count how many other buffers are still attached (excluding the one being detached)
+  local other_buffers_count = 0
   for buf_id in pairs(client.attached_buffers) do
-    if buf_id ~= args.buf then return end
+    if buf_id ~= args.buf then
+      other_buffers_count = other_buffers_count + 1
+    end
   end
-  client:stop()
+
+  -- Only stop the client if no other buffers are attached
+  if other_buffers_count == 0 then
+    client:stop()
+  end
 end
 
 M.setup = function()
