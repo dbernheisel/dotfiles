@@ -1,0 +1,13 @@
+#!/usr/bin/env bin/sh
+
+case "$(uname)_$@" in
+  "Darwin_battery")
+    if ! pmset -g batt | grep "Now drawing from 'AC Power'" &> /dev/null; then
+      echo "⌁$(pmset -g batt | \
+        grep [0-9][0-9]% | \
+        awk 'NR==1{print$3}' | \
+        cut -c 1-3)%";;
+    fi;;
+  *)
+    exit 1;;
+esac
