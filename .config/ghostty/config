@@ -15,13 +15,13 @@ confirm-close-surface = false
 keybind = global:cmd+shift+slash=toggle_quick_terminal
 keybind = cmd+shift+i=inspector:toggle
 
-keybind = ctrl+a>n=new_window
-keybind = ctrl+a>minus=new_split:down
-keybind = ctrl+a>backslash=new_split:right
-keybind = ctrl+a>l=goto_split:right
-keybind = ctrl+a>h=goto_split:left
-keybind = ctrl+a>j=goto_split:bottom
-keybind = ctrl+a>k=goto_split:top
+# keybind = ctrl+a>n=new_window
+# keybind = ctrl+a>minus=new_split:down
+# keybind = ctrl+a>backslash=new_split:right
+# keybind = ctrl+a>l=goto_split:right
+# keybind = ctrl+a>h=goto_split:left
+# keybind = ctrl+a>j=goto_split:bottom
+# keybind = ctrl+a>k=goto_split:top
 keybind = shift+enter=text:\n
 
 # Appearance
@@ -30,7 +30,7 @@ macos-icon-frame = plastic
 macos-icon-ghost-color = FFFFFF
 macos-icon-screen-color = 000000
 macos-shortcuts = ask
-macos-titlebar-style = native
+macos-titlebar-style = tabs
 macos-auto-secure-input = true
 macos-secure-input-indication = true
 window-colorspace = display-p3
@@ -67,7 +67,7 @@ window-padding-color = background
 window-padding-balance = true
 background-opacity = 0.90
 background-blur-radius = 32
-theme = light:ayu-light,dark:moonfly
+theme = dark:moonfly,light:ayu-light
 # theme = light:one-half-light,dark:Afterglow
 # theme = light:catppuccin-latte,dark:catppuccin-mocha
 custom-shader = shaders/bloom.glsl

@@ -1,15 +1,18 @@
 # Homebrew is bad at casks and updating. Just stop
 
-brew 'asdf'           # CLI tool version manager
 brew 'bat'            # CLI utility. Colorized cat
-brew 'eza'            # CLI utility. Prettier ls
 brew 'dfu-util'       # CLI Firmware loader for keyboard
-brew 'git-delta'      # CLI diff-highlight for git
+brew 'eza'            # CLI utility. Prettier ls
+brew 'fd'             # CLI find replacement
 brew 'fzf'            # CLI Fuzzy Finder CLI
+brew 'gh'             # CLI add commands to git
 brew 'git'            # CLI Git version control
+brew 'git-delta'      # CLI diff-highlight for git
+brew 'htop'           # CLI htop process utility
 brew 'imagemagick'    # CLI magick Image converter CLI
 brew 'lame'           # Library audio encoder/decoder
 brew 'lazygit'        # CLI Git TUI
+brew 'mise'           # CLI tool version manager
 tap 'neovim/neovim'
 brew 'neovim'         # CLI nvim text editor
 brew 'ripgrep'        # CLI rg grep current directory
@@ -20,6 +23,7 @@ brew 'tldr'           # CLI tldr shorter man pages
 brew 'wget'           # CLI wget HTTP interface
 brew 'x264'           # Library video decoder
 brew 'xz'             # CLI xz compression
+brew 'zellij'         # CLI better tmux
 
 if OS.mac?
   cask 'font-fira-code-nerd-font'
@@ -31,15 +35,12 @@ if OS.mac?
   brew 'automake'       # CLI Build utility
   brew 'cmake'          # CLI Build utility
   brew 'coreutils'      # CLI GNU utilities
-  brew 'fd'             # CLI find replacement
   brew 'ffmpeg'         # CLI ffmpeg Media encoder/decoder
   brew 'fontconfig'     # CLI fontconfig Font utility for patching fonts
   brew 'freetype'       # Library Render fonts
   brew 'glib'           # Library Build utility
   brew 'gpg'            # CLI GPG security
   brew 'gnu-sed'        # CLI sed, but GNU-y
-  brew 'htop'           # CLI htop process utility
-  brew 'gh'             # CLI add commands to git
   brew 'libxml2'        # Library XML parsing
   brew 'libyaml'        # Library for parsing YAML
   brew 'openssl'        # Library SSL library
@@ -64,7 +65,6 @@ if OS.mac?
   # Apps
   printf 'Install App Store apps? (y/N) '
   if gets.chomp == 'y' then
-    mas 'Parcel', id: 639968404
     mas 'Wireguard', id: 1451685025
     mas 'Medis', id: 1063631769
     mas 'Slack', id: 803453959
@@ -73,7 +73,7 @@ if OS.mac?
   # Services
   printf 'Install Services? (y/N) '
   if gets.chomp == 'y' then
-    brew 'postgresql@15', restart_service: :changed
+    brew 'postgresql@18', restart_service: :changed
     brew 'redis', restart_service: :changed
   end
 end

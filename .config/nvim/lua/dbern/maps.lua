@@ -69,9 +69,9 @@ m('n', 'gd', ':call v:lua.show_documentation()<cr>', { silent = true })
 
 -- Emulate tmux shortcuts
 -- Remember to use :tabclose instead of :q for zoomed terminals
-m('n', [[<C-A>z]], ':$tabnew<CR>:terminal<CR>i', { noremap = true })
-m('n', [[<C-A>\]], ':80vsplit term://$SHELL<CR>i', { noremap = true })
-m('n', [[<C-A>-]], ':split term://$SHELL<CR>i', { noremap = true })
+-- m('n', [[<C-A>z]], ':$tabnew<CR>:terminal<CR>i', { noremap = true })
+-- m('n', [[<C-A>\]], ':80vsplit term://$SHELL<CR>i', { noremap = true })
+-- m('n', [[<C-A>-]], ':split term://$SHELL<CR>i', { noremap = true })
 
 m('t', [[<C-O>]], [[<C-\><C-N>]], { noremap = true })
 m('t', [[<A-H>]], [[<C-\><C-N><C-W>h]], { noremap = true })

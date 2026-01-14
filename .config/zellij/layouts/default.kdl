@@ -1,0 +1,110 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+                format_left   "#[fg=#80a0ff,bold]{session} {mode} {tabs}"
+                format_center ""
+                format_right  "{pipe_zjstatus_hints}{command_git_branch} {datetime}"
+                format_space  ""
+
+                pipe_zjstatus_hints_format "{output}"
+
+                border_enabled  "false"
+                border_char     "─"
+                border_format   "#[fg=#80a0ff]{char}"
+                border_position "top"
+
+                mode_locked      "#[bg=#ff5189,fg=#c6c6c6,bold] LOCKED  "
+                mode_normal      "#[fg=#323437,bold] NORMAL "
+                mode_pane        "#[bg=#9FFBB6,fg=#323437,bold]  PANE  "
+                mode_resize      "#[bg=#f09479,fg=#323437,bold] RESIZE "
+                mode_move        "#[bg=#f09479,fg=#323437,bold]  MOVE  "
+                mode_tab         "#[bg=#80a0ff,fg=#323437,bold]  TAB   "
+                mode_scroll      "#[bg=#c6c684,fg=#323437,bold] SCROLL "
+                mode_search      "#[bg=#c6c684,fg=#323437,bold] SEARCH "
+                mode_entersearch "#[bg=#c6c684,fg=#323437,bold] SEARCH "
+                mode_renametab   "#[bg=#85dc85,fg=#323437,bold] RE-TAB "
+                mode_renamepane  "#[bg=#85dc85,fg=#323437,bold] RE-PANE "
+                mode_session     "#[bg=#ae81ff,fg=#323437,bold] SESSION "
+                mode_tmux        "#[bg=#4e4e4e,fg=#c6c6c6,bold]  TMUX  "
+
+                tab_active              "#[bg=#80a0ff,fg=#323437,bold] {index} {name} "
+                tab_active_fullscreen   "#[bg=#80a0ff,fg=#323437,bold] {fullscreen_indicator} {index} {name} "
+                tab_active_sync         "#[bg=#80a0ff,fg=#323437,bold] {sync_indicator} {index} {name} "
+
+                tab_normal              "#[fg=#80a0ff,bold] {index} {name} "
+                tab_normal_fullscreen   "#[fg=#80a0ff,bold] {fullscreen_indicator} {index} {name} "
+                tab_normal_sync         "#[fg=#80a0ff,bold] {sync_indicator} {index} {name} "
+
+                tab_separator " "
+
+                tab_sync_indicator       "󰓦"
+                tab_fullscreen_indicator "󰊓"
+                tab_floating_indicator   "⬚"
+
+                tab_rename              "#[bg=#ff5189,fg=#323437,bold] {index} {name} {floating_indicator} "
+
+                tab_display_count         "9"
+                tab_truncate_start_format "#[fg=#c6c684]  +{count}  "
+                tab_truncate_end_format   "#[fg=#c6c684]   +{count} "
+
+// {
+//   bay = "#4d5d8d",
+//   bg = "NONE",
+//   black = "#080808",
+//   blue = "#80a0ff",
+//   cinnamon = "#e9958e",
+//   coral = "#f09479",
+//   cranberry = "#e65e72",
+//   crimson = "#ff5189",
+//   emerald = "#36c692",
+//   green = "#8cc85f",
+//   grey0 = "#323437",
+//   grey1 = "#373c4d",
+//   grey11 = "#1c1c1c",
+//   grey13 = "#212121",
+//   grey15 = "#262626",
+//   grey16 = "#292929",
+//   grey18 = "#2e2e2e",
+//   grey23 = "#3a3a3a",
+//   grey27 = "#444444",
+//   grey30 = "#4e4e4e",
+//   grey35 = "#585858",
+//   grey39 = "#626262",
+//   grey50 = "#808080",
+//   grey58 = "#949494",
+//   grey62 = "#9e9e9e",
+//   grey7 = "#121212",
+//   grey70 = "#b2b2b2",
+//   grey89 = "#e4e4e4",
+//   haze = "#88a2b7",
+//   khaki = "#c6c684",
+//   lavender = "#adadf3",
+//   lime = "#85dc85",
+//   mineral = "#314940",
+//   orange = "#de935f",
+//   orchid = "#e196a2",
+//   purple = "#ae81ff",
+//   red = "#ff5d5d",
+//   sky = "#74b2ff",
+//   slate = "#748999",
+//   turquoise = "#79dac8",
+//   violet = "#cf87e8",
+//   white = "#c6c6c6",
+//   yellow = "#e3c78a"
+// }
+
+                datetime        "#[fg=#c6c6c6,bold] {format} "
+                datetime_format "%b %e %-I:%M%P"
+                datetime_timezone "America/New_York"
+
+                command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+                command_git_branch_format      "#[fg=blue] {stdout} "
+                command_git_branch_interval    "10"
+                command_git_branch_rendermode  "static"
+            }
+        }
+    }
+}
+ 

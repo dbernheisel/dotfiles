@@ -1,0 +1,433 @@
+keybinds clear-defaults=true {
+  // Keybindings shared across all modes.
+  normal clear-defaults=true {
+    bind "ctrl a" { SwitchToMode "tmux"; }
+    unbind "ctrl b" 
+  }
+
+  shared {
+      bind "esc" "ctrl c" { SwitchToMode "normal"; }
+  }
+
+  tmux {
+      bind "left" { MoveTab "left"; SwitchToMode "normal"; }
+      bind "right" { MoveTab "right"; SwitchToMode "normal"; }
+      bind "space" { NextSwapLayout; }
+      bind "-" { NewPane "down"; SwitchToMode "normal"; }
+      bind "\\" { NewPane "right"; SwitchToMode "normal"; }
+      bind "," { SwitchToMode "renametab"; }
+      bind "[" { SwitchToMode "scroll"; }
+      bind "ctrl b" { Write 2; SwitchToMode "normal"; }
+      bind "c" { NewTab; SwitchToMode "normal"; }
+
+      bind "h" { MoveFocus "left"; SwitchToMode "normal"; }
+      bind "j" { MoveFocus "down"; SwitchToMode "normal"; }
+      bind "k" { MoveFocus "up"; SwitchToMode "normal"; }
+      bind "l" { MoveFocus "right"; SwitchToMode "normal"; }
+
+      bind "H" { MovePane "left"; SwitchToMode "normal"; }
+      bind "J" { MovePane "down"; SwitchToMode "normal"; }
+      bind "K" { MovePane "up"; SwitchToMode "normal"; }
+      bind "L" { MovePane "right"; SwitchToMode "normal"; }
+
+      bind "n" { GoToNextTab; SwitchToMode "normal"; }
+      bind "p" { GoToPreviousTab; SwitchToMode "normal"; }
+
+      bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
+      bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+      bind "z" { TogglePaneEmbedOrFloating; SwitchToMode "normal"; }
+
+      bind "tab" {
+          LaunchOrFocusPlugin "session-manager" {
+              floating true
+              move_to_focused_tab true
+          };
+          SwitchToMode "normal"
+      }
+
+      bind "r" { SwitchToMode "resize"; }
+  }
+
+  resize {
+      bind "enter" { SwitchToMode "normal"; }
+
+      bind "h" { Resize "Increase Left"; }
+      bind "j" { Resize "Increase Down"; }
+      bind "k" { Resize "Increase Up"; }
+      bind "l" { Resize "Increase Right"; }
+
+      bind "H" { Resize "Decrease Left"; }
+      bind "J" { Resize "Decrease Down"; }
+      bind "K" { Resize "Decrease Up"; }
+      bind "L" { Resize "Decrease Right"; }
+
+      bind "=" "+" { Resize "Increase"; }
+      bind "-" { Resize "Decrease"; }
+
+      bind "ctrl c" { MoveFocus "left"; }
+      bind "ctrl j" { MoveFocus "down"; }
+      bind "ctrl k" { MoveFocus "up"; }
+      bind "ctrl l" { MoveFocus "right"; }
+
+      bind "left" { MovePane "left"; }
+      bind "down" { MovePane "down"; }
+      bind "up" { MovePane "up"; }
+      bind "right" { MovePane "right"; }
+
+      bind "n" { MovePane; }
+      bind "p" { MovePaneBackwards; }
+  }
+
+  scroll {
+      bind "Ctrl c" "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
+      bind "e" { EditScrollback; SwitchToMode "Normal"; }
+      bind "/" { SwitchToMode "EnterSearch"; SearchInput 0; }
+      bind "j" "Down" { ScrollDown; }
+      bind "k" "Up" { ScrollUp; }
+      bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+      bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+      bind "d" { HalfPageScrollDown; }
+      bind "u" { HalfPageScrollUp; }
+  }
+
+  search {
+      bind "ctrl c" "esc" { ScrollToBottom; SwitchToMode "Normal"; }
+      bind "ctrl s" { SwitchToMode "Normal"; }
+      bind "j" "down" { ScrollDown; }
+      bind "k" "up" { ScrollUp; }
+      bind "ctrl f" "PageDown" "left" "l" { PageScrollDown; }
+      bind "ctrl b" "PageUp" "left" "h" { PageScrollUp; }
+      bind "d" { HalfPageScrollDown; }
+      bind "u" { HalfPageScrollUp; }
+      bind "n" { Search "down"; }
+      bind "p" { Search "up"; }
+      bind "c" { SearchToggleOption "CaseSensitivity"; }
+      bind "w" { SearchToggleOption "Wrap"; }
+      bind "o" { SearchToggleOption "WholeWord"; }
+  }
+
+  entersearch {
+      bind "ctrl c" "esc" { SwitchToMode "Scroll"; }
+      bind "enter" { SwitchToMode "Search"; }
+  }
+
+  renametab {
+      bind "enter" { SwitchToMode "Normal"; }
+      bind "esc" { UndoRenameTab; SwitchToMode "Normal"; }
+      bind "ctrl a" { SwitchToMode "renamepane"; }
+  }
+
+  renamepane {
+      bind "enter" { SwitchToMode "Normal"; }
+      bind "esc" { UndoRenamePane; SwitchToMode "Normal"; }
+      bind "ctrl a" { SwitchToMode "renametab"; }
+  }
+}
+
+// Plugin aliases - can be used to change the implementation of Zellij
+// changing these requires a restart to take effect
+plugins {
+    about location="zellij:about"
+    compact-bar location="zellij:compact-bar"
+    configuration location="zellij:configuration"
+    filepicker location="zellij:strider" {
+        cwd "/"
+    }
+    plugin-manager location="zellij:plugin-manager"
+    session-manager location="zellij:session-manager"
+    status-bar location="zellij:status-bar"
+    strider location="zellij:strider"
+    tab-bar location="zellij:tab-bar"
+    welcome-screen location="zellij:session-manager" {
+        welcome_screen false
+    }
+
+    nvim-nav location="file:~/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm"
+
+    zjstatus-hints location="file:~/.config/zellij/plugins/zjstatus-hints.wasm" {
+        max_length "0"
+        overflow_str ""
+        pipe_name "zjstatus_hints"
+        hide_in_base_mode false // default
+    }
+    zjframes location="file:~/.config/zellij/zplugins/jframes.wasm"
+
+    zjframes  {
+        hide_frame_for_single_pane       "true"
+        hide_frame_except_for_search     "true"
+        hide_frame_except_for_scroll     "true"
+        hide_frame_except_for_fullscreen "true"
+    }
+}
+
+// Plugins to load in the background when a new session starts
+// eg. "file:/path/to/my-plugin.wasm"
+// eg. "https://example.com/my-plugin.wasm"
+load_plugins {
+    zjframes
+    zjstatus-hints
+    nvim-nav
+}
+
+web_client {
+    font "monospace"
+}
+ 
+// Use a simplified UI without special fonts (arrow glyphs)
+// Options:
+//   - true
+//   - false (Default)
+// 
+// simplified_ui true
+ 
+// Choose the theme that is specified in the themes section.
+// Default: default
+// 
+theme "moonfly"
+
+// The folder in which Zellij will look for themes
+// (Requires restart)
+// 
+// theme_dir "/tmp"
+ 
+// Choose the base input mode of zellij.
+// Default: normal
+// 
+// default_mode "locked"
+ 
+// Choose the path to the default shell that zellij will use for opening new panes
+// Default: $SHELL
+// 
+// default_shell "fish"
+ 
+// Choose the path to override cwd that zellij will use for opening new panes
+// 
+// default_cwd "/tmp"
+ 
+// The name of the default layout to load on startup
+// Default: "default"
+// 
+default_layout "default"
+
+// The folder in which Zellij will look for layouts
+// (Requires restart)
+// 
+// layout_dir "/tmp"
+ 
+ 
+// Toggle enabling the mouse mode.
+// On certain configurations, or terminals this could
+// potentially interfere with copying text.
+// Options:
+//   - true (default)
+//   - false
+// 
+// mouse_mode false
+ 
+// Toggle having pane frames around the panes
+// Options:
+//   - true (default, enabled)
+//   - false
+pane_frames false
+ 
+// When attaching to an existing session with other users,
+// should the session be mirrored (true)
+// or should each user have their own cursor (false)
+// (Requires restart)
+// Default: false
+// 
+// mirror_session true
+ 
+// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active zellij session is closed
+// (Requires restart)
+// Options:
+//   - detach (Default)
+//   - quit
+// 
+// on_force_close "quit"
+ 
+// Configure the scroll back buffer size
+// This is the number of lines zellij stores for each pane in the scroll back
+// buffer. Excess number of lines are discarded in a FIFO fashion.
+// (Requires restart)
+// Valid values: positive integers
+// Default value: 10000
+// 
+// scroll_buffer_size 10000
+ 
+// Provide a command to execute when copying text. The text will be piped to
+// the stdin of the program to perform the copy. This can be used with
+// terminal emulators which do not support the OSC 52 ANSI control sequence
+// that will be used by default if this option is not set.
+// Examples:
+//
+// copy_command "xclip -selection clipboard" // x11
+// copy_command "wl-copy"                    // wayland
+// copy_command "pbcopy"                     // osx
+// 
+copy_command "pbcopy"
+ 
+// Choose the destination for copied text
+// Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
+// Does not apply when using copy_command.
+// Options:
+//   - system (default)
+//   - primary
+// 
+// copy_clipboard "primary"
+ 
+// Enable automatic copying (and clearing) of selection when releasing mouse
+// Default: true
+// 
+copy_on_select true
+ 
+// Path to the default editor to use to edit pane scrollbuffer
+// Default: $EDITOR or $VISUAL
+// scrollback_editor "/usr/bin/vim"
+ 
+// A fixed name to always give the Zellij session.
+// Consider also setting `attach_to_session true,`
+// otherwise this will error if such a session exists.
+// Default: <RANDOM>
+// 
+session_name "default"
+ 
+// When `session_name` is provided, attaches to that session
+// if it is already running or creates it otherwise.
+// Default: false
+// 
+attach_to_session true
+ 
+// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
+// Options:
+//   - true (default)
+//   - false
+// 
+// auto_layout false
+ 
+// Whether sessions should be serialized to the cache folder (including their tabs/panes, cwds and running commands) so that they can later be resurrected
+// Options:
+//   - true (default)
+//   - false
+// 
+// session_serialization false
+ 
+// Whether pane viewports are serialized along with the session, default is false
+// Options:
+//   - true
+//   - false (default)
+// 
+// serialize_pane_viewport false
+ 
+// Scrollback lines to serialize along with the pane viewport when serializing sessions, 0
+// defaults to the scrollback size. If this number is higher than the scrollback size, it will
+// also default to the scrollback size. This does nothing if `serialize_pane_viewport` is not true.
+// 
+// scrollback_lines_to_serialize 10000
+ 
+// Enable or disable the rendering of styled and colored underlines (undercurl).
+// May need to be disabled for certain unsupported terminals
+// (Requires restart)
+// Default: true
+// 
+// styled_underlines false
+ 
+// How often in seconds sessions are serialized
+// 
+// serialization_interval 10000
+ 
+// Enable or disable writing of session metadata to disk (if disabled, other sessions might not know
+// metadata info on this session)
+// (Requires restart)
+// Default: false
+// 
+// disable_session_metadata false
+ 
+// Enable or disable support for the enhanced Kitty Keyboard Protocol (the host terminal must also support it)
+// (Requires restart)
+// Default: true (if the host terminal supports it)
+// 
+// support_kitty_keyboard_protocol false
+// Whether to make sure a local web server is running when a new Zellij session starts.
+// This web server will allow creating new sessions and attaching to existing ones that have
+// opted in to being shared in the browser.
+// When enabled, navigate to http://127.0.0.1:8082
+// (Requires restart)
+// 
+// Note: a local web server can still be manually started from within a Zellij session or from the CLI.
+// If this is not desired, one can use a version of Zellij compiled without
+// `web_server_capability`
+// 
+// Possible values:
+// - true
+// - false
+// Default: false
+// 
+// web_server false
+// Whether to allow sessions started in the terminal to be shared through a local web server, assuming one is
+// running (see the `web_server` option for more details).
+// (Requires restart)
+// 
+// Note: This is an administrative separation and not intended as a security measure.
+// 
+// Possible values:
+// - "on" (allow web sharing through the local web server if it
+// is online)
+// - "off" (do not allow web sharing unless sessions explicitly opt-in to it)
+// - "disabled" (do not allow web sharing and do not permit sessions started in the terminal to opt-in to it)
+// Default: "off"
+// 
+// web_sharing "off"
+// A path to a certificate file to be used when setting up the web client to serve the
+// connection over HTTPs
+// 
+// web_server_cert "/path/to/cert.pem"
+// A path to a key file to be used when setting up the web client to serve the
+// connection over HTTPs
+// 
+// web_server_key "/path/to/key.pem"
+/// Whether to enforce https connections to the web server when it is bound to localhost
+/// (127.0.0.0/8)
+///
+/// Note: https is ALWAYS enforced when bound to non-local interfaces
+///
+/// Default: false
+// 
+// enforce_https_for_localhost false
+ 
+// Whether to stack panes when resizing beyond a certain size
+// Default: true
+// 
+// stacked_resize false
+ 
+// Whether to show tips on startup
+// Default: true
+// 
+show_startup_tips false
+ 
+// Whether to show release notes on first version run
+// Default: true
+// 
+// show_release_notes false
+ 
+// Whether to enable mouse hover effects and pane grouping functionality
+// default is true
+// advanced_mouse_actions false
+ 
+// The ip address the web server should listen on when it starts
+// Default: "127.0.0.1"
+// (Requires restart)
+// web_server_ip "127.0.0.1"
+ 
+// The port the web server should listen on when it starts
+// Default: 8082
+// (Requires restart)
+// web_server_port 8082
+ 
+// A command to run (will be wrapped with sh -c and provided the RESURRECT_COMMAND env variable) 
+// after Zellij attempts to discover a command inside a pane when resurrecting sessions, the STDOUT
+// of this command will be used instead of the discovered RESURRECT_COMMAND
+// can be useful for removing wrappers around commands
+// Note: be sure to escape backslashes and similar characters properly
+// post_command_discovery_hook "echo $RESURRECT_COMMAND | sed <your_regex_here>"
