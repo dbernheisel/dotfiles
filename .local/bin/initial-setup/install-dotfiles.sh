@@ -29,7 +29,7 @@ config config --local status.showUntrackedFiles no
 config pull --recurse-submodules
 
 read -rp "Run setup? (y/n) " yn
-case $yn in
+case "$yn" in
   [Yy]*) "$HOME/.local/bin/initial-setup/setup-dotfiles.sh";;
   *) break:;
 esac
