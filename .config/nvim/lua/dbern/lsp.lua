@@ -4,7 +4,7 @@ local hasFzf, _Fzf = pcall(require, "fzf-lua")
 local osInfo = vim.uv.os_uname()
 local homedir = vim.uv.os_homedir()
 local expert = vim.fn.resolve(homedir.."/.local/bin/" .."expert_"..string.lower(osInfo.sysname).."_"..string.lower(osInfo.machine))
-print(expert)
+-- local lexical = vim.fn.resolve(homedir.."/lexical/_build/dev/package/lexical/bin/start_lexical.sh")
 
 local M = {}
 
@@ -19,10 +19,17 @@ M.servers = {
   },
   cssls = {},
   dockerls = {},
+  -- lexical = {
+  --   cmd = { lexical }
+  -- },
   expert = {
-    cmd = { expert },
-    root_markers = {'mix.exs', '.git'},
+    cmd = { expert, "--stdio" },
     filetypes = { "elixir", "eelixir", "heex" },
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local root = vim.fs.root(fname, { "mix.exs" })
+      if root then on_dir(root) end
+    end,
   },
   html = {},
   jsonls = {},
@@ -53,11 +60,11 @@ M.on_attach = function(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
   local bufnr = args.buf
 
-  if client.name == "ElixirLS" then
-    vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-    vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-    vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
-  end
+  -- if client.name == "ElixirLS" then
+  --   vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+  --   vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+  --   vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+  -- end
 
   local kmp = function(lhs, rhs, desc)
     a.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap = true, silent = true, desc = desc })
@@ -135,14 +142,36 @@ end
 ---@param args vim.api.keyset.create_autocmd.callback_args
 M.on_detach = function(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if not client or not client.attached_buffers then return end
+  if not client then return end
+
+  local other_buffers_count = 0
   for buf_id in pairs(client.attached_buffers) do
-    if buf_id ~= args.buf then return end
+    if buf_id ~= args.buf then
+      other_buffers_count = other_buffers_count + 1
+    end
   end
-  client:stop()
+
+  if other_buffers_count == 0 then
+    client:stop()
+    vim.notify(
+      string.format('Stopping LSP client %s (0 buffers)', client.name),
+      vim.log.levels.INFO
+    )
+  end
 end
 
 M.setup = function()
+  -- :Mason
+  require('mason-lspconfig').setup({
+    opts =  {
+      automatic_enable = true,
+      automatic_installation = false,
+      ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
+        "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
+        "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
+    }
+  })
+
   M.lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
 
   a.nvim_create_autocmd('LspAttach', {
@@ -152,21 +181,9 @@ M.setup = function()
   })
 
   a.nvim_create_autocmd("LspDetach", {
-    group = vim.api.nvim_create_augroup("my.lsp.detact", {}),
+    group = vim.api.nvim_create_augroup("my.lsp.detach", {}),
     callback = M.on_detach,
     desc = "Stop LSP client when no buffer is attached",
-  })
-
-  require('lspconfig')
-
-  -- :Mason
-  require('mason').setup()
-  require('mason-lspconfig').setup({
-    automatic_enable = true,
-    automatic_installation = false,
-    ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
-      "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
-      "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
   })
 
   for server, server_config in pairs(M.servers) do

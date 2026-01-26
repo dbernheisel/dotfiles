@@ -29,11 +29,11 @@ silent !mkdir -p ~/.cache/nvim/undo > /dev/null 2>&1
 ]]
 vim.opt.undofile = true
 vim.opt.undodir = vim.uv.os_homedir()..'/.cache/nvim/undo'
+vim.opt.swapfile = false
 vim.o.winborder = 'rounded'
 
 vim.g.backup = false
 vim.g.writebackup = false
-vim.g.swapfile = false
 
 if U.has('nvim-0.7') then
   -- Global status line

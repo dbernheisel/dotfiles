@@ -83,5 +83,11 @@
 (sigil
   (sigil_name) @_sigil_name
   (quoted_content) @injection.content
- (#any-of? @_sigil_name "BASH")
- (#set! injection.language "sh"))
+ (#any-of? @_sigil_name "b" "BASH")
+ (#set! injection.language "bash"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+ (#any-of? @_sigil_name "MERMAID")
+ (#set! injection.language "mermaid"))

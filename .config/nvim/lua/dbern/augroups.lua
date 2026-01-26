@@ -31,3 +31,13 @@ vim.cmd [[
     au TermOpen * set winhighlight=Normal:BlackBg
   augroup END
 ]]
+
+-- Clean up buffers when switching projects
+vim.api.nvim_create_autocmd('DirChanged', {
+  group = vim.api.nvim_create_augroup('ProjectSwitchCleanup', { clear = true }),
+  pattern = 'global',
+  callback = function()
+    require('dbern.buffer_cleanup').cleanup_old_buffers()
+  end,
+  desc = 'Clean up buffers when switching projects'
+})

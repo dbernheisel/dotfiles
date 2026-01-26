@@ -44,6 +44,7 @@ M.is_modern_terminal = function()
   return M.env_has("TERM_PROGRAM", "ghostty") or
     M.is_kitty() or
     M.env_has("TERM_PROGRAM", "iTerm") or
+    M.env_has("TERM_PROGRAM", "WezTerm") or
     M.env_present("KITTY_WINDOW_ID") or
     M.env_present("SSH_CLIENT") or
     M.env_present("ALACRITTY_LOG") or

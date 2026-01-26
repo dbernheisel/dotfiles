@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+set -e
+
+cd ~/.local/bin || exit
+
+# lowercase assignments
+declare -l file
+file="expert_$(uname)_$(uname -m)"
+
+wget -q --show-progress "https://github.com/elixir-lang/expert/releases/download/nightly/${file}" -O "$file"
+xattr -d com.apple.quarantine "${HOME}/.local/bin/${file}" &>/dev/null || true
+chmod +x "${HOME}/.local/bin/${file}"
+
+echo "Updated ${HOME}/.local/bin/${file}"
