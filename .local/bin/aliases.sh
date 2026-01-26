@@ -215,11 +215,14 @@ if [ "$DESKTOP_SESSION" = "gnome" ]; then
 fi
 
 alias memhog='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'
-
 alias tmuxbase='tmux attach -t base || tmux new -s base'
 
 if have "pacman"; then
   alias pacman='sudo pacman'
+fi
+
+if have "apt"; then
+  alias apt='sudo apt'
 fi
 
 # Notify function
@@ -246,18 +249,4 @@ alias csv-diff='git diff --color-words="[^[:space:],]+" --no-index'
 if have "scanimage"; then
   # usage: scanimg test.jpg
   alias scanimg='scanimage --device="brother5:net1;dev0" --mode Color --format=jpeg --resolution=600 --batch > '
-fi
-
-if have "heroku"; then
-  # usage: copy_heroku_db production my_app_dev
-  function copy_heroku_db() {
-    local heroku_app=$1; shift
-    local local_db=$1; shift
-
-    [[ -z $local_db ]] && echo "Please specify the local database to load into" && return 1
-
-    heroku pg:backups:capture --app "$heroku_app" && \
-    heroku pg:backups:download --app "$heroku_app" && \
-    pg_restore --verbose --clean --no-acl --no-owner -h localhost -d "$local_db" latest.dump
-  }
 fi

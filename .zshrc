@@ -68,7 +68,7 @@ fi
 
 [ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/shims" ] && export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 [ -d "${MIX_HOME:-$HOME/.mix}/escripts" ] && export PATH="${MIX_HOME:-$HOME/.mix}/escripts:$PATH"
-[ -e "$HOME/.local/bin/mise" ] && eval "$(~/.local/bin/mise activate zsh)"
+have mise && eval "$(mise activate zsh)"
 [ -e "$HOME/.local/bin/autocomplete.zsh" ] && source "$HOME/.local/bin/autocomplete.zsh"
 [ -e "$HOME/.local/bin/aliases.sh" ] && source "$HOME/.local/bin/aliases.sh"
 [ -e "$HOME/.local/bin/aliases.zsh" ] && source "$HOME/.local/bin/aliases.zsh"

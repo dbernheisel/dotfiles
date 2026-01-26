@@ -462,7 +462,7 @@ require("lazy").setup({
       local ts = require('nvim-treesitter')
       local languages = {
         'bash', 'caddy', 'css', 'dart', 'dockerfile', 'erlang', 'elixir', 'go', 'eex',
-        'heex', 'html', 'graphql', 'sql', 'javascript', 'jsonc', 'kotlin',
+        'heex', 'html', 'graphql', 'sql', 'javascript', 'json5', 'kotlin',
         'git_config', 'gitattributes', 'gitcommit', 'gitignore', 'git_rebase',
         'gleam', 'diff', 'make', 'swift', 'scheme', 'ssh_config', 'toml', 'http',
         'lua', 'markdown', 'markdown_inline', 'php', 'python', 'regex', 'ruby',

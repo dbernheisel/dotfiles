@@ -1,95 +1,50 @@
-local wezterm = require("wezterm")
+local wezterm = require("wezterm")  --[[@as Wezterm]]
 local config = wezterm.config_builder()
 
--- Preferences
+require("tabs").setup(config)
+require("mouse").setup(config)
+require("links").setup(config)
+require("fonts").setup(config)
+-- require("keys").setup(config)
+
 config.hide_mouse_cursor_when_typing = true
 config.window_close_confirmation = "NeverPrompt"
+config.color_scheme = 'Moonfly (Gogh)'
+config.bold_brightens_ansi_colors = false
+config.underline_thickness = 3
+config.cursor_thickness = 4
+config.underline_position = -6
+config.default_cursor_style = "BlinkingBar"
+config.enable_kitty_graphics = true
+config.command_palette_font_size = 13
+config.command_palette_bg_color = "#394b70"
+config.command_palette_fg_color = "#828bb8"
 
--- Keybinds
-config.keys = {
-	{ key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\n") },
-}
+if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+  config.window_decorations = "TITLE|RESIZE"
+  config.enable_wayland = true
+  config.window_background_opacity = 0.95
+end
 
 -- macOS Appearance
-config.macos_window_background_blur = 32
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
-config.native_macos_fullscreen_mode = true
+if wezterm.target_triple == 'aarch64-apple-darwin' then
+  config.macos_window_background_blur = 32
+  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  config.native_macos_fullscreen_mode = true
+  config.window_background_opacity = 0.90
+end
 
 -- Window
 config.window_padding = {
-	left = 8,
-	right = 8,
-	top = 8,
-	bottom = 8,
+  left = 8,
+  right = 8,
+  top = 8,
+  bottom = 8,
 }
 
--- Font
-config.font_size = 16
-config.font = wezterm.font_with_fallback({
-	{
-		family = "Maple Mono",
-		weight = "Regular",
-		harfbuzz_features = {
-			"zero=1", -- 0 with a dot
-      "cv01=1",
-      "cv02=1",
-      "cv09=1",
-      "cv10=1",
-      "cv31=1",
-      "cv32=1",
-      "cv33=1",
-      "cv34=1",
-      "cv35=1",
-      "cv36=1",
-      "cv37=1",
-      "cv42=1",
-      "cv43=1",
-      "cv61=1",
-      "cv64=1",
-      "cv66=1",
-      "ss05=1",
-      "ss06=1",
-      "ss07=1",
-      "ss08=1"
-		},
-	},
-	{
-		family = "FiraCode Nerd Font Mono",
-		weight = "Regular",
-		harfbuzz_features = {
-			"zero=1", -- 0 with a dot
-			"cv01=1", -- Normalize special symbols @ $ & % Q => ->
-			"cv02=1", -- Alternative a with top arm
-			"ss06=1", -- Break connected strokes between italic letters al, il, ull
-		},
-	},
-	{ family = "JetBrainsMono Nerd Font Mono" },
-})
-
-config.font_rules = {
-	{
-		italic = true,
-		font = wezterm.font_with_fallback({
-			{ family = "Maple Mono", style = "Italic" },
-			{ family = "JetBrainsMono Nerd Font Mono", style = "Italic" },
-		}),
-	},
-	{
-		intensity = "Bold",
-		italic = true,
-		font = wezterm.font_with_fallback({
-			{ family = "Maple Mono", weight = "Bold", style = "Italic" },
-			{ family = "JetBrainsMono Nerd Font Mono", weight = "Bold", style = "Italic" },
-		}),
-	},
+-- Keybinds
+config.keys = {
+  { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\n") },
 }
-
-config.color_scheme = 'Moonfly (Gogh)'
-
--- Background opacity with blur
-config.window_background_opacity = 0.90
-
--- Bold is not bright
-config.bold_brightens_ansi_colors = false
 
 return config

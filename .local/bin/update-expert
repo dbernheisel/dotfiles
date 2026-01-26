@@ -6,7 +6,9 @@ cd ~/.local/bin || exit
 
 # lowercase assignments
 declare -l file
-file="expert_$(uname)_$(uname -m)"
+arch=$(uname -m)
+if [ $arch = "x86_64" ]; then arch=amd64; fi
+file="expert_$(uname)_$arch"
 
 wget -q --show-progress "https://github.com/elixir-lang/expert/releases/download/nightly/${file}" -O "$file"
 xattr -d com.apple.quarantine "${HOME}/.local/bin/${file}" &>/dev/null || true

@@ -4,8 +4,6 @@ function have() {
   type "$1" &> /dev/null
 }
 
-BREW_PREFIX=$(brew --prefix)
-
 if have fzf; then
   if [ -f /usr/share/fzf/key-bindings.zsh ]; then
     # If Arch

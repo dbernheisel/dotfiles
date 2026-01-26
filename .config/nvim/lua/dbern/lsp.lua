@@ -2,8 +2,14 @@ local a = vim.api
 local lsputil = require("vim.lsp.util")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
 local osInfo = vim.uv.os_uname()
+local arch
+  if osInfo.machine == "x86_64" then
+    arch="amd64"
+  else
+    arch=string.lower(osInfo.machine)
+  end
 local homedir = vim.uv.os_homedir()
-local expert = vim.fn.resolve(homedir.."/.local/bin/" .."expert_"..string.lower(osInfo.sysname).."_"..string.lower(osInfo.machine))
+local expert = vim.fn.resolve(homedir.."/.local/bin/" .."expert_"..string.lower(osInfo.sysname).."_"..arch)
 -- local lexical = vim.fn.resolve(homedir.."/lexical/_build/dev/package/lexical/bin/start_lexical.sh")
 
 local M = {}
