@@ -96,7 +96,7 @@ layout {
 // }
 
                 datetime        "#[fg=#c6c6c6,bold] {format} "
-                datetime_format "%b %e %-I:%M%P"
+                datetime_format "%b %d %I:%M%p"
                 datetime_timezone "America/New_York"
 
                 command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
