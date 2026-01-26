@@ -7,13 +7,6 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "agent_servers": {
-    "your_agent": {
-      "command": "path_to_executable",
-      "args": [],
-      "env": {}
-    }
-  },
   "agent": {
     "play_sound_when_agent_done": true,
     "default_model": {

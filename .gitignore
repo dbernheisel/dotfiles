@@ -21,6 +21,9 @@ settings.local.json
 .byebug_history
 config/definitions.rb
 
+# Dart/Flutter
+.dart_tool
+
 # MacOS
 .DS\_Store
 Icon?
@@ -84,6 +87,8 @@ private_ssh_key
 .solargraph.yml
 .elixir_ls/
 .elixir-tools/
+.ropeproject/
 .lexical/
 .next-ls/
 .expert/
+.grepai/
