@@ -102,14 +102,6 @@ is_arch() {
   fi
 }
 
-is_crostini() {
-  if [ -d /etc/systemd/user/sommelier@0.service.d ]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
 if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
   if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
     column
@@ -119,7 +111,6 @@ if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
 fi
 
 #### Prerequisites, like xcode and homebrew
-if is_crostini; then source "$INITIALSCRIPTS/install-crostini.sh"; fi
 if is_debian; then source "$INITIALSCRIPTS/install-debian.sh"; fi
 if is_fedora; then source "$INITIALSCRIPTS/install-fedora.sh"; fi
 if is_arch; then source "$INITIALSCRIPTS/install-arch.sh"; fi
@@ -138,34 +129,10 @@ if [ ! -e "$HOME/.zshlocal" ]; then
   touch "$HOME/.zshlocal"
 fi
 
-#### asdf Install, plugins, and languages
-column
-install_asdf_plugin() {
-  local language="$1"; shift
-  local url="$1"; shift
-  if ! asdf plugin list | grep -v "$language" >/dev/null; then
-    asdf plugin add "$language" "$url"
-  fi
-}
-
-install_asdf
-if type asdf &> /dev/null; then
-  fancy_echo "Installing languages through asdf ..." "$yellow"
-  if prompt_install "Erlang"; then install_asdf_plugin erlang https://github.com/michallepicki/asdf-erlang-prebuilt-macos.git; fi
-  if prompt_install "Ruby"; then install_asdf_plugin ruby; fi
-  if prompt_install "Elixir"; then install_asdf_plugin elixir; fi
-  if prompt_install "NodeJS"; then install_asdf_plugin nodejs; fi
-  asdf install
-fi
-
 #### Tools
 column
 fancy_echo "Installing neovim plugins for languages" "$yellow"
 pip_install_or_update neovim
-
-if is_linux && ! type kitty &> /dev/null && prompt_install "Kitty terminal"; then
-  curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
-fi
 
 column
 fancy_echo "Installing user fonts" "$yellow"
