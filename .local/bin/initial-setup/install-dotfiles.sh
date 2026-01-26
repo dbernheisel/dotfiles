@@ -23,7 +23,7 @@ if ! config checkout; then
 fi
 
 config checkout
-mv ~/.gitconfig ~/.gitconfig-bak-checked
+[[ -f ~/.gifconfig ]] && mv ~/.gitconfig ~/.gitconfig-bak-checked
 config submodule update --init --recursive
 config config --local status.showUntrackedFiles no
 config pull --recurse-submodules
