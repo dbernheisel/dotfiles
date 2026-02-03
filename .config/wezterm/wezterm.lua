@@ -5,7 +5,7 @@ require("tabs").setup(config)
 require("mouse").setup(config)
 require("links").setup(config)
 require("fonts").setup(config)
--- require("keys").setup(config)
+require("keys").setup(config)
 
 config.hide_mouse_cursor_when_typing = true
 config.window_close_confirmation = "NeverPrompt"
@@ -29,7 +29,7 @@ end
 -- macOS Appearance
 if wezterm.target_triple == 'aarch64-apple-darwin' then
   config.macos_window_background_blur = 32
-  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  config.window_decorations = "RESIZE"
   config.native_macos_fullscreen_mode = true
   config.window_background_opacity = 0.90
 end
@@ -40,11 +40,6 @@ config.window_padding = {
   right = 8,
   top = 8,
   bottom = 8,
-}
-
--- Keybinds
-config.keys = {
-  { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\n") },
 }
 
 return config

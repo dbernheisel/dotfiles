@@ -47,7 +47,7 @@ M.maple_features = {
   "cv06=1", -- i without platform
   "cv07=1", -- J without hat
   "cv09=1", -- 7 with strike
-  "cv10=1", -- Zz with strike
+  -- "cv10=1", -- Zz with strike
   "cv61=1", -- straight puncuation ,;
   "cv64=1", -- less-than straight bar <=
   "cv65=1", -- straighter ampersand
@@ -62,7 +62,7 @@ M.maple_features = {
   "cv39=1", -- italic i without curls
   "cv40=1", -- italic J without hat
   "cv42=1", -- italic 7 with strike
-  "cv43=1", -- italic z with strike
+  -- "cv43=1", -- italic z with strike
   "ss03=1", -- Add tags [info]
   "ss07=1", -- >>> > > > connect multi-greaters
   "ss10=1", -- =~ = ~ fuzzy equal 

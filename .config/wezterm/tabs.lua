@@ -50,6 +50,7 @@ function M.title(tab, max_width)
       break
     end
   end
+
   if is_zoomed then -- or (#tab.panes > 1 and not tab.is_active) then
     title = " " .. title
   end
@@ -60,8 +61,8 @@ end
 
 ---@param config Config
 function M.setup(config)
-  config.use_fancy_tab_bar = false
   config.hide_tab_bar_if_only_one_tab = true
+  config.use_fancy_tab_bar = false
   config.tab_max_width = 32
   config.unzoom_on_switch_pane = true
 
@@ -75,19 +76,19 @@ function M.setup(config)
           break
         end
       end
+
       local is_last = tab_idx == #tabs
       local next_tab = tabs[tab_idx + 1]
       local next_is_active = next_tab and next_tab.is_active
       local arrow = (tab.is_active or is_last or next_is_active) and M.arrow_solid or M.arrow_thin
       local arrow_bg = inactive_bg
 
-      local ret = tab.is_active
-          and {
-            { Attribute = { Intensity = "Bold" } },
-            { Attribute = { Italic = true } },
-          }
-        or {}
-      ret[#ret + 1] = { Text = title }
+      local ret = tab.is_active and {
+          { Attribute = { Intensity = "Bold" } },
+          { Attribute = { Italic = true } },
+        } or {}
+
+      ret[#ret + 3] = { Text = title }
       ret[#ret + 1] = { Text = arrow }
       return ret
     end)
