@@ -1,9 +1,21 @@
-local wezterm = require("wezterm")  --[[@as Wezterm]]
+local wezterm = require("wezterm") --[[@as Wezterm]]
 
 local M = {}
 
-M.arrow_solid = ""
-M.arrow_thin = ""
+-- Moonfly-inspired tab colors
+local colors = {
+  bar_bg = "#121212",
+  active_bg = "#2c3043",
+  active_fg = "#80a0ff",
+  inactive_bg = "#121212",
+  inactive_fg = "#6e738d",
+  hover_bg = "#1e2132",
+  hover_fg = "#a1aab8",
+  separator_fg = "#3b3f52",
+}
+
+M.arrow_solid = ""
+M.arrow_thin = ""
 M.icons = {
   ["mix"] = wezterm.nerdfonts.seti_elixir,
   ["elixir"] = wezterm.nerdfonts.seti_elixir,
@@ -51,8 +63,8 @@ function M.title(tab, max_width)
     end
   end
 
-  if is_zoomed then -- or (#tab.panes > 1 and not tab.is_active) then
-    title = " " .. title
+  if is_zoomed then
+    title = " " .. title
   end
 
   title = wezterm.truncate_right(title, max_width - 3)
@@ -66,32 +78,67 @@ function M.setup(config)
   config.tab_max_width = 32
   config.unzoom_on_switch_pane = true
 
-  wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      local title = M.title(tab, max_width)
+  config.colors = config.colors or {}
+  config.colors.tab_bar = {
+    background = colors.bar_bg,
+    new_tab = { bg_color = colors.bar_bg, fg_color = colors.inactive_fg },
+    new_tab_hover = { bg_color = colors.hover_bg, fg_color = colors.hover_fg },
+  }
 
-      local tab_idx = 1
-      for i, t in ipairs(tabs) do
-        if t.tab_id == tab.tab_id then
-          tab_idx = i
-          break
-        end
+  wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
+    local title = M.title(tab, max_width)
+
+    local bg = tab.is_active and colors.active_bg
+      or hover and colors.hover_bg
+      or colors.inactive_bg
+    local fg = tab.is_active and colors.active_fg
+      or hover and colors.hover_fg
+      or colors.inactive_fg
+
+    local tab_idx = 1
+    for i, t in ipairs(tabs) do
+      if t.tab_id == tab.tab_id then
+        tab_idx = i
+        break
       end
+    end
 
-      local is_last = tab_idx == #tabs
-      local next_tab = tabs[tab_idx + 1]
-      local next_is_active = next_tab and next_tab.is_active
-      local arrow = (tab.is_active or is_last or next_is_active) and M.arrow_solid or M.arrow_thin
-      local arrow_bg = inactive_bg
+    local is_last = tab_idx == #tabs
+    local next_tab = tabs[tab_idx + 1]
+    local next_is_active = next_tab and next_tab.is_active
 
-      local ret = tab.is_active and {
-          { Attribute = { Intensity = "Bold" } },
-          { Attribute = { Italic = true } },
-        } or {}
+    -- Solid arrow at edges and active transitions, thin divider between inactive tabs
+    local use_solid = tab.is_active or is_last or next_is_active
+    local arrow = use_solid and M.arrow_solid or M.arrow_thin
 
-      ret[#ret + 3] = { Text = title }
-      ret[#ret + 1] = { Text = arrow }
-      return ret
-    end)
+    local edge_bg = colors.bar_bg
+    if next_tab then
+      edge_bg = next_is_active and colors.active_bg or colors.inactive_bg
+    end
+
+    local ret = {}
+
+    if tab.is_active then
+      table.insert(ret, { Attribute = { Intensity = "Bold" } })
+      table.insert(ret, { Attribute = { Italic = true } })
+    end
+
+    table.insert(ret, { Background = { Color = bg } })
+    table.insert(ret, { Foreground = { Color = fg } })
+    table.insert(ret, { Text = title })
+
+    -- Arrow separator with proper color transitions
+    if use_solid then
+      table.insert(ret, { Background = { Color = edge_bg } })
+      table.insert(ret, { Foreground = { Color = bg } })
+    else
+      table.insert(ret, { Background = { Color = colors.inactive_bg } })
+      table.insert(ret, { Foreground = { Color = colors.separator_fg } })
+    end
+    table.insert(ret, { Text = arrow })
+
+    return ret
+  end)
 end
 
 return M

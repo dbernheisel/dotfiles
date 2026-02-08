@@ -28,6 +28,10 @@ function M.setup(config)
 
     { key = "Enter", mods = "SHIFT", action = act.SendString("\n") },
 
+    -- Word jumping
+    { mods = 'CTRL', key = 'LeftArrow', action = act.SendString("\x1b[1;5D") },
+    { mods = 'CTRL', key = 'RightArrow', action = act.SendString("\x1b[1;5C") },
+
     -- Scrollback
     { mods = 'SUPER', key = "t", action = act.SpawnTab("CurrentPaneDomain") },
     { mods = 'SUPER', key = "-", action = act.DecreaseFontSize },
@@ -63,6 +67,13 @@ function M.setup(config)
     { mods = 'SHIFT|SUPER', key = "p", action = act.ActivateCommandPalette },
     { mods = 'SHIFT|SUPER', key = "d", action = act.ShowDebugOverlay },
   }
+
+  -- Linux: CTRL+SHIFT+number for direct tab switching (SUPER is captured by DE)
+  if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+    for i = 1, 9 do
+      table.insert(config.keys, { mods = 'CTRL|SHIFT', key = tostring(i), action = act.ActivateTab(i - 1) })
+    end
+  end
 end
 
 function M.is_nvim(pane)

@@ -21,9 +21,15 @@ config.command_palette_fg_color = "#828bb8"
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
-  config.window_decorations = "TITLE|RESIZE"
+  config.window_decorations = "RESIZE"
   config.enable_wayland = true
   config.window_background_opacity = 0.95
+  config.window_padding = {
+    left = 8,
+    right = 8,
+    top = 8,
+    bottom = 38,
+  }
 end
 
 -- macOS Appearance
@@ -32,14 +38,12 @@ if wezterm.target_triple == 'aarch64-apple-darwin' then
   config.window_decorations = "RESIZE"
   config.native_macos_fullscreen_mode = true
   config.window_background_opacity = 0.90
+  config.window_padding = {
+    left = 8,
+    right = 8,
+    top = 8,
+    bottom = 8,
+  }
 end
-
--- Window
-config.window_padding = {
-  left = 8,
-  right = 8,
-  top = 8,
-  bottom = 8,
-}
 
 return config
