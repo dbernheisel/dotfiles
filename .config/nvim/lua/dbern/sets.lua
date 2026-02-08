@@ -43,7 +43,7 @@ else
 end
 
 if U.is_mac then
-  vim.o.clipboard = 'unnamed'
+  vim.o.clipboard = 'unnamedplus'
   vim.g.python_host_prog = '/usr/bin/python'
   vim.g.python3_host_prog = '/usr/bin/python3'
   vim.g.python2_host_prog = '/usr/bin/python2'

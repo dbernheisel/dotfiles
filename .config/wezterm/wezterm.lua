@@ -3,7 +3,6 @@ local config = wezterm.config_builder()
 
 require("tabs").setup(config)
 require("mouse").setup(config)
-require("links").setup(config)
 require("fonts").setup(config)
 require("keys").setup(config)
 
@@ -19,6 +18,7 @@ config.enable_kitty_graphics = true
 config.command_palette_font_size = 13
 config.command_palette_bg_color = "#394b70"
 config.command_palette_fg_color = "#828bb8"
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
   config.window_decorations = "TITLE|RESIZE"
