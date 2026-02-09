@@ -5,10 +5,9 @@ layout {
             plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
                 format_left   "{mode} #[fg=#80a0ff,bold]{session} {tabs}"
                 format_center ""
-                format_right  "{pipe_zjstatus_hints}{command_git_branch} {datetime}"
+                format_right  "{command_git_branch} {datetime}"
                 format_space  ""
 
-                pipe_zjstatus_hints_format "{output}"
 
                 border_enabled  "false"
                 border_char     "─"

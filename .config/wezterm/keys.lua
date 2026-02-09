@@ -3,6 +3,23 @@ local wezterm = require("wezterm") --[[@as Wezterm]]
 local act = wezterm.action
 local M = {}
 
+local function smart_scroll(amount)
+  return wezterm.action_callback(function(window, pane)
+    local vars = pane:get_user_vars()
+    if vars.IS_NVIM == 'true' then
+      local key = amount < 0 and 'k' or 'j'
+      window:perform_action(act.SendKey { mods = 'CTRL|SHIFT', key = key }, pane)
+    elseif vars.zellij_session then
+      local zj = '/opt/homebrew/bin/zellij'
+      local scroll = amount < 0 and 'half-page-scroll-up' or 'half-page-scroll-down'
+      wezterm.run_child_process({ zj, '-s', vars.zellij_session, 'action', 'switch-mode', 'scroll' })
+      wezterm.run_child_process({ zj, '-s', vars.zellij_session, 'action', scroll })
+    else
+      window:perform_action(act.ScrollByPage(amount), pane)
+    end
+  end)
+end
+
 ---@param config Config
 function M.setup(config)
   config.disable_default_key_bindings = true
@@ -37,8 +54,10 @@ function M.setup(config)
     { mods = 'SUPER', key = "-", action = act.DecreaseFontSize },
     { mods = 'SUPER', key = "=", action = act.IncreaseFontSize },
 
-    { mods = 'CTRL|SHIFT', key = "k", action = act.ScrollByPage(-0.5) },
-    { mods = 'CTRL|SHIFT', key = "j", action = act.ScrollByPage(0.5) },
+    { mods = 'CTRL|SHIFT', key = "k", action = smart_scroll(-0.5) },
+    { mods = 'CTRL|SHIFT', key = "j", action = smart_scroll(0.5) },
+    { mods = 'CTRL|SHIFT', key = "PageUp", action = smart_scroll(-0.5) },
+    { mods = 'CTRL|SHIFT', key = "PageDown", action = smart_scroll(0.5) },
 
     -- Move Tabs
     { mods = 'CTRL|SHIFT', key = ">", action = act.MoveTabRelative(1) },

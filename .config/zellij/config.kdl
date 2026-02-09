@@ -93,6 +93,7 @@ keybinds clear-defaults=true {
 
   scroll {
       bind "Ctrl c" "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
+      bind "q" { SwitchToMode "Normal"; }
       bind "e" { EditScrollback; SwitchToMode "Normal"; }
       bind "/" { SwitchToMode "EnterSearch"; SearchInput 0; }
       bind "j" "Down" { ScrollDown; }
@@ -101,6 +102,8 @@ keybinds clear-defaults=true {
       bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
       bind "d" { HalfPageScrollDown; }
       bind "u" { HalfPageScrollUp; }
+      bind "G" { ScrollToBottom; }
+      bind "g" { ScrollToTop; }
   }
 
   search {
@@ -157,12 +160,6 @@ plugins {
 
     nvim-nav location="file:~/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm"
 
-    zjstatus-hints location="file:~/.config/zellij/plugins/zjstatus-hints.wasm" {
-        max_length "0"
-        overflow_str ""
-        pipe_name "zjstatus_hints"
-        hide_in_base_mode false // default
-    }
     zjframes location="file:~/.config/zellij/zplugins/jframes.wasm"
 
     zjframes  {
@@ -178,7 +175,6 @@ plugins {
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
     zjframes
-    zjstatus-hints
     nvim-nav
 }
 

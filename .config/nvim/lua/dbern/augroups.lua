@@ -32,6 +32,22 @@ vim.cmd [[
   augroup END
 ]]
 
+-- Set wezterm user var so wezterm can detect nvim through zellij
+if os.getenv('TERM_PROGRAM') == 'WezTerm' then
+  vim.api.nvim_create_autocmd({ 'VimEnter', 'VimResume' }, {
+    group = vim.api.nvim_create_augroup('WeztermUserVar', { clear = true }),
+    callback = function()
+      io.write('\027]1337;SetUserVar=IS_NVIM=dHJ1ZQ==\a')
+    end,
+  })
+  vim.api.nvim_create_autocmd({ 'VimLeave', 'VimSuspend' }, {
+    group = 'WeztermUserVar',
+    callback = function()
+      io.write('\027]1337;SetUserVar=IS_NVIM=\a')
+    end,
+  })
+end
+
 -- Clean up buffers when switching projects
 vim.api.nvim_create_autocmd('DirChanged', {
   group = vim.api.nvim_create_augroup('ProjectSwitchCleanup', { clear = true }),
