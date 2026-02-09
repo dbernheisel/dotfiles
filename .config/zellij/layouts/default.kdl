@@ -29,9 +29,9 @@ layout {
                 mode_session     "#[bg=#ae81ff,fg=#323437,bold] SESSION "
                 mode_tmux        "#[bg=#4e4e4e,fg=#c6c6c6,bold]  TMUX   "
 
-                tab_active              "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {index} {name} #[fg=#373c4d,bg=#080808]"
-                tab_active_fullscreen   "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {fullscreen_indicator} {index} {name} #[fg=#373c4d,bg=#080808]"
-                tab_active_sync         "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {sync_indicator} {index} {name} #[fg=#373c4d,bg=#080808]"
+                tab_active              "#[fg=#373c4d]#[fg=#80a0ff,bg=#373c4d,bold] {index} {name} #[fg=#373c4d]"
+                tab_active_fullscreen   "#[fg=#373c4d]#[fg=#80a0ff,bg=#373c4d,bold] {fullscreen_indicator} {index} {name} #[fg=#373c4d]"
+                tab_active_sync         "#[fg=#373c4d]#[fg=#80a0ff,bg=#373c4d,bold] {sync_indicator} {index} {name} #[fg=#373c4d]"
 
                 tab_normal              " #[fg=#808080] {index} {name}  "
                 tab_normal_fullscreen   " #[fg=#808080] {fullscreen_indicator} {index} {name}  "
@@ -43,7 +43,7 @@ layout {
                 tab_fullscreen_indicator "󰊓"
                 tab_floating_indicator   "⬚"
 
-                tab_rename              "#[fg=#ff5189,bg=#080808]#[fg=#323437,bg=#ff5189,bold] {index} {name} {floating_indicator} #[fg=#ff5189,bg=#080808]"
+                tab_rename              "#[fg=#ff5189]#[fg=#323437,bg=#ff5189,bold] {index} {name} {floating_indicator} #[fg=#ff5189]"
 
                 tab_display_count         "9"
                 tab_truncate_start_format "#[fg=#c6c684]  +{count} "
