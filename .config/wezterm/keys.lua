@@ -50,9 +50,9 @@ function M.setup(config)
     -- Clipboard
     { mods = 'NONE', key = 'Copy', action = act.CopyTo('ClipboardAndPrimarySelection') },
     { mods = 'NONE', key = 'Paste', action = act.PasteFrom('Clipboard') },
-    { mods = 'SUPER', key = 'c', action = act.CopyTo('ClipboardAndPrimarySelection') }, 
+    { mods = 'SUPER', key = 'c', action = act.CopyTo('ClipboardAndPrimarySelection') },
     { mods = 'SUPER', key = 'v', action = act.PasteFrom('Clipboard') },
-    { mods = 'CTRL|SHIFT', key = 'C', action = act.CopyTo('ClipboardAndPrimarySelection') }, 
+    { mods = 'CTRL|SHIFT', key = 'C', action = act.CopyTo('ClipboardAndPrimarySelection') },
     { mods = 'CTRL|SHIFT', key = 'V', action = act.PasteFrom('Clipboard') },
 
     { mods = 'CTRL|SHIFT', key = "Space", action = act.QuickSelect },
@@ -69,9 +69,11 @@ function M.setup(config)
   }
 
   -- Linux: CTRL+SHIFT+number for direct tab switching (SUPER is captured by DE)
+  -- Shift+number produces the symbol (e.g. Shift+1 = !), so bind the shifted symbols.
   if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+    local shifted = { '!', '@', '#', '$', '%', '^', '&', '*', '(' }
     for i = 1, 9 do
-      table.insert(config.keys, { mods = 'CTRL|SHIFT', key = tostring(i), action = act.ActivateTab(i - 1) })
+      table.insert(config.keys, { mods = 'CTRL|SHIFT', key = shifted[i], action = act.ActivateTab(i - 1) })
     end
   end
 end
