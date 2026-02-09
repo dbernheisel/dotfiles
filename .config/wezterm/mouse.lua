@@ -1,23 +1,24 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
+local zj = require("zellij")
 
 local M = {}
 
 local function smart_wheel(direction)
   return wezterm.action_callback(function(window, pane)
     local vars = pane:get_user_vars()
-    if vars.IS_NVIM == 'true' then
-      local key = direction < 0 and 'UpArrow' or 'DownArrow'
-      for _ = 1, 5 do
-        window:perform_action(act.SendKey { key = key }, pane)
-      end
-    elseif vars.zellij_session then
-      local zj = '/opt/homebrew/bin/zellij'
+    if vars.zellij_session and zj.bin and not zj.is_alt_screen(pane) then
+      -- Non-alt-screen in zellij: enter scroll mode
       local zs = vars.zellij_session
       local scroll = direction < 0 and 'half-page-scroll-up' or 'half-page-scroll-down'
-      wezterm.run_child_process({ zj, '-s', zs, 'action', 'switch-mode', 'scroll' })
-      wezterm.run_child_process({ zj, '-s', zs, 'action', scroll })
+      wezterm.run_child_process({ zj.bin, '-s', zs, 'action', 'switch-mode', 'scroll' })
+      wezterm.run_child_process({ zj.bin, '-s', zs, 'action', scroll })
+    elseif vars.zellij_session then
+      -- Alt screen in zellij: send arrow key (default wheel behavior)
+      local arrow = direction < 0 and 'UpArrow' or 'DownArrow'
+      window:perform_action(act.SendKey { key = arrow }, pane)
     else
+      -- No zellij: scroll wezterm scrollback
       window:perform_action(act.ScrollByLine(direction * 5), pane)
     end
   end)

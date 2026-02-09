@@ -1,19 +1,24 @@
 local wezterm = require("wezterm") --[[@as Wezterm]]
 
 local act = wezterm.action
+local zj = require("zellij")
 local M = {}
 
 local function smart_scroll(amount)
   return wezterm.action_callback(function(window, pane)
     local vars = pane:get_user_vars()
-    if vars.IS_NVIM == 'true' then
-      local key = amount < 0 and 'k' or 'j'
-      window:perform_action(act.SendKey { mods = 'CTRL|SHIFT', key = key }, pane)
-    elseif vars.zellij_session then
-      local zj = '/opt/homebrew/bin/zellij'
+    if vars.zellij_session and zj.bin and zj.is_alt_screen(pane) then
+      -- Send Ctrl+U/Ctrl+D to the alt screen app via zellij
+      local key = amount < 0 and { 21 } or { 4 }  -- Ctrl+U / Ctrl+D
+      local cmd = { zj.bin, '-s', vars.zellij_session, 'action', 'write' }
+      for _, b in ipairs(key) do
+        table.insert(cmd, tostring(b))
+      end
+      wezterm.run_child_process(cmd)
+    elseif vars.zellij_session and zj.bin then
       local scroll = amount < 0 and 'half-page-scroll-up' or 'half-page-scroll-down'
-      wezterm.run_child_process({ zj, '-s', vars.zellij_session, 'action', 'switch-mode', 'scroll' })
-      wezterm.run_child_process({ zj, '-s', vars.zellij_session, 'action', scroll })
+      wezterm.run_child_process({ zj.bin, '-s', vars.zellij_session, 'action', 'switch-mode', 'scroll' })
+      wezterm.run_child_process({ zj.bin, '-s', vars.zellij_session, 'action', scroll })
     else
       window:perform_action(act.ScrollByPage(amount), pane)
     end
