@@ -9,7 +9,7 @@ function M.setup(config)
   config.keys = {
     { mods = 'SUPER', key = 'n', action = act.SpawnWindow },
     { mods = 'SUPER', key = 'w', action = act.CloseCurrentTab({ confirm=true }) },
-    { mods = 'SUPER', key = "Q", action = act.QuitApplication },
+    { mods = 'SUPER', key = "q", action = act.QuitApplication },
     { mods = 'SUPER', key = '1', action = act.ActivateTab(0) },
     { mods = 'SUPER', key = '2', action = act.ActivateTab(1) },
     { mods = 'SUPER', key = '3', action = act.ActivateTab(2) },

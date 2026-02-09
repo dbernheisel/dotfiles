@@ -72,9 +72,9 @@
 [http]
   postBuffer = 157286400
 [url "ssh://git@github.com/"]
-  insteadOf = https://github.com/
+  pushInsteadOf = https://github.com/
 [url "ssh://git@bitbucket.org/"]
-  insteadOf = https://bitbucket.org/
+  pushInsteadOf = https://bitbucket.org/
 [url "ssh://git@bitbucket.org/"]
   insteadOf = bb:
 [url "ssh://git@github.com/"]

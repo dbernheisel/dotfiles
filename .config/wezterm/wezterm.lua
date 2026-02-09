@@ -6,6 +6,7 @@ require("mouse").setup(config)
 require("fonts").setup(config)
 require("keys").setup(config)
 
+config.default_prog = { wezterm.config_dir .. '/zellij-new-session' }
 config.hide_mouse_cursor_when_typing = true
 config.window_close_confirmation = "NeverPrompt"
 config.color_scheme = 'Moonfly (Gogh)'

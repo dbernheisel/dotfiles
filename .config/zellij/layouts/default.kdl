@@ -3,7 +3,7 @@ layout {
         children
         pane size=1 borderless=true {
             plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
-                format_left   "#[fg=#80a0ff,bold]{session} {mode} {tabs}"
+                format_left   "{mode} #[fg=#80a0ff,bold]{session} {tabs}"
                 format_center ""
                 format_right  "{pipe_zjstatus_hints}{command_git_branch} {datetime}"
                 format_space  ""
@@ -16,38 +16,38 @@ layout {
                 border_position "top"
 
                 mode_locked      "#[bg=#ff5189,fg=#c6c6c6,bold] LOCKED  "
-                mode_normal      "#[fg=#323437,bold] NORMAL "
-                mode_pane        "#[bg=#9FFBB6,fg=#323437,bold]  PANE  "
-                mode_resize      "#[bg=#f09479,fg=#323437,bold] RESIZE "
-                mode_move        "#[bg=#f09479,fg=#323437,bold]  MOVE  "
-                mode_tab         "#[bg=#80a0ff,fg=#323437,bold]  TAB   "
-                mode_scroll      "#[bg=#c6c684,fg=#323437,bold] SCROLL "
-                mode_search      "#[bg=#c6c684,fg=#323437,bold] SEARCH "
-                mode_entersearch "#[bg=#c6c684,fg=#323437,bold] SEARCH "
-                mode_renametab   "#[bg=#85dc85,fg=#323437,bold] RE-TAB "
+                mode_normal      "#[fg=#323437,bold] NORMAL  "
+                mode_pane        "#[bg=#9FFBB6,fg=#323437,bold]  PANE   "
+                mode_resize      "#[bg=#f09479,fg=#323437,bold] RESIZE  "
+                mode_move        "#[bg=#f09479,fg=#323437,bold]  MOVE   "
+                mode_tab         "#[bg=#80a0ff,fg=#323437,bold]   TAB   "
+                mode_scroll      "#[bg=#c6c684,fg=#323437,bold] SCROLL  "
+                mode_search      "#[bg=#c6c684,fg=#323437,bold] SEARCH  "
+                mode_entersearch "#[bg=#c6c684,fg=#323437,bold] SEARCH  "
+                mode_renametab   "#[bg=#85dc85,fg=#323437,bold] RE-TAB  "
                 mode_renamepane  "#[bg=#85dc85,fg=#323437,bold] RE-PANE "
                 mode_session     "#[bg=#ae81ff,fg=#323437,bold] SESSION "
-                mode_tmux        "#[bg=#4e4e4e,fg=#c6c6c6,bold]  TMUX  "
+                mode_tmux        "#[bg=#4e4e4e,fg=#c6c6c6,bold]  TMUX   "
 
-                tab_active              "#[bg=#80a0ff,fg=#323437,bold] {index} {name} "
-                tab_active_fullscreen   "#[bg=#80a0ff,fg=#323437,bold] {fullscreen_indicator} {index} {name} "
-                tab_active_sync         "#[bg=#80a0ff,fg=#323437,bold] {sync_indicator} {index} {name} "
+                tab_active              "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {index} {name} #[fg=#373c4d,bg=#080808]"
+                tab_active_fullscreen   "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {fullscreen_indicator} {index} {name} #[fg=#373c4d,bg=#080808]"
+                tab_active_sync         "#[fg=#373c4d,bg=#080808]#[fg=#80a0ff,bg=#373c4d,bold] {sync_indicator} {index} {name} #[fg=#373c4d,bg=#080808]"
 
-                tab_normal              "#[fg=#80a0ff,bold] {index} {name} "
-                tab_normal_fullscreen   "#[fg=#80a0ff,bold] {fullscreen_indicator} {index} {name} "
-                tab_normal_sync         "#[fg=#80a0ff,bold] {sync_indicator} {index} {name} "
+                tab_normal              " #[fg=#808080] {index} {name}  "
+                tab_normal_fullscreen   " #[fg=#808080] {fullscreen_indicator} {index} {name}  "
+                tab_normal_sync         " #[fg=#808080] {sync_indicator} {index} {name}  "
 
-                tab_separator " "
+                tab_separator ""
 
                 tab_sync_indicator       "󰓦"
                 tab_fullscreen_indicator "󰊓"
                 tab_floating_indicator   "⬚"
 
-                tab_rename              "#[bg=#ff5189,fg=#323437,bold] {index} {name} {floating_indicator} "
+                tab_rename              "#[fg=#ff5189,bg=#080808]#[fg=#323437,bg=#ff5189,bold] {index} {name} {floating_indicator} #[fg=#ff5189,bg=#080808]"
 
                 tab_display_count         "9"
-                tab_truncate_start_format "#[fg=#c6c684]  +{count}  "
-                tab_truncate_end_format   "#[fg=#c6c684]   +{count} "
+                tab_truncate_start_format "#[fg=#c6c684]  +{count} "
+                tab_truncate_end_format   "#[fg=#c6c684]  +{count} "
 
 // {
 //   bay = "#4d5d8d",
@@ -107,4 +107,3 @@ layout {
         }
     }
 }
- 

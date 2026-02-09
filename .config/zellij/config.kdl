@@ -304,13 +304,13 @@ copy_on_select true
 // otherwise this will error if such a session exists.
 // Default: <RANDOM>
 // 
-session_name "default"
- 
+// session_name "default"
+
 // When `session_name` is provided, attaches to that session
 // if it is already running or creates it otherwise.
 // Default: false
-// 
-attach_to_session true
+//
+// attach_to_session true
  
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
@@ -361,7 +361,7 @@ attach_to_session true
 // (Requires restart)
 // Default: true (if the host terminal supports it)
  
-support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol true
 // Whether to make sure a local web server is running when a new Zellij session starts.
 // This web server will allow creating new sessions and attaching to existing ones that have
 // opted in to being shared in the browser.
@@ -422,7 +422,7 @@ show_startup_tips false
 // Whether to show release notes on first version run
 // Default: true
 // 
-// show_release_notes false
+show_release_notes false
  
 // Whether to enable mouse hover effects and pane grouping functionality
 // default is true
