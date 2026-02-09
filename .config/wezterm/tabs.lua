@@ -3,6 +3,10 @@ local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabl
 
 local M = {}
 
+local scheme = wezterm.color.get_builtin_schemes()['Moonfly (Gogh)']
+local tab_active_fg = scheme.ansi[5]
+local tab_active_bg = scheme.cursor and scheme.cursor.bg or scheme.ansi[1]
+
 local TAB_MAX_TITLE = 24
 
 local function truncate(s)
@@ -14,18 +18,21 @@ end
 
 local function tab_title(tab)
   local session = tab.active_pane.user_vars.zellij_session
+
   if session and session ~= '' then
-    return truncate(tab.active_pane.title or session) .. ' '
+    return ' ' .. truncate(tab.active_pane.title or session) .. ' '
   end
+
   local proc = tab.active_pane.foreground_process_name or ''
   proc = proc:match('([^/]+)$') or proc
   if proc == 'zsh' or proc == 'bash' or proc == '' then
     local cwd_uri = tab.active_pane.current_working_dir
     if cwd_uri then
-      return truncate(cwd_uri.file_path:match('([^/]+)/?$') or proc) .. ' '
+      return ' ' .. truncate(cwd_uri.file_path:match('([^/]+)/?$') or proc) .. ' '
     end
   end
-  return truncate(proc) .. ' '
+
+  return ' ' .. truncate(proc) .. ' '
 end
 
 ---@param config Config
@@ -46,8 +53,13 @@ function M.setup(config)
         right = wezterm.nerdfonts.pl_right_soft_divider,
       },
       tab_separators = {
-        left = wezterm.nerdfonts.pl_left_hard_divider,
-        right = wezterm.nerdfonts.pl_right_hard_divider,
+        left = '',
+        right = '',
+      },
+      theme_overrides = {
+        tab = {
+          active = { fg = tab_active_bg, bg = tab_active_fg },
+        },
       },
     },
     sections = {
@@ -60,14 +72,22 @@ function M.setup(config)
         },
       },
       tabline_b = {},
-      tabline_c = { ' ' },
+      tabline_c = {},
       tab_active = {
+        { Attribute = { Intensity = 'Bold' } },
         'index',
+        'ResetAttributes',
+        { Foreground = { Color = tab_active_fg } },
+        { Background = { Color = tab_active_bg } },
         tab_title,
         { 'zoomed', padding = 0 },
       },
       tab_inactive = {
+        { Attribute = { Intensity = 'Bold' } },
+        { Attribute = { Reverse = true } },
         'index',
+        'ResetAttributes',
+        { Attribute = { Reverse = false } },
         tab_title,
       },
       tabline_x = {},

@@ -65,8 +65,8 @@ function M.setup(config)
     { mods = 'CTRL|SHIFT', key = "PageDown", action = smart_scroll(0.5) },
 
     -- Move Tabs
-    { mods = 'CTRL|SHIFT', key = ">", action = act.MoveTabRelative(1) },
-    { mods = 'CTRL|SHIFT', key = "<", action = act.MoveTabRelative(-1) },
+    { mods = 'SUPER|CTRL|SHIFT', key = "l", action = act.MoveTabRelative(1) },
+    { mods = 'SUPER|CTRL|SHIFT', key = "h", action = act.MoveTabRelative(-1) },
     { mods = 'CTRL|SHIFT', key = "l", action = act.ActivateTabRelative(1) },
     { mods = 'CTRL|SHIFT', key = "h", action = act.ActivateTabRelative(-1) },
 
