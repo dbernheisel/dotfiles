@@ -26,14 +26,16 @@ function M.is_alt_screen(pane)
     return false
   end
 
+  -- Only check the first client's focused pane command.
+  -- list-clients is session-wide; checking all clients would falsely
+  -- detect alt-screen when another client is focused on a different pane.
   for line in stdout:gmatch('[^\n]+') do
     local cmd = line:match('^%d+%s+%S+%s+(%S+)')
     if cmd then
       local name = cmd:match('([^/]+)$') or cmd
-      if alt_screen_apps[name] then
-        alt_screen_cache[zs] = { result = true, time = now }
-        return true
-      end
+      local result = alt_screen_apps[name] ~= nil
+      alt_screen_cache[zs] = { result = result, time = now }
+      return result
     end
   end
 
