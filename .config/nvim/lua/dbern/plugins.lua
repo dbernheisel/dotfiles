@@ -123,7 +123,7 @@ require("lazy").setup({
   },
   {
     'saghen/blink.cmp',
-    version = '1.*',
+    version = '1.8.0',
     dependencies = {
       { 'L3MON4D3/LuaSnip',
         version =  'v2.*',
@@ -242,8 +242,8 @@ require("lazy").setup({
       { "<leader>b", function()
         Snacks.picker.explorer({
           hidden = true,
-          preset = "sidebar",
-          auto_close = true
+          follow_file = false,
+          watch = false,
         })
       end, desc = "Explore Files" },
       { "<leader>gco", function() Snacks.picker.git_branches() end, desc = "Find git branch" },
@@ -483,6 +483,7 @@ require("lazy").setup({
       })
 
       -- ts.setup(opts)
+      vim.treesitter.language.register("bash", "sh")
       vim.treesitter.language.register("bash", "zsh")
       vim.treesitter.language.register("bash", "env")
     end,

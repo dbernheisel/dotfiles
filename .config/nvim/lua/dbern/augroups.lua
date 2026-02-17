@@ -57,3 +57,15 @@ vim.api.nvim_create_autocmd('DirChanged', {
   end,
   desc = 'Clean up buffers when switching projects'
 })
+
+vim.api.nvim_create_autocmd({'BufReadPost', 'BufWritePost'}, {
+  desc = 'Autodetect extension-less filetypes',
+  pattern = '*',
+  group = vim.api.nvim_create_augroup('Shebang', { clear = true }),
+  callback = function()
+    local first_line = vim.fn.getline(1)
+    if string.match(first_line, '^#!.*/bin/bash') or string.match(first_line, '^#!.*/bin/env%s+bash') then
+      vim.bo.filetype = 'bash'
+    end
+  end
+})
