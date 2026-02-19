@@ -459,6 +459,12 @@ require("lazy").setup({
       install_dir = vim.fn.stdpath('data') .. '/site'
     },
     config = function(_, opts)
+      require("vim.treesitter.query").add_predicate("is-mise?", function(_, _, bufnr, _)
+        local filepath = vim.api.nvim_buf_get_name(tonumber(bufnr) or 0)
+        local filename = vim.fn.fnamemodify(filepath, ":t")
+        return string.match(filename, ".*mise.*%.toml$") ~= nil
+      end, { force = true, all = false })
+
       local ts = require('nvim-treesitter')
       local languages = {
         'bash', 'caddy', 'css', 'dart', 'erlang', 'elixir', 'go', 'eex',

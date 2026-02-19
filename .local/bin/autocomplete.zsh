@@ -48,6 +48,10 @@ if have kubectl && [ ! -f "$HOME/.cache/completions/_kubectl" ]; then
   kubectl completion zsh > "$HOME/.cache/completions/_kubectl"
 fi
 
+if have mise && [ ! -f "$HOME/.cache/completions/_mise" ]; then
+  mise completion zsh > "$HOME/.cache/completions/_mise"
+fi
+
 if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ] && [ ! -f "$HOME/.cache/completions/_kitty" ]; then
   kitty + complete setup zsh > "$HOME/.cache/completions/_kitty"
 fi
