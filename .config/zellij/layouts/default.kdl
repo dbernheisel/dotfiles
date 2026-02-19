@@ -22,9 +22,9 @@ layout {
                 mode_tab         "#[bg=#80a0ff,fg=#323437,bold]   TAB   "
                 mode_scroll      "#[bg=#c6c684,fg=#323437,bold] SCROLL  "
                 mode_search      "#[bg=#c6c684,fg=#323437,bold] SEARCH  "
-                mode_entersearch "#[bg=#c6c684,fg=#323437,bold] SEARCH  "
-                mode_renametab   "#[bg=#85dc85,fg=#323437,bold] RE-TAB  "
-                mode_renamepane  "#[bg=#85dc85,fg=#323437,bold] RE-PANE "
+                mode_enter_search "#[bg=#c6c684,fg=#323437,bold] SEARCH  "
+                mode_rename_tab  "#[bg=#85dc85,fg=#323437,bold] RE-TAB  "
+                mode_rename_pane "#[bg=#85dc85,fg=#323437,bold] RE-PANE "
                 mode_session     "#[bg=#ae81ff,fg=#323437,bold] SESSION "
                 mode_tmux        "#[bg=#4e4e4e,fg=#c6c6c6,bold]  TMUX   "
 

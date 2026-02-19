@@ -160,7 +160,7 @@ plugins {
 
     nvim-nav location="file:~/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm"
 
-    zjframes location="file:~/.config/zellij/zplugins/jframes.wasm"
+    zjframes location="file:~/.config/zellij/plugins/zjframes.wasm"
 
     zjframes  {
         hide_frame_for_single_pane       "true"
