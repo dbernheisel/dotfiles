@@ -8,6 +8,7 @@
   "codediff.nvim": { "branch": "main", "commit": "9ba04ddf48827f7f765e0d1eeb3a22650323c2a6" },
   "flutter-tools.nvim": { "branch": "main", "commit": "677cc07c16e8b89999108d2ebeefcfc5f539b73c" },
   "fzf-lua": { "branch": "main", "commit": "1749fedca3a0efdd47918f8b588f7c7abb4e5bd6" },
+  "fzf-neovim": { "branch": "master", "commit": "b56d614ba2f901c64eed454f181badec0b1cedff" },
   "fzf.vim": { "branch": "master", "commit": "34a564c81f36047f50e593c1656f4580ff75ccca" },
   "grapple.nvim": { "branch": "main", "commit": "b41ddfc1c39f87f3d1799b99c2f0f1daa524c5f7" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },

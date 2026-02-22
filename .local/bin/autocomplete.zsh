@@ -52,7 +52,14 @@ if have mise && [ ! -f "$HOME/.cache/completions/_mise" ]; then
   mise completion zsh > "$HOME/.cache/completions/_mise"
 fi
 
-if ! [ -z "$TERMINFO" ] && [ $TERMINFO =~ "kitty" ] && [ ! -f "$HOME/.cache/completions/_kitty" ]; then
+if [ $TERM_PROGRAM = "WezTerm" ] && \
+   [ ! -f "$HOME/.cache/completions/_wezterm" ]; then
+  wezterm shell-completion --shell zsh > "$HOME/.cache/completions/_wezterm"
+fi
+
+if [ -n "$TERMINFO" ] && \
+   [ "$TERMINFO" =~ "kitty" ] && \
+   [ ! -f "$HOME/.cache/completions/_kitty" ]; then
   kitty + complete setup zsh > "$HOME/.cache/completions/_kitty"
 fi
 

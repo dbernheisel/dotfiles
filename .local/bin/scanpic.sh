@@ -17,7 +17,7 @@ else
   PREFIX="$1"
 fi
 
-LATEST_FILE=$(find . -maxdepth 1 -name "$PREFIX-*.jpg" | tail -1 )
+LATEST_FILE=$(find . -maxdepth 1 -name "$PREFIX-*.jpg" | sort -Vk1,1 | tail -1)
 LATEST_FILE=$(basename "$LATEST_FILE")
 LATEST_NUM=${LATEST_FILE#"$PREFIX"-}
 LATEST_NUM=${LATEST_NUM%%.jpg}
