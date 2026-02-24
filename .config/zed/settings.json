@@ -7,22 +7,24 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "provider": "none"
+  },
   "agent": {
+    "tool_permissions": {
+      "default": "allow"
+    },
     "play_sound_when_agent_done": true,
     "default_model": {
       "provider": "anthropic",
-      "model": "claude-sonnet-4-latest"
+      "model": "claude-sonnet-4-latest",
     },
     "model_parameters": [],
-    "always_allow_tool_actions": true
   },
   "icon_theme": "Colored Zed Icons Theme Dark",
-  "features": {
-    "edit_prediction_provider": "none"
-  },
   "file_types": {
     "Markdown": ["*.md", "*.pml"],
-    "Dockerfile": ["Dockerfile*"]
+    "Dockerfile": ["Dockerfile*"],
   },
   "auto_install_extensions": {
     "catppuccin-blur": true,
@@ -33,14 +35,14 @@
     "graphql": true,
     "html": true,
     "sql": true,
-    "toml": true
+    "toml": true,
   },
   "use_smartcase_search": true,
   "terminal": {
     "detect_venv": "off",
     "dock": "right",
     "env": {
-      "EDITOR": "zed --wait"
+      "EDITOR": "zed --wait",
     },
     "font_family": "FiraCode Nerd Font",
     "font_features": {
@@ -51,8 +53,8 @@
       "ss05": true,
       "ss06": true,
       "ss07": true,
-      "cv14": true
-    }
+      "cv14": true,
+    },
   },
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_features": {
@@ -63,10 +65,10 @@
     "ss05": true,
     "ss06": true,
     "ss07": true,
-    "cv14": true
+    "cv14": true,
   },
   "telemetry": {
-    "metrics": false
+    "metrics": false,
   },
   "tab_size": 2,
   "languages": {
@@ -78,9 +80,9 @@
         "!next-ls",
         "!lexical",
         "!elixir-ls",
-        "..."
+        "...",
       ],
-      "tab_size": 2
+      "tab_size": 2,
     },
     "Elixir": {
       "language_servers": [
@@ -89,20 +91,20 @@
         "!next-ls",
         "!lexical",
         "!elixir-ls",
-        "..."
+        "...",
       ],
-      "tab_size": 2
-    }
+      "tab_size": 2,
+    },
   },
   "lsp": {
     "tailwindcss-language-server": {
       "settings": {
         "includeLanguages": {
           "heex": "html",
-          "Elixir": "html"
-        }
-      }
-    }
+          "Elixir": "html",
+        },
+      },
+    },
   },
   "vim_mode": true,
   "ui_font_size": 16,
@@ -110,6 +112,6 @@
   "theme": {
     "mode": "dark",
     "light": "Catppuccin Latte (Blur)",
-    "dark": "Catppuccin Espresso (Blur)"
-  }
+    "dark": "Catppuccin Espresso (Blur)",
+  },
 }
