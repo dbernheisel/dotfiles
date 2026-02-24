@@ -52,9 +52,9 @@ if have mise && [ ! -f "$HOME/.cache/completions/_mise" ]; then
   mise completion zsh > "$HOME/.cache/completions/_mise"
 fi
 
-if [ $TERM_PROGRAM = "WezTerm" ] && \
+if [ "$TERM_PROGRAM" = "WezTerm" ] && \
    [ ! -f "$HOME/.cache/completions/_wezterm" ]; then
-  wezterm shell-completion --shell zsh > "$HOME/.cache/completions/_wezterm"
+  (cd "$WEZTERM_EXECUTABLE_DIR" && ./wezterm shell-completion --shell zsh > "$HOME/.cache/completions/_wezterm")
 fi
 
 if [ -n "$TERMINFO" ] && \
