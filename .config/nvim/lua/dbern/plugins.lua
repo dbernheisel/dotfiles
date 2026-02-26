@@ -242,6 +242,7 @@ require("lazy").setup({
       { "<leader>b", function()
         Snacks.picker.explorer({
           hidden = true,
+          auto_close = true,
           follow_file = false,
           watch = false,
         })
