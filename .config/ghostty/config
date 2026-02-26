@@ -1,6 +1,5 @@
-command = /bin/zsh
 click-repeat-interval = 500
-auto-update-channel = stable
+# auto-update-channel = stable
 shell-integration-features = true
 
 # Preferences
@@ -10,6 +9,13 @@ window-inherit-working-directory = true
 unfocused-split-fill = #000000
 unfocused-split-opacity = 0.50
 confirm-close-surface = false
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = true
+adjust-cursor-thickness = 4
+adjust-underline-thickness = 1
+adjust-underline-position = 3
 
 # Keybinds
 keybind = global:cmd+shift+slash=toggle_quick_terminal
@@ -37,19 +43,38 @@ window-colorspace = display-p3
 
 # Font
 font-size = 16
-font-family = Maple Mono NF Regular
+font-family = Maple Mono Regular Regular
 font-family = FiraCode Nerd Font Mono
 font-family = JetBrainsMono Nerd Font Mono
-font-family-italic = Maple Mono NF Italic
+font-family-italic = Maple Mono Italic Italic
 font-family-italic = JetBrainsMono NFM Italic
-font-family-bold-italic = Maple Mono NF Bold Italic
+font-family-bold-italic = Maple Mono Italic Bold Italic
 font-family-bold-italic = JetBrainsMono NFM Bold Italic
 
 # Maple features
 font-feature = zero on # 0 with a dot
-font-feature = cv01 on # Normalize special symbols @ $ & % Q => ->
-font-feature = cv02 on # Alternative a with top arm
-font-feature = ss06 on # Break connected strokes between italic letters al, il, ull
+font-feature = cv01 on # Remove gaps in @$&
+font-feature = cv02 on # a with top arm
+font-feature = cv06 on # i without platform
+font-feature = cv07 on # J without hat
+font-feature = cv09 on # 7 with strike
+font-feature = cv61 on # straight puncuation ,;
+font-feature = cv64 on # less-than straight bar <=
+font-feature = cv65 on # straighter ampersand
+font-feature = cv66 on # pipe arrow |>
+font-feature = cv31 on # italic with arm
+font-feature = cv32 on # italic f without curls
+font-feature = cv33 on # italic i without curls
+font-feature = cv34 on # italic k without curls
+font-feature = cv35 on # italic l without curls
+font-feature = cv36 on # italic x without curls
+font-feature = cv37 on # italic y straight
+font-feature = cv39 on # italic i without curls
+font-feature = cv40 on # italic J without hat
+font-feature = cv42 on # italic 7 with strike
+font-feature = ss03 on # Add tags [info]
+font-feature = ss07 on # >>> > > > connect multi-greaters
+font-feature = ss10 on # =~ = ~ fuzzy equal 
 
 # FiraCode features
 # font-feature = zero
@@ -70,7 +95,7 @@ background-blur-radius = 32
 theme = dark:moonfly,light:ayu-light
 # theme = light:one-half-light,dark:Afterglow
 # theme = light:catppuccin-latte,dark:catppuccin-mocha
-custom-shader = shaders/bloom.glsl
+# custom-shader = shaders/bloom.glsl
 # custom-shader = shaders/cursor_blaze_tapered.glsl
 bold-is-bright = false
 
