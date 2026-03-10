@@ -1,0 +1,16 @@
+#!/bin/zsh
+for p in /opt/homebrew/bin/zellij "$HOME/.local/bin/zellij"; do
+  [ -x "$p" ] && ZELLIJ="$p" && break
+done
+if [ ! -x "$ZELLIJ" ]; then
+  exec zsh
+fi
+
+n=1
+existing=$("$ZELLIJ" list-sessions -s 2>/dev/null)
+while printf '%s\n' "$existing" | grep -qxF "$n"; do
+  n=$((n + 1))
+done
+"$ZELLIJ" attach --create-background "$n" 2>/dev/null
+printf "\033]1337;SetUserVar=%s=%s\007" "zellij_session" "$(printf '%s' "$n" | base64)"
+exec "$ZELLIJ" attach "$n"
