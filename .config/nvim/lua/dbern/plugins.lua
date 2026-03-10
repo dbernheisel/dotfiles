@@ -123,8 +123,9 @@ require("lazy").setup({
   },
   {
     'saghen/blink.cmp',
-    version = '1.8.0',
+    version = '1.9.1',
     dependencies = {
+      { 'dbernheisel/hex-cmp' },
       { 'L3MON4D3/LuaSnip',
         version =  'v2.*',
         config = function() require('dbern.plugins.snippets') end},
@@ -160,11 +161,12 @@ require("lazy").setup({
           end
         end,
         per_filetype = {
-          codecompanion = { "codecompanion" },
-          sql = { 'snippets', 'dadbod', 'buffer' }
+          elixir = { inherit_defaults = true, 'hex' },
+          sql = { 'snippets', 'dadbod', 'buffer' },
         },
         providers = {
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+          hex = { name = "hex", module = "hex_cmp", async = true }
         },
       },
       snippets = {

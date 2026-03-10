@@ -52,6 +52,9 @@ M.servers = {
   },
   pylsp = {},
   -- "ruby_lsp",
+  rust_analyzer = {
+    filetypes = {'rust'}
+  },
   sourcekit = {},
   sqlls = {},
   tailwindcss = {},
@@ -71,6 +74,11 @@ M.on_attach = function(args)
   --   vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
   --   vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
   -- end
+  
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  if bufname:match('mix.exs$') then
+    require('hex_cmp.hover').attach(bufnr)
+  end
 
   local kmp = function(lhs, rhs, desc)
     a.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap = true, silent = true, desc = desc })

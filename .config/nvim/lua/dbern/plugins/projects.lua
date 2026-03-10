@@ -4,7 +4,11 @@ local M = {}
 M.projects = {
   { name = "DateTimePicker", path = "~/date_time_parser" },
   { name = "PhantomMCP", path = "~/phantom_mcp" },
-  { name = "RunCom", path = "~/runcom" },
+  { name = "Runcom", path = "~/runcom" },
+  { name = "RuncomBuilder", path = "~/runcom_builder" },
+  { name = "RuncomRMQ", path = "~/runcom_rmq" },
+  { name = "RuncomDashboard", path = "~/runcom_dashboard" },
+  { name = "RuncomEcto", path = "~/runcom_ecto" },
   { name = "Grove", path = "~/grove" },
   { name = "Bash", path = "~/bash" },
   { name = "Safe Ecto Migrations", path = "~/safe-ecto-migrations" },
