@@ -1,11 +1,13 @@
+auto-update-channel = stable
 click-repeat-interval = 500
-# auto-update-channel = stable
 shell-integration-features = true
 
 # Preferences
 mouse-hide-while-typing = true
 clipboard-trim-trailing-spaces = true
-window-inherit-working-directory = true
+window-inherit-working-directory = false
+tab-inherit-working-directory = true
+split-inherit-working-directory = true
 unfocused-split-fill = #000000
 unfocused-split-opacity = 0.50
 confirm-close-surface = false
@@ -17,20 +19,43 @@ adjust-cursor-thickness = 4
 adjust-underline-thickness = 1
 adjust-underline-position = 3
 
-# Keybinds
-keybind = global:cmd+shift+slash=toggle_quick_terminal
-keybind = cmd+shift+i=inspector:toggle
-keybind = ctrl+shift+c=copy_to_clipboard
-keybind = ctrl+shift+v=paste_from_clipboard
+# Notifications
 
-# keybind = ctrl+a>n=new_window
-# keybind = ctrl+a>minus=new_split:down
-# keybind = ctrl+a>backslash=new_split:right
-# keybind = ctrl+a>l=goto_split:right
-# keybind = ctrl+a>h=goto_split:left
-# keybind = ctrl+a>j=goto_split:bottom
-# keybind = ctrl+a>k=goto_split:top
+notify-on-command-finish = unfocused
+notify-on-command-finish-action = no-bell,notify
+
+# Keybinds
+# keybind = global:cmd+shift+slash=toggle_quick_terminal
+keybind = cmd+shift+i=inspector:toggle
+keybind = performable:ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
 keybind = shift+enter=text:\n
+
+# Tmux
+keybind = ctrl+a>minus=new_split:down
+keybind = ctrl+a>backslash=new_split:right
+keybind = ctrl+a>l=goto_split:right
+keybind = ctrl+a>h=goto_split:left
+keybind = ctrl+a>j=goto_split:bottom
+keybind = ctrl+a>k=goto_split:top
+keybind = ctrl+a>,=prompt_tab_title
+keybind = ctrl+a>z=toggle_split_zoom
+keybind = ctrl+a>r=activate_key_table:resize
+keybind = ctrl+a>catch_all=end_key_sequence
+
+# Resize mode
+keybind = resize/arrow_up=resize_split:up,12
+keybind = resize/arrow_down=resize_split:down,10
+keybind = resize/arrow_left=resize_split:left,11
+keybind = resize/arrow_right=resize_split:right,10
+keybind = resize/h=resize_split:left,10
+keybind = resize/j=resize_split:down,10
+keybind = resize/k=resize_split:up,10
+keybind = resize/l=resize_split:right,10
+keybind = resize/escape=deactivate_key_table
+keybind = resize/enter=deactivate_key_table
+keybind = resize/q=deactivate_key_table
+keybind = resize/catch_all=ignore
 
 # Appearance
 macos-icon = custom-style
@@ -102,4 +127,3 @@ theme = dark:moonfly,light:ayu-light
 bold-is-bright = false
 
 # vi: ft=toml
-keybind = shift+enter=text:\n
