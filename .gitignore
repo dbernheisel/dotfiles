@@ -49,6 +49,7 @@ config/keybase
 
 *.pem
 
+.grepai/
 private_ssh_key
 
 # Linux
