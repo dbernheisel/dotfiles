@@ -1,13 +1,7 @@
 # Homebrew is bad at casks and updating. Just stop
 
-brew 'bat'            # CLI utility. Colorized cat
 brew 'dfu-util'       # CLI Firmware loader for keyboard
-brew 'eza'            # CLI utility. Prettier ls
-brew 'fd'             # CLI find replacement
-brew 'fzf'            # CLI Fuzzy Finder CLI
-brew 'gh'             # CLI add commands to git
 brew 'git'            # CLI Git version control
-brew 'git-delta'      # CLI diff-highlight for git
 brew 'htop'           # CLI htop process utility
 brew 'imagemagick'    # CLI magick Image converter CLI
 brew 'lame'           # Library audio encoder/decoder
@@ -15,8 +9,6 @@ brew 'lazygit'        # CLI Git TUI
 brew 'mise'           # CLI tool version manager
 tap 'neovim/neovim'
 brew 'neovim'         # CLI nvim text editor
-brew 'ripgrep'        # CLI rg grep current directory
-brew 'shellcheck'     # CLI POSIX shell linter
 brew 'tesseract'      # CLI tesseract OCR
 brew 'tidy-html5'     # CLI tidy HTML linting
 brew 'tldr'           # CLI tldr shorter man pages
