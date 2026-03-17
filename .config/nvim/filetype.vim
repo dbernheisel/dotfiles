@@ -6,6 +6,7 @@ augroup filetypedetect
   au! BufNewFile,BufRead Procfile,Brewfile setl filetype=ruby
   au! BufNewFile,BufRead *.md setl filetype=markdown
   au! BufNewFile,BufRead *.ex,*.exs,mix.lock setl filetype=elixir
+  au! BufNewFile,BufRead rebar.config,rebar.config.script setl filetype=erlang
   au! BufNewFile,BufRead mise.lock setl filetype=toml
   au! BufNewFile,BufRead *.arb setl filetype=eruby
   au! BufNewFile,BufRead *.service setl filetype=ini
