@@ -41,6 +41,7 @@ keybind = ctrl+a>k=goto_split:top
 keybind = ctrl+a>,=prompt_tab_title
 keybind = ctrl+a>z=toggle_split_zoom
 keybind = ctrl+a>r=activate_key_table:resize
+keybind = ctrl+a>slash=activate_key_table:scroll
 keybind = ctrl+a>catch_all=end_key_sequence
 
 # Resize mode
@@ -56,6 +57,26 @@ keybind = resize/escape=deactivate_key_table
 keybind = resize/enter=deactivate_key_table
 keybind = resize/q=deactivate_key_table
 keybind = resize/catch_all=ignore
+
+# Scroll mode
+keybind = scroll/arrow_up=scroll_page_lines:-1
+keybind = scroll/arrow_down=scroll_page_lines:1
+keybind = scroll/c>p=write_screen_file:copy
+keybind = scroll/k=scroll_page_lines:-1
+keybind = scroll/j=scroll_page_lines:1
+keybind = scroll/PageUp=scroll_page_up
+keybind = scroll/PageDown=scroll_page_down
+keybind = scroll/shift+j=scroll_page_down
+keybind = scroll/shift+k=scroll_page_up
+keybind = scroll/g>g=scroll_to_top
+keybind = scroll/shift+g=scroll_to_bottom
+keybind = scroll/slash=start_search
+keybind = scroll/n=navigate_search:next
+keybind = scroll/shift+n=navigate_search:previous
+keybind = scroll/escape=deactivate_key_table
+keybind = scroll/enter=deactivate_key_table
+keybind = scroll/q=deactivate_key_table
+keybind = scroll/catch_all=ignore
 
 # Appearance
 macos-icon = custom-style
