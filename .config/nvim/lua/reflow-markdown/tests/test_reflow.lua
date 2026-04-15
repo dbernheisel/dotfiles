@@ -628,4 +628,54 @@ Body text]], [[
 Body text]])
 end
 
+-- ─── ExDoc auto-link stripping ────────────────────────────────────────
+
+T['exdoc autolinks'] = MiniTest.new_set()
+
+local exdoc_opts = { strip_exdoc_autolinks = true }
+
+T['exdoc autolinks']['strips m: prefix from module links'] = function()
+  assert_reflow(
+    'See `m:MyModule` for details.',
+    'See `MyModule` for details.',
+    exdoc_opts)
+end
+
+T['exdoc autolinks']['strips t: prefix from type links'] = function()
+  assert_reflow(
+    'Returns `t:MyModule.t()`.',
+    'Returns `MyModule.t()`.',
+    exdoc_opts)
+end
+
+T['exdoc autolinks']['strips c: prefix from callback links'] = function()
+  assert_reflow(
+    'Implements `c:GenServer.init/1`.',
+    'Implements `GenServer.init/1`.',
+    exdoc_opts)
+end
+
+T['exdoc autolinks']['strips multiple prefixes on one line'] = function()
+  assert_reflow(
+    'Uses `m:Foo` and `t:Foo.bar()` and `c:Foo.baz/2`.',
+    'Uses `Foo` and `Foo.bar()` and `Foo.baz/2`.',
+    exdoc_opts)
+end
+
+T['exdoc autolinks']['does not strip inside fenced code blocks'] = function()
+  assert_reflow([[
+```elixir
+`m:MyModule`
+```]], [[
+```elixir
+`m:MyModule`
+```]], exdoc_opts)
+end
+
+T['exdoc autolinks']['disabled by default'] = function()
+  assert_reflow(
+    'See `m:MyModule` for details.',
+    'See `m:MyModule` for details.')
+end
+
 return T

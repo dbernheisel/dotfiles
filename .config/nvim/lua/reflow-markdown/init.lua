@@ -21,6 +21,7 @@ local M = {}
 ---@field max_width integer|false? Cap hover float width in columns. Set to false to defer to Neovim's default. Default: 80.
 ---@field wrap boolean? Soft-wrap long lines inside the hover float. Default: true.
 ---@field fence_indented_code string|false? Wrap 4-space-indented code blocks in fences of the given language (e.g. `"elixir"`) so syntax highlighters can pick them up. LSPs like Expert emit example blocks as indented code without fences. Default: false.
+---@field strip_exdoc_autolinks boolean? Strip ExDoc auto-link prefixes (`m:`, `t:`, `c:`) from backtick code spans. Default: false.
 ---@field per_client table<string, reflow.Options>? Per-LSP-client option overrides. Keys are client names (e.g. `"expert"`); values are options merged over the defaults when that client produces a hover. Requires `patch_hover_handler` (installed by `setup`).
 
 ---@type reflow.Options
@@ -31,6 +32,7 @@ local defaults = {
   max_width = 80,
   wrap = true,
   fence_indented_code = false,
+  strip_exdoc_autolinks = false,
 }
 
 -- A line that *starts* a new block and cannot be appended to the previous
@@ -227,6 +229,26 @@ local function pass_admonitions(lines)
   return out
 end
 
+-- Pre-pass: strip ExDoc auto-link prefixes from backtick code spans.
+-- ExDoc uses `m:Module`, `t:Module.type()`, `c:Module.callback()` to
+-- generate links; in a hover float the prefix is visual noise.
+-- Only touches content outside fenced code blocks.
+local function pass_strip_exdoc_autolinks(lines)
+  local out = {}
+  local in_fence = false
+  for _, line in ipairs(lines) do
+    if line:match('^%s*```') then
+      in_fence = not in_fence
+      table.insert(out, line)
+    elseif in_fence then
+      table.insert(out, line)
+    else
+      table.insert(out, (line:gsub('`[mtc]:([^`]+)`', '`%1`')))
+    end
+  end
+  return out
+end
+
 -- First pass: join soft-wrapped paragraph lines. Fence state tracked so
 -- code block interiors pass through untouched. If `pad_fences` is on,
 -- inject a blank line *before* opening fences so renderers can cleanly
@@ -335,7 +357,8 @@ function M.reflow(lines, opts)
   opts = vim.tbl_extend('force', defaults, opts or {})
   local fenced = pass_fence_indented(lines, opts.fence_indented_code)
   local admonitioned = pass_admonitions(fenced)
-  local joined = pass_join(admonitioned, opts)
+  local stripped = opts.strip_exdoc_autolinks and pass_strip_exdoc_autolinks(admonitioned) or admonitioned
+  local joined = pass_join(stripped, opts)
   if opts.compact_same_shapes then
     return pass_compact(joined)
   end

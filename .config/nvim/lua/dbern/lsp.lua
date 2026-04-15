@@ -121,7 +121,7 @@ M.setup = function()
     -- them in ```elixir so markview/treesitter can syntax-highlight.
     -- Scoped to `expert` so other LSPs' indented content isn't touched.
     per_client = {
-      expert = { fence_indented_code = 'elixir' },
+      expert = { fence_indented_code = 'elixir', strip_exdoc_autolinks = true },
     },
   })
 
