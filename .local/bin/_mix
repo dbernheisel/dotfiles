@@ -2,6 +2,45 @@
 # Zsh completion for Elixir's mix build tool.
 # Caches task lists and switches per project, invalidated when mix.exs or mix.lock change.
 
+# Parse switches from `mix help <task>` output (markdown-style: * `--flag` - description)
+# Reads from stdin
+_mix_parse_mix_help() {
+  local joined
+  joined=$(awk '
+    /^[[:space:]]+\* `-/ {
+      if (line != "") print line
+      line = $0
+      next
+    }
+    line != "" && /^[[:space:]]+[^*]/ {
+      gsub(/^[[:space:]]+/, " ", $0)
+      line = line $0
+      next
+    }
+    { if (line != "") { print line; line = "" } }
+    END { if (line != "") print line }
+  ')
+  # --long-flag:description
+  echo "$joined" | sed -nE 's/^[[:space:]]+\* `(--[a-zA-Z0-9_-]+)`.* - (.*)/\1:\2/p'
+  # --no-* variants
+  echo "$joined" | sed -nE 's/^[[:space:]]+\* `--[a-zA-Z0-9_-]+`[[:space:]]+\(`(--no-[a-zA-Z0-9_-]+)`\).* - (.*)/\1:disable \2/p'
+  # -short flags
+  echo "$joined" | sed -nE 's/^[[:space:]]+\* `(-[a-zA-Z])`,? `--[a-zA-Z0-9_-]+`.* - (.*)/\1:\2/p'
+}
+
+# Parse switches from `<task> --help` output (CLI-style: -s, --long-flag  Description)
+# Reads from stdin
+_mix_parse_cli_help() {
+  local input
+  input=$(cat)
+  # -s, --long-flag  description
+  echo "$input" | sed -nE 's/^[[:space:]]+(-[a-zA-Z]),?[[:space:]]+(--[a-zA-Z0-9_-]+)[[:space:]]+(.*)/\1:\3\n\2:\3/p'
+  # --[no-]flag  description -> --flag and --no-flag
+  echo "$input" | sed -nE 's/^[[:space:]]+--\[no-\]([a-zA-Z0-9_-]+)[[:space:]]+(.*)/--\1:\2\n--no-\1:\2/p'
+  # --long-flag-only  description (no short flag)
+  echo "$input" | sed -nE 's/^[[:space:]]+(--[a-zA-Z0-9_-]+)[[:space:]]+(.*)/\1:\2/p'
+}
+
 _mix() {
   local cache_dir="$HOME/.cache/completions/mix"
   mkdir -p "$cache_dir"
@@ -67,38 +106,45 @@ _mix() {
     # Subsequent arguments: complete switches and files
     local task="${words[2]}"
 
+    # Credo has its own subcommand structure
+    if [[ "$task" == "credo" ]] && grep -q '^credo' "$tasks_cache" 2>/dev/null; then
+      local credo_subcmd="${words[3]}"
+      local -a credo_subcmds=(
+        "suggest:Suggest improvements (default)"
+        "explain:Explain a specific issue"
+        "diff:Show issues from recent changes"
+        "info:Show info about the Credo setup"
+        "list:List all issues"
+      )
+
+      if (( CURRENT == 3 )); then
+        _describe 'credo command' credo_subcmds
+        return
+      fi
+
+      # Complete switches for credo subcommands
+      local switch_cache="$project_cache_dir/switch_credo_${credo_subcmd}"
+      if [[ ! -f "$switch_cache" ]]; then
+        local help_output
+        (cd "$project_dir" && mix credo "$credo_subcmd" --help 2>/dev/null) \
+          | _mix_parse_cli_help > "$switch_cache" || { _files; return; }
+      fi
+
+      if [[ -s "$switch_cache" ]]; then
+        local -a switches
+        switches=(${(f)"$(cat "$switch_cache")"})
+        _describe 'switch' switches -- && return
+      fi
+      _files
+      return
+    fi
+
     # Fetch switches for this task (cached per task)
     local switch_cache="$project_cache_dir/switch_${task//[\/.]/_}"
     if [[ ! -f "$switch_cache" ]]; then
       local help_output
-      help_output=$(cd "$project_dir" && mix help "$task" 2>/dev/null) || { _files; return; }
-
-      # Parse switches from lines like: * `--flag` ... - description
-      # Joins continuation lines (indented, no `--` prefix) onto the previous switch line,
-      # then extracts --no-* variants when present as: * `--flag` (`--no-flag`) - description
-      local joined
-      joined=$(echo "$help_output" | awk '
-        /^[[:space:]]+\* `-/ {
-          if (line != "") print line
-          line = $0
-          next
-        }
-        line != "" && /^[[:space:]]+[^*]/ {
-          gsub(/^[[:space:]]+/, " ", $0)
-          line = line $0
-          next
-        }
-        { if (line != "") { print line; line = "" } }
-        END { if (line != "") print line }
-      ')
-      {
-        # Extract --long-flag:description
-        echo "$joined" | sed -nE 's/^[[:space:]]+\* `(--[a-zA-Z0-9_-]+)`.* - (.*)/\1:\2/p'
-        # Extract --no-* variants
-        echo "$joined" | sed -nE 's/^[[:space:]]+\* `--[a-zA-Z0-9_-]+`[[:space:]]+\(`(--no-[a-zA-Z0-9_-]+)`\).* - (.*)/\1:disable \2/p'
-        # Extract -short flags: * `-s`, `--long` -> -s:description
-        echo "$joined" | sed -nE 's/^[[:space:]]+\* `(-[a-zA-Z])`,? `--[a-zA-Z0-9_-]+`.* - (.*)/\1:\2/p'
-      } > "$switch_cache"
+      (cd "$project_dir" && mix help "$task" 2>/dev/null) \
+        | _mix_parse_mix_help > "$switch_cache" || { _files; return; }
     fi
 
     if [[ -s "$switch_cache" ]]; then
