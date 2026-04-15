@@ -39,13 +39,18 @@ require("lazy").setup({
     lazy = false,
     config = function() require('dbern.plugins.lualine') end },
 
-  -- LSP
-  { 'mason-org/mason-lspconfig.nvim',
-    opts = {},
-    dependencies = {
-      { 'mason-org/mason.nvim', opts = {} }
-    }
-  },
+  -- -- LSP
+  -- { 'mason-org/mason-lspconfig.nvim',
+  --   opts = {
+  --     automatic_enable = false,
+  --     ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
+  --       "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
+  --       "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
+  --   },
+  --   dependencies = {
+  --     { 'mason-org/mason.nvim', opts = {} }
+  --   }
+  -- },
 
   {
     "luckasRanarison/tailwind-tools.nvim",
@@ -83,6 +88,14 @@ require("lazy").setup({
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
+  { "dbernheisel/run-or-comp",
+    ft = "elixir",
+    config = function()
+      vim.api.nvim_set_hl(0, "RunorcompCompileTime", { bg = "#1a1a2e" })
+      vim.api.nvim_set_hl(0, "RunorcompLabel", { fg = "#6e6ea8", italic = true })
+      require("runorcomp").setup()
+    end,
+  },
   {
     'narutoxy/silicon.lua',
     cond = U.executable('silicon'),
@@ -116,16 +129,73 @@ require("lazy").setup({
   {
     "coder/claudecode.nvim",
     config = true,
+    dependencies = { "folke/snacks.nvim" },
     keys = {
       { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
       { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>as",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "snacks_picker_list", "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+      },
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
+
   },
+  -- {
+  --   "carlos-algms/agentic.nvim",
+  --   opts = { provider = "claude-agent-acp" },
+  --   keys = {
+  --     {
+  --       "<leader>ac",
+  --       function() require("agentic").toggle() end,
+  --       mode = { "n", "v" },
+  --       desc = "Toggle Agentic Chat"
+  --     },
+  --     {
+  --       "<leader>as",
+  --       function() require("agentic").add_selection_or_file_to_context() end,
+  --       mode = { "n", "v" },
+  --       desc = "Add file or selection to Agentic to Context"
+  --     },
+  --     {
+  --       "<leader>an",
+  --       function() require("agentic").new_session() end,
+  --       mode = { "n", "v" },
+  --       desc = "New Agentic Session"
+  --     },
+  --     {
+  --       "<leader>ar",
+  --       function() require("agentic").restore_session() end,
+  --       desc = "Agentic Restore session",
+  --       silent = true,
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>ad",
+  --       function() require("agentic").add_current_line_diagnostics() end,
+  --       desc = "Add current line diagnostic to Agentic",
+  --       mode = { "n" },
+  --     },
+  --     {
+  --       "<leader>aD",
+  --       function() require("agentic").add_buffer_diagnostics() end,
+  --       desc = "Add all buffer diagnostics to Agentic",
+  --       mode = { "n" },
+  --     },
+  --   },
+  -- },
   {
     'saghen/blink.cmp',
     version = '1.9.1',
     dependencies = {
-      { 'dbernheisel/hex-cmp' },
+      -- { 'dbernheisel/hex-cmp', config = true },
       { 'L3MON4D3/LuaSnip',
         version =  'v2.*',
         config = function() require('dbern.plugins.snippets') end},
@@ -161,12 +231,12 @@ require("lazy").setup({
           end
         end,
         per_filetype = {
-          elixir = { inherit_defaults = true, 'hex' },
+          -- elixir = { inherit_defaults = true, 'hex' },
           sql = { 'snippets', 'dadbod', 'buffer' },
         },
         providers = {
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-          hex = { name = "hex", module = "hex_cmp", async = true }
+          -- hex = { name = "hex", module = "hex_cmp", async = true }
         },
       },
       snippets = {
@@ -212,9 +282,10 @@ require("lazy").setup({
     },
     lazy = false,
     keys = {
-      -- { "<leader>f", function() Snacks.picker.grep({ matcher = { cwd_bonus = true, frecency = true, sort_empty = true } }) end, desc = "Find text" },
+      { "<leader>f", function() Snacks.picker.grep() end, desc = "Find text" },
       { "<leader>S", function() Snacks.scratch() end, desc = "Find text" },
       { "<leader>H", function() Snacks.picker.highlights() end, desc = "Find highlights" },
+      { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
       { "<c-s-p>", function() require("dbern.plugins.projects").pick_project() end, desc = "Switch project" },
       { "<c-p>", function()
         Snacks.picker.files({
@@ -338,31 +409,70 @@ require("lazy").setup({
         },
       },
       picker = {
-        -- snacks.picker.layout.Config
-        -- layout = {
-        --   cycle = true,
-        --   reverse = true,
-        --   backdrop = true,
-        --   layout = {
-        --     box = "horizontal",
-        --     reverse = true,
-        --     width = 0.8,
-        --     min_width = 120,
-        --     height = 0.8,
-        --     {
-        --       { win = "list", border = "bottom" },
-        --       { win = "input", height = 1, border = "none" },
-        --       box = "vertical",
-        --       border = "rounded",
-        --       title = "{title} {live} {flags}",
-        --     },
-        --     { win = "preview", title = "{preview}", height = 0.4, border = "top" },
-        --   }
-        -- },
         ui_select = true,
         enabled = true,
+        sources = {
+          files = {
+            layout = {
+              layout = {
+                box = "horizontal",
+                width = 0,
+                height = 0,
+                {
+                  box = "vertical",
+                  border = true,
+                  title = "{title} {live} {flags}",
+                  { win = "input", height = 1, border = "bottom" },
+                  { win = "list", border = "none" },
+                },
+                { win = "preview", title = "{preview}", border = true, width = 0.5 },
+              },
+            },
+          },
+          grep = {
+            layout = {
+              layout = {
+                box = "horizontal",
+                width = 0,
+                height = 0,
+                {
+                  box = "vertical",
+                  border = true,
+                  title = "{title} {live} {flags}",
+                  { win = "input", height = 1, border = "bottom" },
+                  { win = "list", border = "none" },
+                },
+                { win = "preview", title = "{preview}", border = true, width = 0.5 },
+              },
+            },
+            filter = {
+              -- Rewrite `!glob` tokens in the search input into
+              -- `-- -g !glob` so ripgrep excludes matching paths.
+              -- e.g. `!vector/ mix.exs` → `mix.exs -- -g !vector/`
+              transform = function(_, filter)
+                local terms = {}
+                local globs = {}
+                for token in filter.search:gmatch('%S+') do
+                  if token:sub(1, 1) == '!' and #token > 1 then
+                    table.insert(globs, token)
+                  else
+                    table.insert(terms, token)
+                  end
+                end
+                if #globs > 0 then
+                  local glob_args = {}
+                  for _, g in ipairs(globs) do
+                    table.insert(glob_args, '-g')
+                    table.insert(glob_args, g)
+                  end
+                  filter.search = table.concat(terms, ' ')
+                    .. ' -- ' .. table.concat(glob_args, ' ')
+                end
+              end,
+            },
+          },
+        },
         win = {
-          -- input window
           input = {
             keys = {
               ["<Esc>"] = { "close", mode = { "n", "i" } },
@@ -444,7 +554,7 @@ require("lazy").setup({
     },
     config = function() require('dbern.plugins.fzf').setup() end,
     keys = {
-      { "<leader>f", ':call v:lua.fzf_grep()<cr>', silent = true, desc = "Find text" },
+      -- { "<leader>f", ':call v:lua.fzf_grep()<cr>', silent = true, desc = "Find text" },
       -- { "<c-p>", ':call v:lua.fzf_files()<cr>', desc = "Find file" },
       -- { "<leader>ev", ':call v:lua.fzf_vimrc()<cr>', desc = "Find vimrc file" },
       -- { "<leader>ed", ':call v:lua.fzf_dotfiles()<cr>', desc = "Find dotfile" },
@@ -495,6 +605,110 @@ require("lazy").setup({
       vim.treesitter.language.register("bash", "sh")
       vim.treesitter.language.register("bash", "zsh")
       vim.treesitter.language.register("bash", "env")
+    end,
+  },
+
+  -- Render markdown (including LSP hover floats) with styled headings,
+  -- bold/italic, lists, code blocks, tables, rules, etc.
+  { 'OXY2DEV/markview.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      { 'nvim-tree/nvim-web-devicons', lazy = true },
+    },
+    ft = { 'markdown' },
+    -- Also load on LspAttach so the first hover in a non-markdown buffer
+    -- gets decorated. Neovim sets ft=markdown on the hover float
+    -- automatically, which is what markview keys off of.
+    event = 'LspAttach',
+    config = function()
+      require('markview').setup({
+        markdown = {
+          list_items = {
+            shift_width = 1,
+            indent_size = 2,
+            add_padding = false,
+          },
+        },
+        markdown_inline = {
+          -- Markview conceals inline code backticks but by default pads
+          -- each side with a virt-text space — so the column width of
+          -- "`foo`" stays the same, just shifted. Empty strings collapse
+          -- the padding so inline code flows like plain text.
+          inline_codes = {
+            padding_left = '',
+            padding_right = '',
+          },
+        },
+        preview = {
+          filetypes = { 'markdown' },
+          -- markview defaults to ignoring `nofile` buffers — but LSP hover
+          -- floats *are* `nofile`, and rendering them is the whole point.
+          -- Override by passing an empty list so no buftype is ignored.
+          ignore_buftypes = {},
+          -- Hybrid mode reveals raw source around the cursor (markview's
+          -- analogue to render-markdown's anti_conceal). Disabled so
+          -- previews stay fully rendered in hover floats and regular files.
+          hybrid_modes = {},
+        },
+        -- LaTeX rendering pulls in tree-sitter LaTeX queries we don't need.
+        latex = { enable = false },
+      })
+
+      -- Markview has no per-buftype sign toggle, so suppress the sign
+      -- column for markdown in nofile buffers (LSP hover floats). Signs
+      -- the plugin would otherwise place — heading icons, list bullets,
+      -- code block indicators — simply have no column to render into.
+      -- Regular markdown files keep their sign decorations.
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('markview-nofile-no-signs', {}),
+        pattern = 'markdown',
+        callback = function(args)
+          if vim.bo[args.buf].buftype == 'nofile' then
+            vim.wo.signcolumn = 'no'
+            vim.wo.spell = false
+          end
+        end,
+      })
+
+      -- Strip the background on fenced-code-block content. Markview
+      -- applies `MarkviewCode` (its own hl group) for the block
+      -- background; `MarkviewCodeInfo` is the language-label strip at
+      -- the top of the block. Both read as noisy stripes inside hover
+      -- floats — especially for multi-line blocks. Re-applied on
+      -- ColorScheme so scheme switches don't bring the bg back.
+      local function clear_code_bg()
+        for _, group in ipairs({
+          'MarkviewCode',
+          'MarkviewCodeInfo',
+          'MarkviewInlineCode',
+        }) do
+          vim.api.nvim_set_hl(0, group, { bg = 'NONE', ctermbg = 'NONE' })
+        end
+        -- Bold the heading text. `MarkviewHeading<N>` is a *link* to
+        -- `MarkviewPalette<N>` (where the actual fg color lives), so
+        -- neither `:highlight gui=bold` nor `nvim_set_hl({bold=true})`
+        -- works cleanly — both break the link and leave you either
+        -- without fg or without bold. We resolve the palette color
+        -- ourselves and redefine the heading group with both.
+        for i = 1, 6 do
+          local palette = vim.api.nvim_get_hl(0, {
+            name = 'MarkviewPalette' .. i,
+            link = false,
+          })
+          -- Copy *all* palette attributes (fg, bg, sp, italic,
+          -- underline, etc.) and add bold. Copying just `fg` earlier
+          -- stripped markview's heading background, which is what
+          -- produced the heading color strip — without it, headings
+          -- looked plain apart from bold.
+          palette.bold = true
+          vim.api.nvim_set_hl(0, 'MarkviewHeading' .. i, palette)
+        end
+      end
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        group = vim.api.nvim_create_augroup('markview-code-bg-transparent', {}),
+        callback = clear_code_bg,
+      })
+      clear_code_bg()
     end,
   },
 
@@ -726,46 +940,36 @@ require("lazy").setup({
   { 'pbrisbin/vim-mkdir' },
 
 
-  { 'nvim-flutter/flutter-tools.nvim',
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      flutter_path = nil,
-      flutter_lookup_cmd = "mise where flutter",
-      widget_guides = {
-        enabled = true,
-      },
-        closing_tags = {
-          highlight = "Comment",
-          prefix = "// ",
-          enabled = true,
-        },
-        dev_log = {
-          enabled = true,
-          open_cmd = "tabedit",
-        },
-    },
-    keys = {
-      { "<leader>fs", ":FlutterRun<CR>", desc = "Flutter Run" },
-      { "<leader>fq", ":FlutterQuit<CR>", desc = "Flutter Quit" },
-      { "<leader>fd", ":FlutterDevices<CR>", desc = "Flutter Devices" },
-      { "<leader>fe", ":FlutterEmulators<CR>", desc = "Flutter Emulators" },
-      { "<leader>fr", ":FlutterReload<CR>", desc = "Flutter Reload" },
-      { "<leader>fR", ":FlutterRestart<CR>", desc = "Flutter Restart" },
-      { "<leader>fD", ":FlutterDevTools<CR>", desc = "Flutter DevTools" },
-    }
-  },
-
-  -- AI bullcrap
-  {
-    "coder/claudecode.nvim",
-    config = true,
-    keys = {
-      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-    },
-  },
+  -- { 'nvim-flutter/flutter-tools.nvim',
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --   },
+  --   opts = {
+  --     flutter_path = nil,
+  --     flutter_lookup_cmd = "mise where flutter",
+  --     widget_guides = {
+  --       enabled = true,
+  --     },
+  --       closing_tags = {
+  --         highlight = "Comment",
+  --         prefix = "// ",
+  --         enabled = true,
+  --       },
+  --       dev_log = {
+  --         enabled = true,
+  --         open_cmd = "tabedit",
+  --       },
+  --   },
+  --   keys = {
+  --     { "<leader>fs", ":FlutterRun<CR>", desc = "Flutter Run" },
+  --     { "<leader>fq", ":FlutterQuit<CR>", desc = "Flutter Quit" },
+  --     { "<leader>fd", ":FlutterDevices<CR>", desc = "Flutter Devices" },
+  --     { "<leader>fe", ":FlutterEmulators<CR>", desc = "Flutter Emulators" },
+  --     { "<leader>fr", ":FlutterReload<CR>", desc = "Flutter Reload" },
+  --     { "<leader>fR", ":FlutterRestart<CR>", desc = "Flutter Restart" },
+  --     { "<leader>fD", ":FlutterDevTools<CR>", desc = "Flutter DevTools" },
+  --   }
+  -- },
 
   -- Write better
   { 'godlygeek/tabular' },

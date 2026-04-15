@@ -1,83 +1,20 @@
 local a = vim.api
 local lsputil = require("vim.lsp.util")
 local hasFzf, _Fzf = pcall(require, "fzf-lua")
-local osInfo = vim.uv.os_uname()
-local arch
-  if osInfo.machine == "x86_64" then
-    arch="amd64"
-  else
-    arch=string.lower(osInfo.machine)
-  end
-local homedir = vim.uv.os_homedir()
-local expert = vim.fn.resolve(homedir.."/.local/bin/" .."expert_"..string.lower(osInfo.sysname).."_"..arch)
--- local lexical = vim.fn.resolve(homedir.."/lexical/_build/dev/package/lexical/bin/start_lexical.sh")
 
 local M = {}
 
-M.servers = {
-  bashls = {
-    filetypes = {"sh", "bash", "zsh"},
-    settings = {
-      bashIde = {
-        globPattern = "*@(.sh|.inc|.bash|.command|.zsh|zshrc|zsh_*)"
-      }
-    }
-  },
-  cssls = {},
-  dockerls = {},
-  -- lexical = {
-  --   cmd = { lexical }
-  -- },
-  expert = {
-    cmd = { expert, "--stdio" },
-    filetypes = { "elixir", "eelixir", "heex" },
-    root_dir = function(bufnr, on_dir)
-      local fname = vim.api.nvim_buf_get_name(bufnr)
-      local root = vim.fs.root(fname, { "mix.exs" })
-      if root then on_dir(root) end
-    end,
-  },
-  html = {},
-  jsonls = {},
-  kotlin_language_server = {},
-  lua_ls = {},
-  markdown_oxide = {
-    capabilities = {
-      workspace = {
-        didChangeWatchedFiles = {
-          dynamicRegistration = true
-        }
-      }
-    }
-  },
-  pylsp = {},
-  -- "ruby_lsp",
-  rust_analyzer = {
-    filetypes = {'rust'}
-  },
-  sourcekit = {},
-  sqlls = {},
-  tailwindcss = {},
-  ts_ls = {},
-  vimls = {},
-  vuels = {},
-  yamlls = {},
-  zls = {},
-}
 
 M.on_attach = function(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
   local bufnr = args.buf
 
-  -- if client.name == "ElixirLS" then
-  --   vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-  --   vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-  --   vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
+  -- if client:supports_method('textDocument/completion') then
+  --   vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
   -- end
-  
-  local bufname = vim.api.nvim_buf_get_name(bufnr)
-  if bufname:match('mix.exs$') then
-    require('hex_cmp.hover').attach(bufnr)
+
+  if client and client:supports_method "textDocument/codeLens" and client.name ~= "markdown_oxide" then
+    vim.lsp.codelens.enable()
   end
 
   local kmp = function(lhs, rhs, desc)
@@ -115,6 +52,7 @@ M.on_attach = function(args)
   end
 
   kmp('<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', "Code actions")
+  kmp('<leader>cl', '<cmd>lua vim.lsp.codelens.run()<cr>', "Run code lens")
 
   if client:supports_method("textDocument/rename") then
     kmp('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', "Rename")
@@ -175,18 +113,17 @@ M.on_detach = function(args)
 end
 
 M.setup = function()
-  -- :Mason
-  require('mason-lspconfig').setup({
-    opts =  {
-      automatic_enable = true,
-      automatic_installation = false,
-      ensure_installed = { "bashls", "cssls", "dockerls", "html", "jsonls", "markdown_oxide",
-        "solargraph", "kotlin_language_server", "lua_ls", "tailwindcss", "ts_ls", "vimls",
-        "vuels", "ruby_lsp", "sqlls", "yamlls", "zls" }
-    }
-  })
-
   M.lspHighlightAugroup = vim.api.nvim_create_augroup("LspDocumentHighlight", {})
+
+  require('reflow-markdown').setup({
+    -- Expert (Elixir LSP) emits example blocks under `## Examples` as
+    -- 4-space-indented CommonMark code instead of fenced blocks. Wrap
+    -- them in ```elixir so markview/treesitter can syntax-highlight.
+    -- Scoped to `expert` so other LSPs' indented content isn't touched.
+    per_client = {
+      expert = { fence_indented_code = 'elixir' },
+    },
+  })
 
   a.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
@@ -200,11 +137,10 @@ M.setup = function()
     desc = "Stop LSP client when no buffer is attached",
   })
 
-  for server, server_config in pairs(M.servers) do
-    if vim.tbl_count(server_config) ~= 0 then
-      vim.lsp.config(server, server_config)
-    end
-    vim.lsp.enable(server)
+  -- Enable all servers defined in lsp/*.lua
+  for _, file in ipairs(vim.api.nvim_get_runtime_file('lsp/*.lua', true)) do
+    local name = vim.fn.fnamemodify(file, ':t:r')
+    vim.lsp.enable(name)
   end
 
   require('colorizer').setup({'css', 'scss', 'sass', 'javascript', 'html',

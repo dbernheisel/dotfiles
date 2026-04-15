@@ -91,3 +91,15 @@
   (quoted_content) @injection.content
  (#any-of? @_sigil_name "MERMAID")
  (#set! injection.language "mermaid"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+  (#eq? @_sigil_name "JQ")
+  (#set! injection.language "jq"))
+
+(sigil
+  (sigil_name) @_sigil_name
+  (quoted_content) @injection.content
+  (#eq? @_sigil_name "AWK")
+  (#set! injection.language "awk"))

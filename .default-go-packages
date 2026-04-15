@@ -1,0 +1,2 @@
+github.com/docker/docker-language-server/cmd/docker-language-server@latest
+golang.org/x/tools/gopls@latest

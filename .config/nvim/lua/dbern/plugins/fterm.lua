@@ -43,6 +43,24 @@ M.setup = function()
   vim.api.nvim_set_keymap('n', '<leader>t2', ':call v:lua.toggle_test()<cr>', opts)
   vim.api.nvim_set_keymap('t', '<leader>t1', '<c-\\><c-n>:call v:lua.toggle_term()<cr><esc>', opts)
   vim.api.nvim_set_keymap('t', '<leader>t2', '<c-\\><c-n>:call v:lua.toggle_test()<cr><esc>', opts)
+
+  local function set_fterm_hl()
+    vim.api.nvim_set_hl(0, 'FTerm', { bg = '#151515' })
+  end
+  set_fterm_hl()
+
+  local group = vim.api.nvim_create_augroup('fterm-float-bg', {})
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = group,
+    callback = set_fterm_hl,
+  })
+  vim.api.nvim_create_autocmd('FileType', {
+    group = group,
+    pattern = 'FTerm',
+    callback = function()
+      vim.api.nvim_set_option_value('winhl', 'Normal:FTerm,NormalFloat:FTerm', { win = 0 })
+    end,
+  })
 end
 
 -- Keymaps

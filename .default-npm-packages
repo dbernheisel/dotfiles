@@ -1,7 +1,16 @@
 @babel/eslint-parser
 @mermaid-js/mermaid-cli
+@tailwindcss/language-server
+bash-language-server
 eslint
 neovim
 prettier
+sql-language-server
 tree-sitter-cli
 typescript
+typescript-language-server
+vim-language-server
+vscode-langservers-extracted
+yaml-language-server
+@vue/language-server
+@vtsls/language-server

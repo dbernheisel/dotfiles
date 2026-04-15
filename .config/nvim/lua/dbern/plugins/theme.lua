@@ -8,6 +8,8 @@ highlight Dash guibg=#D19A66 gui=bold
 highlight VertSplit ctermbg=255 guibg=bg guifg=bg
 highlight BlackBg guibg=#151515
 highlight NormalFloat guibg=#151515
+highlight SnacksNormal guibg=#151515
+highlight SnacksNormalNC guibg=#151515
 highlight link string.special.symbol @constant
 ]]
 
