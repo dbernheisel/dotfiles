@@ -446,18 +446,27 @@ require("lazy").setup({
               },
             },
             filter = {
-              -- Rewrite `!glob` tokens in the search input into
-              -- `-- -g !glob` so ripgrep excludes matching paths.
-              -- e.g. `!vector/ mix.exs` → `mix.exs -- -g !vector/`
-              transform = function(_, filter)
+              -- Rewrite glob tokens in the search input so ripgrep
+              -- filters matching paths.
+              -- `!vector/` excludes via `-g !vector/`
+              -- `sidecar/` limits to that dir via search path (respects gitignore)
+              transform = function(picker, filter)
                 local terms = {}
                 local globs = {}
+                local dirs = {}
                 for token in filter.search:gmatch('%S+') do
                   if token:sub(1, 1) == '!' and #token > 1 then
-                    table.insert(globs, token)
+                    table.insert(globs, token .. '*')
+                  elseif token:match('/$') then
+                    table.insert(dirs, token)
                   else
                     table.insert(terms, token)
                   end
+                end
+                if #dirs > 0 then
+                  picker.opts.dirs = dirs
+                else
+                  picker.opts.dirs = nil
                 end
                 if #globs > 0 then
                   local glob_args = {}
@@ -467,6 +476,8 @@ require("lazy").setup({
                   end
                   filter.search = table.concat(terms, ' ')
                     .. ' -- ' .. table.concat(glob_args, ' ')
+                else
+                  filter.search = table.concat(terms, ' ')
                 end
               end,
             },
@@ -476,6 +487,14 @@ require("lazy").setup({
           input = {
             keys = {
               ["<Esc>"] = { "close", mode = { "n", "i" } },
+              ["<PageDown>"] = { "list_scroll_down", mode = { "i", "n" } },
+              ["<PageUp>"] = { "list_scroll_up", mode = { "i", "n" } },
+            }
+          },
+          list = {
+            keys = {
+              ["<PageDown>"] = "list_scroll_down",
+              ["<PageUp>"] = "list_scroll_up",
             }
           }
         }
