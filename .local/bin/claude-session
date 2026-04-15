@@ -1,0 +1,3 @@
+#!/bin/bash
+
+zellij --layout $HOME/.config/zellij/layouts/claude.kdl attach --create "Claude"

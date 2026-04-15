@@ -52,6 +52,10 @@ if have mise && [ ! -f "$HOME/.cache/completions/_mise" ]; then
   mise completion zsh > "$HOME/.cache/completions/_mise"
 fi
 
+if have tailscale && [ ! -f "$HOME/.cache/completions/_tailscale" ]; then
+  tailscale completion zsh > "$HOME/.cache/completions/_tailscale"
+fi
+
 if [ "$TERM_PROGRAM" = "WezTerm" ] && \
    [ ! -f "$HOME/.cache/completions/_wezterm" ]; then
   (cd "$WEZTERM_EXECUTABLE_DIR" && ./wezterm shell-completion --shell zsh > "$HOME/.cache/completions/_wezterm")
@@ -65,6 +69,10 @@ fi
 
 if have npm && [ ! -f "$HOME/.cache/completions/_npm" ]; then
   npm completion > "$HOME/.cache/completions/_npm"
+fi
+
+if have mix && [ ! -L "$HOME/.cache/completions/_mix" ]; then
+  ln -sf "$HOME/.local/bin/_mix" "$HOME/.cache/completions/_mix"
 fi
 
 fpath=("$HOME/.cache/completions" $fpath)

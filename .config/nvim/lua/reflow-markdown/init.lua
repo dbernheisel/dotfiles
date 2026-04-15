@@ -188,7 +188,7 @@ end
 -- admonition blockquotes into GitHub alert syntax so markview.nvim
 -- renders them with colored borders/icons.
 --
---   > #### Error {: .error}     →  > [!ERROR]
+--   > #### Error {: .error}     →   > [!ERROR]
 --   >                               >
 --   > Body text                     > Body text
 --
