@@ -91,6 +91,7 @@ _mix() {
   if (( needs_refresh )); then
     local task_output
     task_output=$(cd "$project_dir" && mix help 2>/dev/null | grep '^mix ' | sed 's/^mix //' | sed 's/ *# /:/') || return
+    rm -f "$tasks_cache"
     {
       echo "$cache_key"
       echo "$task_output"
