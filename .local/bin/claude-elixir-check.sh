@@ -50,17 +50,26 @@ $compile_output
 "
     fi
 
-    # 3. Credo
+    # 3. Credo (only on changed .ex/.exs files)
     has_credo=false
     if [ -f .credo.exs ] || mix help credo >/dev/null 2>&1; then
       has_credo=true
     fi
     if $has_credo; then
-      if ! credo_output=$(mix credo --strict 2>&1); then
-        proj_errors+="## [$label] mix credo --strict FAILED
+      # Filter changed files to this subproject, strip subproject prefix
+      if [ "$proj" = "." ]; then
+        proj_files=$(echo "$elixir_changed" | grep -E '\.(ex|exs)$' || true)
+      else
+        proj_files=$(echo "$elixir_changed" | grep "^${proj}/" | sed "s|^${proj}/||" | grep -E '\.(ex|exs)$' || true)
+      fi
+      if [ -n "$proj_files" ]; then
+        # shellcheck disable=SC2086
+        if ! credo_output=$(mix credo --strict $proj_files 2>&1); then
+          proj_errors+="## [$label] mix credo --strict FAILED
 $credo_output
 
 "
+        fi
       fi
     fi
 
@@ -78,15 +87,11 @@ for f in "$tmpdir"/*; do
 done
 
 if [ -n "$errors" ]; then
-  context=$(printf '%s' "$errors" | jq -Rs .)
+  reason=$(printf 'Elixir code quality checks failed. Fix these issues before stopping:\n\n%s' "$errors" | jq -Rs .)
   cat <<ENDJSON
 {
   "decision": "block",
-  "reason": "Elixir code quality checks failed",
-  "hookSpecificOutput": {
-    "hookEventName": "Stop",
-    "additionalContext": $context
-  }
+  "reason": $reason
 }
 ENDJSON
   exit 2
