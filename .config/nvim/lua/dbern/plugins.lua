@@ -127,75 +127,9 @@ require("lazy").setup({
     }
   },
   {
-    "coder/claudecode.nvim",
-    config = true,
-    dependencies = { "folke/snacks.nvim" },
-    keys = {
-      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
-      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
-      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-      {
-        "<leader>as",
-        "<cmd>ClaudeCodeTreeAdd<cr>",
-        desc = "Add file",
-        ft = { "snacks_picker_list", "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
-      },
-      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-    },
-
-  },
-  -- {
-  --   "carlos-algms/agentic.nvim",
-  --   opts = { provider = "claude-agent-acp" },
-  --   keys = {
-  --     {
-  --       "<leader>ac",
-  --       function() require("agentic").toggle() end,
-  --       mode = { "n", "v" },
-  --       desc = "Toggle Agentic Chat"
-  --     },
-  --     {
-  --       "<leader>as",
-  --       function() require("agentic").add_selection_or_file_to_context() end,
-  --       mode = { "n", "v" },
-  --       desc = "Add file or selection to Agentic to Context"
-  --     },
-  --     {
-  --       "<leader>an",
-  --       function() require("agentic").new_session() end,
-  --       mode = { "n", "v" },
-  --       desc = "New Agentic Session"
-  --     },
-  --     {
-  --       "<leader>ar",
-  --       function() require("agentic").restore_session() end,
-  --       desc = "Agentic Restore session",
-  --       silent = true,
-  --       mode = { "n", "v" },
-  --     },
-  --     {
-  --       "<leader>ad",
-  --       function() require("agentic").add_current_line_diagnostics() end,
-  --       desc = "Add current line diagnostic to Agentic",
-  --       mode = { "n" },
-  --     },
-  --     {
-  --       "<leader>aD",
-  --       function() require("agentic").add_buffer_diagnostics() end,
-  --       desc = "Add all buffer diagnostics to Agentic",
-  --       mode = { "n" },
-  --     },
-  --   },
-  -- },
-  {
     'saghen/blink.cmp',
     version = '1.9.1',
     dependencies = {
-      -- { 'dbernheisel/hex-cmp', config = true },
       { 'L3MON4D3/LuaSnip',
         version =  'v2.*',
         config = function() require('dbern.plugins.snippets') end},
