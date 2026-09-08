@@ -2,6 +2,7 @@
 *.sqlite3
 *.sw[nop]
 .env
+mise.local.toml
 .env.*
 .log
 .secret*
@@ -14,6 +15,8 @@ tmp/**/*
 
 # Claude
 settings.local.json
+.claude/worktrees
+.claude/scheduled_tasks.lock
 
 # Mise
 mise.local.toml
@@ -90,10 +93,15 @@ private_ssh_key
 .sqllsrc
 .solargraph.yml
 .elixir_ls/
+.ex_dna_cache
 .elixir-tools/
 .ropeproject/
 .lexical/
 .next-ls/
 .expert/
 .grepai/
+.worktrees/
 
+# XCode
+xcuserdata/
+dbern.xcuserdatad/
