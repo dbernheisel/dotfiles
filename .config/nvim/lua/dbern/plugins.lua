@@ -605,7 +605,7 @@ require("lazy").setup({
         'gleam', 'diff', 'make', 'swift', 'scheme', 'ssh_config', 'toml', 'http',
         'lua', 'markdown', 'markdown_inline', 'php', 'python', 'regex', 'ruby',
         'rust', 'scss', 'surface', 'svelte', 'toml', 'tsx', 'typescript',
-        'vue', 'yaml', 'zig', 'mermaid', 'query', 'kdl', 'ini'
+        'vue', 'yaml', 'zig', 'mermaid', 'query', 'kdl', 'ini', 'vim'
       }
 
       ts.install(languages)
