@@ -14,6 +14,11 @@ function have() {
   type "$1" &> /dev/null
 }
 
+bindkey '^[b' backward-word
+bindkey '^[f' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word
+
 # Customize to your needs...
 setopt extended_glob
 unsetopt nomatch
