@@ -7,12 +7,25 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "project_panel": {
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "git_panel": {
+    "dock": "right"
+  },
   "edit_predictions": {
-    "provider": "none"
+    "provider": "none",
   },
   "agent": {
+    "dock": "left",
     "tool_permissions": {
-      "default": "allow"
+      "default": "allow",
     },
     "play_sound_when_agent_done": true,
     "default_model": {
@@ -72,7 +85,7 @@
   },
   "tab_size": 2,
   "languages": {
-    "HEEX": {
+    "HEEx": {
       "language_servers": [
         "expert",
         "tailwindcss-language-server",
@@ -97,6 +110,12 @@
     },
   },
   "lsp": {
+    "expert": {
+      "binary": {
+        "path": "/Users/dbern/.local/bin/expert",
+        "arguments": ["--stdio"],
+      },
+    },
     "tailwindcss-language-server": {
       "settings": {
         "includeLanguages": {

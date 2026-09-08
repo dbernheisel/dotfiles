@@ -16,8 +16,8 @@
   {
     "context": "Editor && mode==full && (vim_mode == normal || vim_mode == visual)",
     "bindings": {
-      "ctrl-n": "vim::SelectNext"
-    }
+      "ctrl-n": "vim::SelectNext",
+    },
   },
   {
     "context": "(Editor && mode==full && vim_mode == normal) || EmptyPane",
@@ -39,7 +39,7 @@
       "ctrl-p": "file_finder::Toggle",
       "space b": "project_panel::ToggleFocus",
       "space f": "pane::DeploySearch",
-      "space n": "notification_panel::ToggleFocus",
+      // "space n": "notification_panel::",
       "space t": "terminal_panel::ToggleFocus",
       "space x": "diagnostics::Deploy",
       "space a c": "agent::ToggleFocus",
@@ -47,20 +47,20 @@
       "space g c": "git::ExpandCommitEditor",
       "space g f": "git::Pull",
       "space g c o": "git::Switch",
-      "space space": "pane::AlternateFile"
-    }
+      "space space": "pane::AlternateFile",
+    },
   },
   {
     "context": "Editor && mode==full && vim_mode == visual",
     "bindings": {
-      "space /": "vim::ToggleComments"
-    }
+      "space /": "vim::ToggleComments",
+    },
   },
   {
     "context": "ProjectSearchBar > Editor",
     "bindings": {
-      "escape": "pane::CloseActiveItem"
-    }
+      "escape": "pane::CloseActiveItem",
+    },
   },
   {
     "context": "ProjectPanel && not_editing",
@@ -78,8 +78,8 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
   {
     "context": "AgentPanel > MessageEditor > Editor",
@@ -88,8 +88,8 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
   {
     "context": "Pane > KeyContextView",
@@ -98,8 +98,8 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
   {
     "context": "GitPanel && ChangesList",
@@ -112,8 +112,8 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "git_panel::FocusEditor"
-    }
+      "ctrl-j": "git_panel::FocusEditor",
+    },
   },
   {
     "context": "GitPanel > Editor",
@@ -125,8 +125,8 @@
       "ctrl-w h": "workspace::ActivatePaneLeft",
       "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-k": "git_panel::FocusChanges",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
   {
     "context": "Terminal",
@@ -136,14 +136,13 @@
       "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-w k": "workspace::ActivatePaneUp",
       "ctrl-w j": "workspace::ActivatePaneDown",
-      "escape": "workspace::ToggleRightDock"
-    }
+    },
   },
   {
     "context": "Editor && mode == full && vim_mode == insert",
     "bindings": {
-      "j j": ["workspace::SendKeystrokes", "escape"]
-    }
+      "j j": ["workspace::SendKeystrokes", "escape"],
+    },
   },
   {
     "context": "Editor && mode == full && vim_mode == normal && (extension==ex || extension==exs)",
@@ -151,21 +150,21 @@
       "space t t": ["task::Spawn", { "task_tag": "#elixir-test" }],
       "space t f": ["task::Spawn", { "task_tag": "#elixir-module-test" }],
       "space t a": ["task::Spawn", { "task_name": "mix test" }],
-      "space t l": "task::Rerun"
-    }
+      "space t l": "task::Rerun",
+    },
   },
   {
     "context": "Editor && showing_completions",
     "bindings": {
       "ctrl-j": "editor::ContextMenuNext",
-      "ctrl-k": "editor::ContextMenuPrevious"
-    }
+      "ctrl-k": "editor::ContextMenuPrevious",
+    },
   },
   {
     "context": "Picker > Editor",
     "bindings": {
       "ctrl-j": "menu::SelectNext",
-      "ctrl-k": "menu::SelectPrevious"
-    }
-  }
+      "ctrl-k": "menu::SelectPrevious",
+    },
+  },
 ]
