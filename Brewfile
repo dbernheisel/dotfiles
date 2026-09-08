@@ -15,6 +15,7 @@ brew 'tldr'           # CLI tldr shorter man pages
 brew 'wget'           # CLI wget HTTP interface
 brew 'x264'           # Library video decoder
 brew 'xz'             # CLI xz compression
+brew 'sd'             # CLI sed replacement
 brew 'zellij'         # CLI better tmux
 brew 'markdown-oxide' # LSP for markdown
 brew 'lua-language-server'
