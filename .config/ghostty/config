@@ -3,6 +3,7 @@ click-repeat-interval = 500
 shell-integration-features = true
 
 # Preferences
+desktop-notifications = true
 mouse-hide-while-typing = true
 clipboard-trim-trailing-spaces = true
 window-inherit-working-directory = false
