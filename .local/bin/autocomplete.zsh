@@ -31,49 +31,56 @@ fi
 #   fi
 # fi
 
-mkdir -p "$HOME/.cache/completions"
-if have docker && [ ! -f "$HOME/.cache/completions/_docker" ]; then
-  docker completion zsh > "$HOME/.cache/completions/_docker"
+COMPDIR="$HOME/.cache/completions"
+mkdir -p "$COMPDIR"
+zmodload -F zsh/stat b:zstat
+
+# Regenerate a completion whenever the tool it describes changes.
+#
+# The cache key is the resolved binary's path, mtime and size, read with zstat
+# instead of shelling out to each tool's --version (~12ms each, on every new
+# shell; the whole stat-based pass is ~4ms). ${commands[...]} resolves past
+# shims to the real binary, so a mise-managed tool moves path on upgrade and a
+# brew- or system-managed one changes mtime.
+completion_for() {
+  local name=$1 bin=$2
+  shift 2
+  [[ -n $bin && -x $bin ]] || return 0
+
+  local out="$COMPDIR/_$name" stamp="$COMPDIR/.$name.stamp" tmp="$COMPDIR/.$name.new"
+  local -A st
+  zstat -H st "$bin" 2>/dev/null || return 0
+  local key="$bin:$st[mtime]:$st[size]"
+
+  [[ -f $out && -r $stamp && "$(<$stamp)" == "$key" ]] && return 0
+
+  # Keep the previous completion if the generator fails or emits nothing —
+  # a stale completion still beats an empty one.
+  "$@" >| "$tmp" 2>/dev/null && [[ -s $tmp ]] || { rm -f "$tmp"; return 0; }
+  mv -f "$tmp" "$out"
+  print -r -- "$key" >| "$stamp"
+}
+
+completion_for docker    "${commands[docker]}"    docker completion zsh
+completion_for just      "${commands[just]}"      just --completions zsh
+completion_for k3d       "${commands[k3d]}"       k3d completion zsh
+completion_for kubectl   "${commands[kubectl]}"   kubectl completion zsh
+completion_for mise      "${commands[mise]}"      mise completion zsh
+completion_for tailscale "${commands[tailscale]}" tailscale completion zsh
+completion_for npm       "${commands[npm]}"       npm completion
+
+if [ "$TERM_PROGRAM" = "WezTerm" ]; then
+  completion_for wezterm "$WEZTERM_EXECUTABLE_DIR/wezterm" \
+    "$WEZTERM_EXECUTABLE_DIR/wezterm" shell-completion --shell zsh
 fi
 
-if have just && [ ! -f "$HOME/.cache/completions/_just" ]; then
-  just --completions zsh > "$HOME/.cache/completions/_just"
+if [[ -n "$TERMINFO" && "$TERMINFO" == *kitty* ]]; then
+  completion_for kitty "${commands[kitty]}" kitty + complete setup zsh
 fi
 
-if have k3d && [ ! -f "$HOME/.cache/completions/_k3d" ]; then
-  k3d completion zsh > "$HOME/.cache/completions/_k3d"
+if have mix && [ ! -L "$COMPDIR/_mix" ]; then
+  ln -sf "$HOME/.local/bin/_mix" "$COMPDIR/_mix"
 fi
 
-if have kubectl && [ ! -f "$HOME/.cache/completions/_kubectl" ]; then
-  kubectl completion zsh > "$HOME/.cache/completions/_kubectl"
-fi
-
-if have mise && [ ! -f "$HOME/.cache/completions/_mise" ]; then
-  mise completion zsh > "$HOME/.cache/completions/_mise"
-fi
-
-if have tailscale && [ ! -f "$HOME/.cache/completions/_tailscale" ]; then
-  tailscale completion zsh > "$HOME/.cache/completions/_tailscale"
-fi
-
-if [ "$TERM_PROGRAM" = "WezTerm" ] && \
-   [ ! -f "$HOME/.cache/completions/_wezterm" ]; then
-  (cd "$WEZTERM_EXECUTABLE_DIR" && ./wezterm shell-completion --shell zsh > "$HOME/.cache/completions/_wezterm")
-fi
-
-if [ -n "$TERMINFO" ] && \
-   [ "$TERMINFO" =~ "kitty" ] && \
-   [ ! -f "$HOME/.cache/completions/_kitty" ]; then
-  kitty + complete setup zsh > "$HOME/.cache/completions/_kitty"
-fi
-
-if have npm && [ ! -f "$HOME/.cache/completions/_npm" ]; then
-  npm completion > "$HOME/.cache/completions/_npm"
-fi
-
-if have mix && [ ! -L "$HOME/.cache/completions/_mix" ]; then
-  ln -sf "$HOME/.local/bin/_mix" "$HOME/.cache/completions/_mix"
-fi
-
-fpath=("$HOME/.cache/completions" $fpath)
+fpath=("$COMPDIR" $fpath)
 autoload -Uz compinit && compinit
